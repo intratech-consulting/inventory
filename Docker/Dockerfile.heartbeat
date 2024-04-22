@@ -1,0 +1,17 @@
+# Use the latest Python 3.11 image
+FROM python:3.11.4-slim
+
+# Set the working directory in the Docker image
+WORKDIR /app
+
+# Copy the requirements file from the Docker directory
+COPY /Docker/heartbeat-requirements.txt ./
+
+# Copy the heartbeat.py script from one level up from the Docker directory
+COPY ./heartbeat.py ./
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r heartbeat-requirements.txt
+
+# Command to run the application
+CMD ["python", "heartbeat.py"]

@@ -3,8 +3,8 @@ import pika
 import time
 from datetime import datetime
 import logging
-import sys  # Import for system operations
-import os   # Import for operating system operations
+import sys
+import os
 
 def setup_logging():
     # Setup basic logger
@@ -26,6 +26,12 @@ def setup_logging():
 
 def main():
     logger = setup_logging()
+    try:
+        credentials = pika.PlainCredentials('guest', 'guest')
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    except pika.exceptions.AMQPConnectionError as e:
+        logger.error("Failed to connect to RabbitMQ", exc_info=True)
+        return  # Exit if connection failed
 
     # Common XML and XSD
     heartbeat_xsd = """
@@ -43,12 +49,16 @@ def main():
     """
 
     # RabbitMQ setup
-    credentials = pika.PlainCredentials('change before testing', 'change before testing')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', "change before testing 5672", '/', credentials))
+    credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    #when running application in a docker network with rabbit mq host must be name of container
+    #connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))
+
     channel = connection.channel()
 
-    queue_name = 'change before testing'  # Placeholder for queue name
-    channel.queue_declare(queue="change before testing", durable=True)
+    queue_name = 'heartbeat'  # Placeholder for queue name
+    channel.queue_declare(queue=f"{queue_name}", durable=True)
+    channel.exchange_declare(exchange='heartbeat', exchange_type='direct', durable=True)
 
     try:
         while True:
@@ -70,7 +80,7 @@ def main():
             else:
                 logger.error('XML is not valid')
 
-            channel.basic_publish(exchange='', routing_key=queue_name, body=heartbeat_xml)
+            channel.basic_publish(exchange='heartbeat', routing_key=queue_name, body=heartbeat_xml)
             logger.info('Message sent')
             time.sleep(2)  # Send message every 2 seconds
     except KeyboardInterrupt:
