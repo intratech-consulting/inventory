@@ -18,11 +18,7 @@ def setup_logging():
     return logger
 
 def send_heartbeat():
-
     logger = setup_logging()
-    #connection = connect_to_rabbit()
-    #channel = connection.channel()
-
     # Declare the queue and exchange, and make sure they are bound
     queue_name = 'heartbeat'
     exchange_name = 'heartbeat'
@@ -31,8 +27,8 @@ def send_heartbeat():
     credentials = pika.PlainCredentials('guest', 'guest')
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
     channel = connection.channel()
-    channel.queue_declare(queue='heartbeat', durable=True)
-    channel.exchange_declare(exchange='heartbeat', exchange_type='direct', durable=True)
+    channel.queue_declare(queue=queue_name , durable=True)
+    channel.exchange_declare(exchange=exchange_name, exchange_type='direct', durable=True)
 
     # Confirm that RabbitMQ will confirm messages
     channel.confirm_delivery()
