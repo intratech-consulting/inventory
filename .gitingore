@@ -1,2 +1,5 @@
 #To ignore the inventree-data
-inventree-data/
+./Inventree/inventree-data/
+
+#Log file
+./heartbeat.log
