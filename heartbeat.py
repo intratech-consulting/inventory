@@ -42,9 +42,9 @@ def main():
                     <xs:element name="id" type="xs:integer" />
                     <xs:element name="name" type="xs:string" />
                     <xs:element name="category" type="xs:string" />
-                    <xs:element name="amount" type="xs:string" />
+                    <xs:element name="amount" type="xs:integer" />
                     <xs:element name="location" type="xs:string" />
-                    <xs:element name="amount_in_stock" type="xs:string" />
+                    <xs:element name="amount_in_stock" type="xs:integer" />
                 </xs:sequence>
             </xs:complexType>
         </xs:element>

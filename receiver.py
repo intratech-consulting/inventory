@@ -27,7 +27,7 @@ def main():
         amount = doc.find("amount").text
         location= doc.find("location").text
         amount_in_stock=doc.find("amount_in_stock").text
-        print(f"Received heartbeat: id: {id}, name: {name}, category: {category}, amount: {amount}")
+        # print(f"Received heartbeat: id: {id}, name: {name}, category: {category}, amount: {amount}")
         print(f"Received heartbeat: id: {id}, name: {name}, category: {category}, amount: {amount}, location:{location},amount in stock:{amount_in_stock}")
 
     # Start consuming messages from the 'heartbeat' queue

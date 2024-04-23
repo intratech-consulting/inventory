@@ -6655,3 +6655,905 @@
 2024-04-23 10:44:07,067 - __main__ - INFO - Message sent
 2024-04-23 10:44:09,068 - __main__ - INFO - XML is valid
 2024-04-23 10:44:09,068 - __main__ - INFO - Message sent
+2024-04-23 10:44:11,069 - __main__ - INFO - XML is valid
+2024-04-23 10:44:11,069 - __main__ - INFO - Message sent
+2024-04-23 10:44:13,071 - __main__ - INFO - XML is valid
+2024-04-23 10:44:13,072 - __main__ - INFO - Message sent
+2024-04-23 10:44:15,072 - __main__ - INFO - XML is valid
+2024-04-23 10:44:15,073 - __main__ - INFO - Message sent
+2024-04-23 10:44:17,073 - __main__ - INFO - XML is valid
+2024-04-23 10:44:17,073 - __main__ - INFO - Message sent
+2024-04-23 10:44:19,075 - __main__ - INFO - XML is valid
+2024-04-23 10:44:19,076 - __main__ - INFO - Message sent
+2024-04-23 10:44:19,664 - __main__ - INFO - Stopping gracefully...
+2024-04-23 10:46:16,780 - __main__ - INFO - XML is valid
+2024-04-23 10:46:16,780 - __main__ - INFO - Message sent
+2024-04-23 10:46:18,781 - __main__ - INFO - XML is valid
+2024-04-23 10:46:18,782 - __main__ - INFO - Message sent
+2024-04-23 10:46:20,782 - __main__ - INFO - XML is valid
+2024-04-23 10:46:20,783 - __main__ - INFO - Message sent
+2024-04-23 10:46:22,785 - __main__ - INFO - XML is valid
+2024-04-23 10:46:22,786 - __main__ - INFO - Message sent
+2024-04-23 10:46:24,787 - __main__ - INFO - XML is valid
+2024-04-23 10:46:24,787 - __main__ - INFO - Message sent
+2024-04-23 10:46:26,789 - __main__ - INFO - XML is valid
+2024-04-23 10:46:26,790 - __main__ - INFO - Message sent
+2024-04-23 10:46:28,791 - __main__ - INFO - XML is valid
+2024-04-23 10:46:28,791 - __main__ - INFO - Message sent
+2024-04-23 10:46:30,792 - __main__ - INFO - XML is valid
+2024-04-23 10:46:30,793 - __main__ - INFO - Message sent
+2024-04-23 10:46:32,794 - __main__ - INFO - XML is valid
+2024-04-23 10:46:32,795 - __main__ - INFO - Message sent
+2024-04-23 10:46:34,795 - __main__ - INFO - XML is valid
+2024-04-23 10:46:34,795 - __main__ - INFO - Message sent
+2024-04-23 10:46:36,796 - __main__ - INFO - XML is valid
+2024-04-23 10:46:36,797 - __main__ - INFO - Message sent
+2024-04-23 10:46:38,798 - __main__ - INFO - XML is valid
+2024-04-23 10:46:38,799 - __main__ - INFO - Message sent
+2024-04-23 10:46:40,799 - __main__ - INFO - XML is valid
+2024-04-23 10:46:40,800 - __main__ - INFO - Message sent
+2024-04-23 10:46:42,800 - __main__ - INFO - XML is valid
+2024-04-23 10:46:42,800 - __main__ - INFO - Message sent
+2024-04-23 10:46:44,802 - __main__ - INFO - XML is valid
+2024-04-23 10:46:44,802 - __main__ - INFO - Message sent
+2024-04-23 10:46:46,803 - __main__ - INFO - XML is valid
+2024-04-23 10:46:46,804 - __main__ - INFO - Message sent
+2024-04-23 10:46:48,805 - __main__ - INFO - XML is valid
+2024-04-23 10:46:48,805 - __main__ - INFO - Message sent
+2024-04-23 10:46:50,807 - __main__ - INFO - XML is valid
+2024-04-23 10:46:50,808 - __main__ - INFO - Message sent
+2024-04-23 10:46:52,808 - __main__ - INFO - XML is valid
+2024-04-23 10:46:52,809 - __main__ - INFO - Message sent
+2024-04-23 10:46:54,810 - __main__ - INFO - XML is valid
+2024-04-23 10:46:54,811 - __main__ - INFO - Message sent
+2024-04-23 10:46:56,812 - __main__ - INFO - XML is valid
+2024-04-23 10:46:56,813 - __main__ - INFO - Message sent
+2024-04-23 10:46:58,813 - __main__ - INFO - XML is valid
+2024-04-23 10:46:58,814 - __main__ - INFO - Message sent
+2024-04-23 10:47:00,815 - __main__ - INFO - XML is valid
+2024-04-23 10:47:00,815 - __main__ - INFO - Message sent
+2024-04-23 10:47:02,817 - __main__ - INFO - XML is valid
+2024-04-23 10:47:02,818 - __main__ - INFO - Message sent
+2024-04-23 10:47:04,819 - __main__ - INFO - XML is valid
+2024-04-23 10:47:04,819 - __main__ - INFO - Message sent
+2024-04-23 10:47:06,819 - __main__ - INFO - XML is valid
+2024-04-23 10:47:06,821 - __main__ - INFO - Message sent
+2024-04-23 10:47:08,821 - __main__ - INFO - XML is valid
+2024-04-23 10:47:08,822 - __main__ - INFO - Message sent
+2024-04-23 10:47:10,822 - __main__ - INFO - XML is valid
+2024-04-23 10:47:10,822 - __main__ - INFO - Message sent
+2024-04-23 10:47:12,823 - __main__ - INFO - XML is valid
+2024-04-23 10:47:12,824 - __main__ - INFO - Message sent
+2024-04-23 10:47:14,824 - __main__ - INFO - XML is valid
+2024-04-23 10:47:14,825 - __main__ - INFO - Message sent
+2024-04-23 10:47:16,827 - __main__ - INFO - XML is valid
+2024-04-23 10:47:16,828 - __main__ - INFO - Message sent
+2024-04-23 10:47:18,829 - __main__ - INFO - XML is valid
+2024-04-23 10:47:18,829 - __main__ - INFO - Message sent
+2024-04-23 10:47:20,830 - __main__ - INFO - XML is valid
+2024-04-23 10:47:20,830 - __main__ - INFO - Message sent
+2024-04-23 10:47:22,832 - __main__ - INFO - XML is valid
+2024-04-23 10:47:22,833 - __main__ - INFO - Message sent
+2024-04-23 10:47:24,834 - __main__ - INFO - XML is valid
+2024-04-23 10:47:24,835 - __main__ - INFO - Message sent
+2024-04-23 10:47:26,836 - __main__ - INFO - XML is valid
+2024-04-23 10:47:26,837 - __main__ - INFO - Message sent
+2024-04-23 10:47:28,838 - __main__ - INFO - XML is valid
+2024-04-23 10:47:28,839 - __main__ - INFO - Message sent
+2024-04-23 10:47:30,839 - __main__ - INFO - XML is valid
+2024-04-23 10:47:30,839 - __main__ - INFO - Message sent
+2024-04-23 10:47:32,841 - __main__ - INFO - XML is valid
+2024-04-23 10:47:32,842 - __main__ - INFO - Message sent
+2024-04-23 10:47:33,090 - __main__ - INFO - Stopping gracefully...
+2024-04-23 10:47:35,027 - __main__ - INFO - XML is valid
+2024-04-23 10:47:35,027 - __main__ - INFO - Message sent
+2024-04-23 10:47:37,028 - __main__ - INFO - XML is valid
+2024-04-23 10:47:37,029 - __main__ - INFO - Message sent
+2024-04-23 10:47:39,030 - __main__ - INFO - XML is valid
+2024-04-23 10:47:39,032 - __main__ - INFO - Message sent
+2024-04-23 10:47:41,032 - __main__ - INFO - XML is valid
+2024-04-23 10:47:41,032 - __main__ - INFO - Message sent
+2024-04-23 10:47:43,034 - __main__ - INFO - XML is valid
+2024-04-23 10:47:43,035 - __main__ - INFO - Message sent
+2024-04-23 10:47:45,036 - __main__ - INFO - XML is valid
+2024-04-23 10:47:45,037 - __main__ - INFO - Message sent
+2024-04-23 10:47:47,038 - __main__ - INFO - XML is valid
+2024-04-23 10:47:47,039 - __main__ - INFO - Message sent
+2024-04-23 10:47:49,040 - __main__ - INFO - XML is valid
+2024-04-23 10:47:49,041 - __main__ - INFO - Message sent
+2024-04-23 10:47:51,041 - __main__ - INFO - XML is valid
+2024-04-23 10:47:51,043 - __main__ - INFO - Message sent
+2024-04-23 10:47:53,043 - __main__ - INFO - XML is valid
+2024-04-23 10:47:53,044 - __main__ - INFO - Message sent
+2024-04-23 10:47:55,045 - __main__ - INFO - XML is valid
+2024-04-23 10:47:55,045 - __main__ - INFO - Message sent
+2024-04-23 10:47:57,047 - __main__ - INFO - XML is valid
+2024-04-23 10:47:57,047 - __main__ - INFO - Message sent
+2024-04-23 10:47:59,048 - __main__ - INFO - XML is valid
+2024-04-23 10:47:59,048 - __main__ - INFO - Message sent
+2024-04-23 10:48:01,049 - __main__ - INFO - XML is valid
+2024-04-23 10:48:01,050 - __main__ - INFO - Message sent
+2024-04-23 10:48:03,050 - __main__ - INFO - XML is valid
+2024-04-23 10:48:03,052 - __main__ - INFO - Message sent
+2024-04-23 10:48:05,052 - __main__ - INFO - XML is valid
+2024-04-23 10:48:05,053 - __main__ - INFO - Message sent
+2024-04-23 10:48:07,054 - __main__ - INFO - XML is valid
+2024-04-23 10:48:07,054 - __main__ - INFO - Message sent
+2024-04-23 10:48:09,055 - __main__ - INFO - XML is valid
+2024-04-23 10:48:09,055 - __main__ - INFO - Message sent
+2024-04-23 10:48:11,056 - __main__ - INFO - XML is valid
+2024-04-23 10:48:11,057 - __main__ - INFO - Message sent
+2024-04-23 10:48:13,058 - __main__ - INFO - XML is valid
+2024-04-23 10:48:13,059 - __main__ - INFO - Message sent
+2024-04-23 10:48:15,060 - __main__ - INFO - XML is valid
+2024-04-23 10:48:15,060 - __main__ - INFO - Message sent
+2024-04-23 10:48:17,061 - __main__ - INFO - XML is valid
+2024-04-23 10:48:17,061 - __main__ - INFO - Message sent
+2024-04-23 10:48:17,194 - __main__ - INFO - Stopping gracefully...
+2024-04-23 10:48:21,884 - __main__ - INFO - XML is valid
+2024-04-23 10:48:21,884 - __main__ - INFO - Message sent
+2024-04-23 10:48:23,885 - __main__ - INFO - XML is valid
+2024-04-23 10:48:23,887 - __main__ - INFO - Message sent
+2024-04-23 10:48:25,888 - __main__ - INFO - XML is valid
+2024-04-23 10:48:25,889 - __main__ - INFO - Message sent
+2024-04-23 10:48:27,889 - __main__ - INFO - XML is valid
+2024-04-23 10:48:27,890 - __main__ - INFO - Message sent
+2024-04-23 10:48:29,891 - __main__ - INFO - XML is valid
+2024-04-23 10:48:29,891 - __main__ - INFO - Message sent
+2024-04-23 10:48:31,892 - __main__ - INFO - XML is valid
+2024-04-23 10:48:31,892 - __main__ - INFO - Message sent
+2024-04-23 10:48:33,893 - __main__ - INFO - XML is valid
+2024-04-23 10:48:33,893 - __main__ - INFO - Message sent
+2024-04-23 10:48:35,895 - __main__ - INFO - XML is valid
+2024-04-23 10:48:35,896 - __main__ - INFO - Message sent
+2024-04-23 10:48:37,896 - __main__ - INFO - XML is valid
+2024-04-23 10:48:37,896 - __main__ - INFO - Message sent
+2024-04-23 10:48:39,897 - __main__ - INFO - XML is valid
+2024-04-23 10:48:39,898 - __main__ - INFO - Message sent
+2024-04-23 10:48:41,899 - __main__ - INFO - XML is valid
+2024-04-23 10:48:41,900 - __main__ - INFO - Message sent
+2024-04-23 10:48:43,901 - __main__ - INFO - XML is valid
+2024-04-23 10:48:43,901 - __main__ - INFO - Message sent
+2024-04-23 10:48:45,912 - __main__ - INFO - XML is valid
+2024-04-23 10:48:45,913 - __main__ - INFO - Message sent
+2024-04-23 10:48:47,914 - __main__ - INFO - XML is valid
+2024-04-23 10:48:47,915 - __main__ - INFO - Message sent
+2024-04-23 10:48:49,915 - __main__ - INFO - XML is valid
+2024-04-23 10:48:49,916 - __main__ - INFO - Message sent
+2024-04-23 10:48:51,917 - __main__ - INFO - XML is valid
+2024-04-23 10:48:51,918 - __main__ - INFO - Message sent
+2024-04-23 10:48:53,926 - __main__ - INFO - XML is valid
+2024-04-23 10:48:53,927 - __main__ - INFO - Message sent
+2024-04-23 10:48:55,928 - __main__ - INFO - XML is valid
+2024-04-23 10:48:55,928 - __main__ - INFO - Message sent
+2024-04-23 10:48:57,929 - __main__ - INFO - XML is valid
+2024-04-23 10:48:57,929 - __main__ - INFO - Message sent
+2024-04-23 10:48:59,930 - __main__ - INFO - XML is valid
+2024-04-23 10:48:59,931 - __main__ - INFO - Message sent
+2024-04-23 10:49:01,932 - __main__ - INFO - XML is valid
+2024-04-23 10:49:01,933 - __main__ - INFO - Message sent
+2024-04-23 10:49:03,934 - __main__ - INFO - XML is valid
+2024-04-23 10:49:03,935 - __main__ - INFO - Message sent
+2024-04-23 10:49:05,937 - __main__ - INFO - XML is valid
+2024-04-23 10:49:05,937 - __main__ - INFO - Message sent
+2024-04-23 10:49:07,939 - __main__ - INFO - XML is valid
+2024-04-23 10:49:07,939 - __main__ - INFO - Message sent
+2024-04-23 10:49:09,939 - __main__ - INFO - XML is valid
+2024-04-23 10:49:09,940 - __main__ - INFO - Message sent
+2024-04-23 10:49:11,121 - __main__ - INFO - Stopping gracefully...
+2024-04-23 10:49:12,264 - __main__ - INFO - XML is valid
+2024-04-23 10:49:12,265 - __main__ - INFO - Message sent
+2024-04-23 10:49:14,267 - __main__ - INFO - XML is valid
+2024-04-23 10:49:14,267 - __main__ - INFO - Message sent
+2024-04-23 10:49:16,268 - __main__ - INFO - XML is valid
+2024-04-23 10:49:16,269 - __main__ - INFO - Message sent
+2024-04-23 10:49:18,270 - __main__ - INFO - XML is valid
+2024-04-23 10:49:18,271 - __main__ - INFO - Message sent
+2024-04-23 10:49:20,271 - __main__ - INFO - XML is valid
+2024-04-23 10:49:20,272 - __main__ - INFO - Message sent
+2024-04-23 10:49:22,272 - __main__ - INFO - XML is valid
+2024-04-23 10:49:22,272 - __main__ - INFO - Message sent
+2024-04-23 10:49:24,273 - __main__ - INFO - XML is valid
+2024-04-23 10:49:24,274 - __main__ - INFO - Message sent
+2024-04-23 10:49:26,275 - __main__ - INFO - XML is valid
+2024-04-23 10:49:26,275 - __main__ - INFO - Message sent
+2024-04-23 10:49:28,276 - __main__ - INFO - XML is valid
+2024-04-23 10:49:28,276 - __main__ - INFO - Message sent
+2024-04-23 10:49:30,277 - __main__ - INFO - XML is valid
+2024-04-23 10:49:30,278 - __main__ - INFO - Message sent
+2024-04-23 10:49:32,279 - __main__ - INFO - XML is valid
+2024-04-23 10:49:32,280 - __main__ - INFO - Message sent
+2024-04-23 10:49:34,281 - __main__ - INFO - XML is valid
+2024-04-23 10:49:34,282 - __main__ - INFO - Message sent
+2024-04-23 10:49:36,283 - __main__ - INFO - XML is valid
+2024-04-23 10:49:36,284 - __main__ - INFO - Message sent
+2024-04-23 10:49:38,285 - __main__ - INFO - XML is valid
+2024-04-23 10:49:38,286 - __main__ - INFO - Message sent
+2024-04-23 10:49:40,286 - __main__ - INFO - XML is valid
+2024-04-23 10:49:40,287 - __main__ - INFO - Message sent
+2024-04-23 10:49:42,288 - __main__ - INFO - XML is valid
+2024-04-23 10:49:42,288 - __main__ - INFO - Message sent
+2024-04-23 10:49:44,289 - __main__ - INFO - XML is valid
+2024-04-23 10:49:44,290 - __main__ - INFO - Message sent
+2024-04-23 10:49:46,291 - __main__ - INFO - XML is valid
+2024-04-23 10:49:46,292 - __main__ - INFO - Message sent
+2024-04-23 10:49:48,293 - __main__ - INFO - XML is valid
+2024-04-23 10:49:48,293 - __main__ - INFO - Message sent
+2024-04-23 10:49:50,294 - __main__ - INFO - XML is valid
+2024-04-23 10:49:50,296 - __main__ - INFO - Message sent
+2024-04-23 10:49:52,297 - __main__ - INFO - XML is valid
+2024-04-23 10:49:52,298 - __main__ - INFO - Message sent
+2024-04-23 10:49:54,299 - __main__ - INFO - XML is valid
+2024-04-23 10:49:54,299 - __main__ - INFO - Message sent
+2024-04-23 10:49:56,301 - __main__ - INFO - XML is valid
+2024-04-23 10:49:56,301 - __main__ - INFO - Message sent
+2024-04-23 10:49:58,302 - __main__ - INFO - XML is valid
+2024-04-23 10:49:58,302 - __main__ - INFO - Message sent
+2024-04-23 10:50:00,303 - __main__ - INFO - XML is valid
+2024-04-23 10:50:00,305 - __main__ - INFO - Message sent
+2024-04-23 10:50:02,305 - __main__ - INFO - XML is valid
+2024-04-23 10:50:02,306 - __main__ - INFO - Message sent
+2024-04-23 10:50:04,306 - __main__ - INFO - XML is valid
+2024-04-23 10:50:04,306 - __main__ - INFO - Message sent
+2024-04-23 10:50:06,308 - __main__ - INFO - XML is valid
+2024-04-23 10:50:06,309 - __main__ - INFO - Message sent
+2024-04-23 10:50:08,309 - __main__ - INFO - XML is valid
+2024-04-23 10:50:08,310 - __main__ - INFO - Message sent
+2024-04-23 10:50:10,312 - __main__ - INFO - XML is valid
+2024-04-23 10:50:10,313 - __main__ - INFO - Message sent
+2024-04-23 10:50:12,314 - __main__ - INFO - XML is valid
+2024-04-23 10:50:12,316 - __main__ - INFO - Message sent
+2024-04-23 10:50:14,317 - __main__ - INFO - XML is valid
+2024-04-23 10:50:14,317 - __main__ - INFO - Message sent
+2024-04-23 10:50:16,318 - __main__ - INFO - XML is valid
+2024-04-23 10:50:16,318 - __main__ - INFO - Message sent
+2024-04-23 10:50:18,319 - __main__ - INFO - XML is valid
+2024-04-23 10:50:18,320 - __main__ - INFO - Message sent
+2024-04-23 10:50:20,321 - __main__ - INFO - XML is valid
+2024-04-23 10:50:55,151 - __main__ - ERROR - Failed to connect to RabbitMQ
+Traceback (most recent call last):
+  File "C:\Users\robbe\OneDrive\Documenten\GitHub\invetree\heartbeat.py", line 31, in main
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pika\adapters\blocking_connection.py", line 360, in __init__
+    self._impl = self._create_connection(parameters, _impl_class)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pika\adapters\blocking_connection.py", line 451, in _create_connection
+    raise self._reap_last_connection_workflow_error(error)
+pika.exceptions.AMQPConnectionError
+2024-04-23 10:51:03,901 - __main__ - INFO - XML is valid
+2024-04-23 10:51:03,902 - __main__ - INFO - Message sent
+2024-04-23 10:51:05,903 - __main__ - INFO - XML is valid
+2024-04-23 10:51:05,904 - __main__ - INFO - Message sent
+2024-04-23 10:51:07,905 - __main__ - INFO - XML is valid
+2024-04-23 10:51:07,906 - __main__ - INFO - Message sent
+2024-04-23 10:51:09,907 - __main__ - INFO - XML is valid
+2024-04-23 10:51:09,908 - __main__ - INFO - Message sent
+2024-04-23 10:51:11,908 - __main__ - INFO - XML is valid
+2024-04-23 10:51:11,909 - __main__ - INFO - Message sent
+2024-04-23 10:51:13,910 - __main__ - INFO - XML is valid
+2024-04-23 10:51:13,911 - __main__ - INFO - Message sent
+2024-04-23 10:51:15,912 - __main__ - INFO - XML is valid
+2024-04-23 10:51:15,913 - __main__ - INFO - Message sent
+2024-04-23 10:51:17,914 - __main__ - INFO - XML is valid
+2024-04-23 10:51:17,914 - __main__ - INFO - Message sent
+2024-04-23 10:51:19,915 - __main__ - INFO - XML is valid
+2024-04-23 10:51:19,916 - __main__ - INFO - Message sent
+2024-04-23 10:51:21,917 - __main__ - INFO - XML is valid
+2024-04-23 10:51:21,918 - __main__ - INFO - Message sent
+2024-04-23 10:51:23,919 - __main__ - INFO - XML is valid
+2024-04-23 10:51:23,919 - __main__ - INFO - Message sent
+2024-04-23 10:51:25,920 - __main__ - INFO - XML is valid
+2024-04-23 10:51:25,920 - __main__ - INFO - Message sent
+2024-04-23 10:51:27,922 - __main__ - INFO - XML is valid
+2024-04-23 10:51:27,923 - __main__ - INFO - Message sent
+2024-04-23 10:51:29,924 - __main__ - INFO - XML is valid
+2024-04-23 10:51:29,925 - __main__ - INFO - Message sent
+2024-04-23 10:51:31,925 - __main__ - INFO - XML is valid
+2024-04-23 10:51:31,926 - __main__ - INFO - Message sent
+2024-04-23 10:51:33,927 - __main__ - INFO - XML is valid
+2024-04-23 10:51:33,928 - __main__ - INFO - Message sent
+2024-04-23 10:51:35,928 - __main__ - INFO - XML is valid
+2024-04-23 10:51:35,929 - __main__ - INFO - Message sent
+2024-04-23 10:51:37,930 - __main__ - INFO - XML is valid
+2024-04-23 10:51:37,930 - __main__ - INFO - Message sent
+2024-04-23 10:51:39,932 - __main__ - INFO - XML is valid
+2024-04-23 10:51:39,932 - __main__ - INFO - Message sent
+2024-04-23 10:51:41,933 - __main__ - INFO - XML is valid
+2024-04-23 10:51:41,934 - __main__ - INFO - Message sent
+2024-04-23 10:51:43,935 - __main__ - INFO - XML is valid
+2024-04-23 10:51:43,936 - __main__ - INFO - Message sent
+2024-04-23 10:51:45,937 - __main__ - INFO - XML is valid
+2024-04-23 10:51:45,937 - __main__ - INFO - Message sent
+2024-04-23 10:51:47,938 - __main__ - INFO - XML is valid
+2024-04-23 10:51:47,938 - __main__ - INFO - Message sent
+2024-04-23 10:51:49,939 - __main__ - INFO - XML is valid
+2024-04-23 10:51:49,940 - __main__ - INFO - Message sent
+2024-04-23 10:51:51,941 - __main__ - INFO - XML is valid
+2024-04-23 10:51:51,942 - __main__ - INFO - Message sent
+2024-04-23 10:51:53,942 - __main__ - INFO - XML is valid
+2024-04-23 10:51:53,942 - __main__ - INFO - Message sent
+2024-04-23 10:51:55,944 - __main__ - INFO - XML is valid
+2024-04-23 10:51:55,945 - __main__ - INFO - Message sent
+2024-04-23 10:51:57,946 - __main__ - INFO - XML is valid
+2024-04-23 10:51:57,946 - __main__ - INFO - Message sent
+2024-04-23 10:51:59,947 - __main__ - INFO - XML is valid
+2024-04-23 10:51:59,948 - __main__ - INFO - Message sent
+2024-04-23 10:52:01,949 - __main__ - INFO - XML is valid
+2024-04-23 10:52:01,950 - __main__ - INFO - Message sent
+2024-04-23 10:52:03,951 - __main__ - INFO - XML is valid
+2024-04-23 10:52:03,952 - __main__ - INFO - Message sent
+2024-04-23 10:52:05,953 - __main__ - INFO - XML is valid
+2024-04-23 10:52:05,954 - __main__ - INFO - Message sent
+2024-04-23 10:52:07,956 - __main__ - INFO - XML is valid
+2024-04-23 10:52:07,957 - __main__ - INFO - Message sent
+2024-04-23 10:52:09,957 - __main__ - INFO - XML is valid
+2024-04-23 10:52:09,957 - __main__ - INFO - Message sent
+2024-04-23 10:52:11,959 - __main__ - INFO - XML is valid
+2024-04-23 10:52:11,960 - __main__ - INFO - Message sent
+2024-04-23 10:52:13,961 - __main__ - INFO - XML is valid
+2024-04-23 10:52:13,962 - __main__ - INFO - Message sent
+2024-04-23 10:52:15,963 - __main__ - INFO - XML is valid
+2024-04-23 10:52:15,964 - __main__ - INFO - Message sent
+2024-04-23 10:52:17,964 - __main__ - INFO - XML is valid
+2024-04-23 10:52:17,965 - __main__ - INFO - Message sent
+2024-04-23 10:52:19,966 - __main__ - INFO - XML is valid
+2024-04-23 10:52:19,967 - __main__ - INFO - Message sent
+2024-04-23 10:52:21,968 - __main__ - INFO - XML is valid
+2024-04-23 10:52:21,969 - __main__ - INFO - Message sent
+2024-04-23 10:52:23,970 - __main__ - INFO - XML is valid
+2024-04-23 10:52:23,971 - __main__ - INFO - Message sent
+2024-04-23 10:52:25,972 - __main__ - INFO - XML is valid
+2024-04-23 10:52:25,972 - __main__ - INFO - Message sent
+2024-04-23 10:52:27,974 - __main__ - INFO - XML is valid
+2024-04-23 10:52:27,974 - __main__ - INFO - Message sent
+2024-04-23 10:52:29,976 - __main__ - INFO - XML is valid
+2024-04-23 10:52:29,976 - __main__ - INFO - Message sent
+2024-04-23 10:52:31,978 - __main__ - INFO - XML is valid
+2024-04-23 10:52:31,978 - __main__ - INFO - Message sent
+2024-04-23 10:52:33,979 - __main__ - INFO - XML is valid
+2024-04-23 10:52:33,981 - __main__ - INFO - Message sent
+2024-04-23 10:52:35,981 - __main__ - INFO - XML is valid
+2024-04-23 10:52:35,981 - __main__ - INFO - Message sent
+2024-04-23 10:52:37,982 - __main__ - INFO - XML is valid
+2024-04-23 10:52:37,983 - __main__ - INFO - Message sent
+2024-04-23 10:52:39,983 - __main__ - INFO - XML is valid
+2024-04-23 10:52:39,985 - __main__ - INFO - Message sent
+2024-04-23 10:52:41,985 - __main__ - INFO - XML is valid
+2024-04-23 10:52:41,986 - __main__ - INFO - Message sent
+2024-04-23 10:52:43,987 - __main__ - INFO - XML is valid
+2024-04-23 10:52:43,988 - __main__ - INFO - Message sent
+2024-04-23 10:52:45,989 - __main__ - INFO - XML is valid
+2024-04-23 10:52:45,990 - __main__ - INFO - Message sent
+2024-04-23 10:52:47,991 - __main__ - INFO - XML is valid
+2024-04-23 10:52:47,992 - __main__ - INFO - Message sent
+2024-04-23 10:52:49,992 - __main__ - INFO - XML is valid
+2024-04-23 10:52:49,993 - __main__ - INFO - Message sent
+2024-04-23 10:52:51,994 - __main__ - INFO - XML is valid
+2024-04-23 10:52:51,994 - __main__ - INFO - Message sent
+2024-04-23 10:52:53,995 - __main__ - INFO - XML is valid
+2024-04-23 10:52:53,995 - __main__ - INFO - Message sent
+2024-04-23 10:52:55,996 - __main__ - INFO - XML is valid
+2024-04-23 10:52:55,997 - __main__ - INFO - Message sent
+2024-04-23 10:52:57,998 - __main__ - INFO - XML is valid
+2024-04-23 10:52:57,999 - __main__ - INFO - Message sent
+2024-04-23 10:53:00,000 - __main__ - INFO - XML is valid
+2024-04-23 10:53:00,001 - __main__ - INFO - Message sent
+2024-04-23 10:53:02,002 - __main__ - INFO - XML is valid
+2024-04-23 10:53:02,002 - __main__ - INFO - Message sent
+2024-04-23 10:53:04,002 - __main__ - INFO - XML is valid
+2024-04-23 10:53:04,005 - __main__ - INFO - Message sent
+2024-04-23 10:53:06,005 - __main__ - INFO - XML is valid
+2024-04-23 10:53:06,006 - __main__ - INFO - Message sent
+2024-04-23 10:53:08,007 - __main__ - INFO - XML is valid
+2024-04-23 10:53:08,007 - __main__ - INFO - Message sent
+2024-04-23 10:53:10,008 - __main__ - INFO - XML is valid
+2024-04-23 10:53:10,008 - __main__ - INFO - Message sent
+2024-04-23 10:53:12,010 - __main__ - INFO - XML is valid
+2024-04-23 10:53:12,010 - __main__ - INFO - Message sent
+2024-04-23 10:53:14,012 - __main__ - INFO - XML is valid
+2024-04-23 10:53:14,013 - __main__ - INFO - Message sent
+2024-04-23 10:53:16,013 - __main__ - INFO - XML is valid
+2024-04-23 10:53:16,014 - __main__ - INFO - Message sent
+2024-04-23 10:53:18,015 - __main__ - INFO - XML is valid
+2024-04-23 10:53:18,015 - __main__ - INFO - Message sent
+2024-04-23 10:53:20,016 - __main__ - INFO - XML is valid
+2024-04-23 10:53:20,017 - __main__ - INFO - Message sent
+2024-04-23 10:53:22,018 - __main__ - INFO - XML is valid
+2024-04-23 10:53:22,019 - __main__ - INFO - Message sent
+2024-04-23 10:53:24,020 - __main__ - INFO - XML is valid
+2024-04-23 10:53:24,021 - __main__ - INFO - Message sent
+2024-04-23 10:53:26,022 - __main__ - INFO - XML is valid
+2024-04-23 10:53:26,023 - __main__ - INFO - Message sent
+2024-04-23 10:53:28,024 - __main__ - INFO - XML is valid
+2024-04-23 10:53:28,025 - __main__ - INFO - Message sent
+2024-04-23 10:53:30,025 - __main__ - INFO - XML is valid
+2024-04-23 10:53:30,026 - __main__ - INFO - Message sent
+2024-04-23 10:53:32,027 - __main__ - INFO - XML is valid
+2024-04-23 10:53:32,028 - __main__ - INFO - Message sent
+2024-04-23 10:53:34,029 - __main__ - INFO - XML is valid
+2024-04-23 10:53:34,031 - __main__ - INFO - Message sent
+2024-04-23 10:53:36,031 - __main__ - INFO - XML is valid
+2024-04-23 10:53:36,033 - __main__ - INFO - Message sent
+2024-04-23 10:53:38,033 - __main__ - INFO - XML is valid
+2024-04-23 10:53:38,034 - __main__ - INFO - Message sent
+2024-04-23 10:53:40,035 - __main__ - INFO - XML is valid
+2024-04-23 10:53:40,036 - __main__ - INFO - Message sent
+2024-04-23 10:53:42,036 - __main__ - INFO - XML is valid
+2024-04-23 10:53:42,037 - __main__ - INFO - Message sent
+2024-04-23 10:53:44,038 - __main__ - INFO - XML is valid
+2024-04-23 10:53:44,039 - __main__ - INFO - Message sent
+2024-04-23 10:53:46,039 - __main__ - INFO - XML is valid
+2024-04-23 10:53:46,039 - __main__ - INFO - Message sent
+2024-04-23 10:53:48,041 - __main__ - INFO - XML is valid
+2024-04-23 10:53:48,042 - __main__ - INFO - Message sent
+2024-04-23 10:53:50,042 - __main__ - INFO - XML is valid
+2024-04-23 10:53:50,043 - __main__ - INFO - Message sent
+2024-04-23 10:53:52,044 - __main__ - INFO - XML is valid
+2024-04-23 10:53:52,044 - __main__ - INFO - Message sent
+2024-04-23 10:53:54,045 - __main__ - INFO - XML is valid
+2024-04-23 10:53:54,045 - __main__ - INFO - Message sent
+2024-04-23 10:53:56,047 - __main__ - INFO - XML is valid
+2024-04-23 10:53:56,048 - __main__ - INFO - Message sent
+2024-04-23 10:53:58,048 - __main__ - INFO - XML is valid
+2024-04-23 10:53:58,049 - __main__ - INFO - Message sent
+2024-04-23 10:54:00,050 - __main__ - INFO - XML is valid
+2024-04-23 10:54:00,050 - __main__ - INFO - Message sent
+2024-04-23 10:54:02,051 - __main__ - INFO - XML is valid
+2024-04-23 10:54:02,051 - __main__ - INFO - Message sent
+2024-04-23 10:54:04,052 - __main__ - INFO - XML is valid
+2024-04-23 10:54:04,053 - __main__ - INFO - Message sent
+2024-04-23 10:54:06,053 - __main__ - INFO - XML is valid
+2024-04-23 10:54:06,054 - __main__ - INFO - Message sent
+2024-04-23 10:54:08,055 - __main__ - INFO - XML is valid
+2024-04-23 10:54:08,055 - __main__ - INFO - Message sent
+2024-04-23 10:54:10,056 - __main__ - INFO - XML is valid
+2024-04-23 10:54:10,057 - __main__ - INFO - Message sent
+2024-04-23 10:54:12,058 - __main__ - INFO - XML is valid
+2024-04-23 10:54:12,059 - __main__ - INFO - Message sent
+2024-04-23 10:54:14,060 - __main__ - INFO - XML is valid
+2024-04-23 10:54:14,061 - __main__ - INFO - Message sent
+2024-04-23 10:54:16,062 - __main__ - INFO - XML is valid
+2024-04-23 10:54:16,062 - __main__ - INFO - Message sent
+2024-04-23 10:54:18,064 - __main__ - INFO - XML is valid
+2024-04-23 10:54:18,065 - __main__ - INFO - Message sent
+2024-04-23 10:54:20,066 - __main__ - INFO - XML is valid
+2024-04-23 10:54:20,067 - __main__ - INFO - Message sent
+2024-04-23 10:54:22,067 - __main__ - INFO - XML is valid
+2024-04-23 10:54:22,067 - __main__ - INFO - Message sent
+2024-04-23 10:54:24,069 - __main__ - INFO - XML is valid
+2024-04-23 10:54:24,069 - __main__ - INFO - Message sent
+2024-04-23 10:54:26,069 - __main__ - INFO - XML is valid
+2024-04-23 10:54:26,070 - __main__ - INFO - Message sent
+2024-04-23 10:54:28,071 - __main__ - INFO - XML is valid
+2024-04-23 10:54:28,072 - __main__ - INFO - Message sent
+2024-04-23 10:54:30,073 - __main__ - INFO - XML is valid
+2024-04-23 10:54:30,074 - __main__ - INFO - Message sent
+2024-04-23 10:54:32,075 - __main__ - INFO - XML is valid
+2024-04-23 10:54:32,076 - __main__ - INFO - Message sent
+2024-04-23 10:54:34,077 - __main__ - INFO - XML is valid
+2024-04-23 10:54:34,078 - __main__ - INFO - Message sent
+2024-04-23 10:54:36,079 - __main__ - INFO - XML is valid
+2024-04-23 10:54:36,079 - __main__ - INFO - Message sent
+2024-04-23 10:54:38,080 - __main__ - INFO - XML is valid
+2024-04-23 10:54:38,081 - __main__ - INFO - Message sent
+2024-04-23 10:54:40,081 - __main__ - INFO - XML is valid
+2024-04-23 10:54:40,083 - __main__ - INFO - Message sent
+2024-04-23 10:54:42,084 - __main__ - INFO - XML is valid
+2024-04-23 10:54:42,085 - __main__ - INFO - Message sent
+2024-04-23 10:54:44,086 - __main__ - INFO - XML is valid
+2024-04-23 10:54:44,087 - __main__ - INFO - Message sent
+2024-04-23 10:54:46,088 - __main__ - INFO - XML is valid
+2024-04-23 10:54:46,088 - __main__ - INFO - Message sent
+2024-04-23 10:54:48,089 - __main__ - INFO - XML is valid
+2024-04-23 10:54:48,090 - __main__ - INFO - Message sent
+2024-04-23 10:54:50,090 - __main__ - INFO - XML is valid
+2024-04-23 10:54:50,090 - __main__ - INFO - Message sent
+2024-04-23 10:54:52,091 - __main__ - INFO - XML is valid
+2024-04-23 10:54:52,092 - __main__ - INFO - Message sent
+2024-04-23 10:54:54,093 - __main__ - INFO - XML is valid
+2024-04-23 10:54:54,093 - __main__ - INFO - Message sent
+2024-04-23 10:54:56,094 - __main__ - INFO - XML is valid
+2024-04-23 10:54:56,095 - __main__ - INFO - Message sent
+2024-04-23 10:54:58,096 - __main__ - INFO - XML is valid
+2024-04-23 10:54:58,097 - __main__ - INFO - Message sent
+2024-04-23 10:55:00,097 - __main__ - INFO - XML is valid
+2024-04-23 10:55:00,098 - __main__ - INFO - Message sent
+2024-04-23 10:55:02,099 - __main__ - INFO - XML is valid
+2024-04-23 10:55:02,100 - __main__ - INFO - Message sent
+2024-04-23 10:55:04,101 - __main__ - INFO - XML is valid
+2024-04-23 10:55:04,102 - __main__ - INFO - Message sent
+2024-04-23 10:55:06,103 - __main__ - INFO - XML is valid
+2024-04-23 10:55:06,104 - __main__ - INFO - Message sent
+2024-04-23 10:55:08,105 - __main__ - INFO - XML is valid
+2024-04-23 10:55:08,106 - __main__ - INFO - Message sent
+2024-04-23 10:55:10,107 - __main__ - INFO - XML is valid
+2024-04-23 10:55:10,107 - __main__ - INFO - Message sent
+2024-04-23 10:55:12,108 - __main__ - INFO - XML is valid
+2024-04-23 10:55:12,109 - __main__ - INFO - Message sent
+2024-04-23 10:55:14,110 - __main__ - INFO - XML is valid
+2024-04-23 10:55:14,111 - __main__ - INFO - Message sent
+2024-04-23 10:55:16,112 - __main__ - INFO - XML is valid
+2024-04-23 10:55:16,113 - __main__ - INFO - Message sent
+2024-04-23 10:55:18,113 - __main__ - INFO - XML is valid
+2024-04-23 10:55:18,114 - __main__ - INFO - Message sent
+2024-04-23 10:55:20,115 - __main__ - INFO - XML is valid
+2024-04-23 10:55:20,116 - __main__ - INFO - Message sent
+2024-04-23 10:55:22,117 - __main__ - INFO - XML is valid
+2024-04-23 10:55:22,117 - __main__ - INFO - Message sent
+2024-04-23 10:55:24,119 - __main__ - INFO - XML is valid
+2024-04-23 10:55:24,120 - __main__ - INFO - Message sent
+2024-04-23 10:55:26,121 - __main__ - INFO - XML is valid
+2024-04-23 10:55:26,121 - __main__ - INFO - Message sent
+2024-04-23 10:55:28,122 - __main__ - INFO - XML is valid
+2024-04-23 10:55:28,123 - __main__ - INFO - Message sent
+2024-04-23 10:55:30,124 - __main__ - INFO - XML is valid
+2024-04-23 10:55:30,125 - __main__ - INFO - Message sent
+2024-04-23 10:55:32,126 - __main__ - INFO - XML is valid
+2024-04-23 10:55:32,127 - __main__ - INFO - Message sent
+2024-04-23 10:55:34,129 - __main__ - INFO - XML is valid
+2024-04-23 10:55:34,130 - __main__ - INFO - Message sent
+2024-04-23 10:55:36,131 - __main__ - INFO - XML is valid
+2024-04-23 10:55:36,131 - __main__ - INFO - Message sent
+2024-04-23 10:55:38,133 - __main__ - INFO - XML is valid
+2024-04-23 10:55:38,133 - __main__ - INFO - Message sent
+2024-04-23 10:55:40,134 - __main__ - INFO - XML is valid
+2024-04-23 10:55:40,134 - __main__ - INFO - Message sent
+2024-04-23 10:55:42,135 - __main__ - INFO - XML is valid
+2024-04-23 10:55:42,135 - __main__ - INFO - Message sent
+2024-04-23 10:55:44,136 - __main__ - INFO - XML is valid
+2024-04-23 10:55:44,136 - __main__ - INFO - Message sent
+2024-04-23 10:55:46,138 - __main__ - INFO - XML is valid
+2024-04-23 10:55:46,138 - __main__ - INFO - Message sent
+2024-04-23 10:55:48,139 - __main__ - INFO - XML is valid
+2024-04-23 10:55:48,139 - __main__ - INFO - Message sent
+2024-04-23 10:55:50,141 - __main__ - INFO - XML is valid
+2024-04-23 10:55:50,141 - __main__ - INFO - Message sent
+2024-04-23 10:55:52,142 - __main__ - INFO - XML is valid
+2024-04-23 10:55:52,142 - __main__ - INFO - Message sent
+2024-04-23 10:55:54,143 - __main__ - INFO - XML is valid
+2024-04-23 10:55:54,143 - __main__ - INFO - Message sent
+2024-04-23 10:55:56,144 - __main__ - INFO - XML is valid
+2024-04-23 10:55:56,145 - __main__ - INFO - Message sent
+2024-04-23 10:55:58,146 - __main__ - INFO - XML is valid
+2024-04-23 10:55:58,147 - __main__ - INFO - Message sent
+2024-04-23 10:56:00,148 - __main__ - INFO - XML is valid
+2024-04-23 10:56:00,148 - __main__ - INFO - Message sent
+2024-04-23 10:56:02,149 - __main__ - INFO - XML is valid
+2024-04-23 10:56:02,149 - __main__ - INFO - Message sent
+2024-04-23 10:56:04,151 - __main__ - INFO - XML is valid
+2024-04-23 10:56:04,151 - __main__ - INFO - Message sent
+2024-04-23 10:56:06,152 - __main__ - INFO - XML is valid
+2024-04-23 10:56:06,152 - __main__ - INFO - Message sent
+2024-04-23 10:56:08,153 - __main__ - INFO - XML is valid
+2024-04-23 10:56:08,154 - __main__ - INFO - Message sent
+2024-04-23 10:56:10,155 - __main__ - INFO - XML is valid
+2024-04-23 10:56:10,155 - __main__ - INFO - Message sent
+2024-04-23 10:56:12,156 - __main__ - INFO - XML is valid
+2024-04-23 10:56:12,156 - __main__ - INFO - Message sent
+2024-04-23 10:56:14,158 - __main__ - INFO - XML is valid
+2024-04-23 10:56:14,159 - __main__ - INFO - Message sent
+2024-04-23 10:56:16,159 - __main__ - INFO - XML is valid
+2024-04-23 10:56:16,159 - __main__ - INFO - Message sent
+2024-04-23 10:56:18,160 - __main__ - INFO - XML is valid
+2024-04-23 10:56:18,161 - __main__ - INFO - Message sent
+2024-04-23 10:56:20,161 - __main__ - INFO - XML is valid
+2024-04-23 10:56:20,162 - __main__ - INFO - Message sent
+2024-04-23 10:56:22,163 - __main__ - INFO - XML is valid
+2024-04-23 10:56:22,164 - __main__ - INFO - Message sent
+2024-04-23 10:56:24,166 - __main__ - INFO - XML is valid
+2024-04-23 10:56:24,167 - __main__ - INFO - Message sent
+2024-04-23 10:56:26,169 - __main__ - INFO - XML is valid
+2024-04-23 10:56:26,169 - __main__ - INFO - Message sent
+2024-04-23 10:56:28,171 - __main__ - INFO - XML is valid
+2024-04-23 10:56:28,172 - __main__ - INFO - Message sent
+2024-04-23 10:56:30,172 - __main__ - INFO - XML is valid
+2024-04-23 10:56:30,173 - __main__ - INFO - Message sent
+2024-04-23 10:56:32,173 - __main__ - INFO - XML is valid
+2024-04-23 10:56:32,174 - __main__ - INFO - Message sent
+2024-04-23 10:56:34,175 - __main__ - INFO - XML is valid
+2024-04-23 10:56:34,175 - __main__ - INFO - Message sent
+2024-04-23 10:56:36,177 - __main__ - INFO - XML is valid
+2024-04-23 10:56:36,177 - __main__ - INFO - Message sent
+2024-04-23 10:56:38,178 - __main__ - INFO - XML is valid
+2024-04-23 10:56:38,178 - __main__ - INFO - Message sent
+2024-04-23 10:56:40,180 - __main__ - INFO - XML is valid
+2024-04-23 10:56:40,180 - __main__ - INFO - Message sent
+2024-04-23 10:56:42,181 - __main__ - INFO - XML is valid
+2024-04-23 10:56:42,181 - __main__ - INFO - Message sent
+2024-04-23 10:56:44,182 - __main__ - INFO - XML is valid
+2024-04-23 10:56:44,182 - __main__ - INFO - Message sent
+2024-04-23 10:56:46,183 - __main__ - INFO - XML is valid
+2024-04-23 10:56:46,184 - __main__ - INFO - Message sent
+2024-04-23 10:56:48,185 - __main__ - INFO - XML is valid
+2024-04-23 10:56:48,186 - __main__ - INFO - Message sent
+2024-04-23 10:56:50,186 - __main__ - INFO - XML is valid
+2024-04-23 10:56:50,186 - __main__ - INFO - Message sent
+2024-04-23 10:56:52,187 - __main__ - INFO - XML is valid
+2024-04-23 10:56:52,188 - __main__ - INFO - Message sent
+2024-04-23 10:56:54,188 - __main__ - INFO - XML is valid
+2024-04-23 10:56:54,189 - __main__ - INFO - Message sent
+2024-04-23 10:56:56,189 - __main__ - INFO - XML is valid
+2024-04-23 10:56:56,189 - __main__ - INFO - Message sent
+2024-04-23 10:56:58,191 - __main__ - INFO - XML is valid
+2024-04-23 10:56:58,191 - __main__ - INFO - Message sent
+2024-04-23 10:57:00,192 - __main__ - INFO - XML is valid
+2024-04-23 10:57:00,192 - __main__ - INFO - Message sent
+2024-04-23 10:57:02,193 - __main__ - INFO - XML is valid
+2024-04-23 10:57:02,193 - __main__ - INFO - Message sent
+2024-04-23 10:57:04,194 - __main__ - INFO - XML is valid
+2024-04-23 10:57:04,195 - __main__ - INFO - Message sent
+2024-04-23 10:57:06,196 - __main__ - INFO - XML is valid
+2024-04-23 10:57:06,196 - __main__ - INFO - Message sent
+2024-04-23 10:57:08,197 - __main__ - INFO - XML is valid
+2024-04-23 10:57:08,197 - __main__ - INFO - Message sent
+2024-04-23 10:57:10,198 - __main__ - INFO - XML is valid
+2024-04-23 10:57:10,199 - __main__ - INFO - Message sent
+2024-04-23 10:57:12,200 - __main__ - INFO - XML is valid
+2024-04-23 10:57:12,200 - __main__ - INFO - Message sent
+2024-04-23 10:57:14,201 - __main__ - INFO - XML is valid
+2024-04-23 10:57:14,201 - __main__ - INFO - Message sent
+2024-04-23 10:57:16,202 - __main__ - INFO - XML is valid
+2024-04-23 10:57:16,203 - __main__ - INFO - Message sent
+2024-04-23 10:57:18,203 - __main__ - INFO - XML is valid
+2024-04-23 10:57:18,204 - __main__ - INFO - Message sent
+2024-04-23 10:57:20,205 - __main__ - INFO - XML is valid
+2024-04-23 10:57:20,206 - __main__ - INFO - Message sent
+2024-04-23 10:57:22,206 - __main__ - INFO - XML is valid
+2024-04-23 10:57:22,207 - __main__ - INFO - Message sent
+2024-04-23 10:57:24,207 - __main__ - INFO - XML is valid
+2024-04-23 10:57:24,208 - __main__ - INFO - Message sent
+2024-04-23 10:57:26,209 - __main__ - INFO - XML is valid
+2024-04-23 10:57:26,209 - __main__ - INFO - Message sent
+2024-04-23 10:57:28,210 - __main__ - INFO - XML is valid
+2024-04-23 10:57:28,210 - __main__ - INFO - Message sent
+2024-04-23 10:57:30,211 - __main__ - INFO - XML is valid
+2024-04-23 10:57:30,211 - __main__ - INFO - Message sent
+2024-04-23 10:57:32,212 - __main__ - INFO - XML is valid
+2024-04-23 10:57:32,212 - __main__ - INFO - Message sent
+2024-04-23 10:57:34,214 - __main__ - INFO - XML is valid
+2024-04-23 10:57:34,214 - __main__ - INFO - Message sent
+2024-04-23 10:57:36,215 - __main__ - INFO - XML is valid
+2024-04-23 10:57:36,215 - __main__ - INFO - Message sent
+2024-04-23 10:57:38,216 - __main__ - INFO - XML is valid
+2024-04-23 10:57:38,217 - __main__ - INFO - Message sent
+2024-04-23 10:57:40,217 - __main__ - INFO - XML is valid
+2024-04-23 10:57:40,217 - __main__ - INFO - Message sent
+2024-04-23 10:57:42,218 - __main__ - INFO - XML is valid
+2024-04-23 10:57:42,218 - __main__ - INFO - Message sent
+2024-04-23 10:57:44,219 - __main__ - INFO - XML is valid
+2024-04-23 10:57:44,220 - __main__ - INFO - Message sent
+2024-04-23 10:57:46,221 - __main__ - INFO - XML is valid
+2024-04-23 10:57:46,222 - __main__ - INFO - Message sent
+2024-04-23 10:57:48,222 - __main__ - INFO - XML is valid
+2024-04-23 10:57:48,222 - __main__ - INFO - Message sent
+2024-04-23 10:57:50,224 - __main__ - INFO - XML is valid
+2024-04-23 10:57:50,224 - __main__ - INFO - Message sent
+2024-04-23 10:57:52,225 - __main__ - INFO - XML is valid
+2024-04-23 10:57:52,225 - __main__ - INFO - Message sent
+2024-04-23 10:57:54,226 - __main__ - INFO - XML is valid
+2024-04-23 10:57:54,227 - __main__ - INFO - Message sent
+2024-04-23 10:57:56,227 - __main__ - INFO - XML is valid
+2024-04-23 10:57:56,227 - __main__ - INFO - Message sent
+2024-04-23 10:57:58,229 - __main__ - INFO - XML is valid
+2024-04-23 10:57:58,229 - __main__ - INFO - Message sent
+2024-04-23 10:58:00,230 - __main__ - INFO - XML is valid
+2024-04-23 10:58:00,230 - __main__ - INFO - Message sent
+2024-04-23 10:58:02,231 - __main__ - INFO - XML is valid
+2024-04-23 10:58:02,231 - __main__ - INFO - Message sent
+2024-04-23 10:58:04,232 - __main__ - INFO - XML is valid
+2024-04-23 10:58:04,233 - __main__ - INFO - Message sent
+2024-04-23 10:58:06,234 - __main__ - INFO - XML is valid
+2024-04-23 10:58:06,234 - __main__ - INFO - Message sent
+2024-04-23 10:58:08,235 - __main__ - INFO - XML is valid
+2024-04-23 10:58:08,235 - __main__ - INFO - Message sent
+2024-04-23 10:58:10,236 - __main__ - INFO - XML is valid
+2024-04-23 10:58:10,236 - __main__ - INFO - Message sent
+2024-04-23 10:58:12,237 - __main__ - INFO - XML is valid
+2024-04-23 10:58:12,237 - __main__ - INFO - Message sent
+2024-04-23 10:58:14,238 - __main__ - INFO - XML is valid
+2024-04-23 10:58:14,239 - __main__ - INFO - Message sent
+2024-04-23 10:58:16,239 - __main__ - INFO - XML is valid
+2024-04-23 10:58:16,239 - __main__ - INFO - Message sent
+2024-04-23 10:58:18,240 - __main__ - INFO - XML is valid
+2024-04-23 10:58:18,240 - __main__ - INFO - Message sent
+2024-04-23 10:58:20,241 - __main__ - INFO - XML is valid
+2024-04-23 10:58:20,241 - __main__ - INFO - Message sent
+2024-04-23 10:58:22,242 - __main__ - INFO - XML is valid
+2024-04-23 10:58:22,242 - __main__ - INFO - Message sent
+2024-04-23 10:58:24,243 - __main__ - INFO - XML is valid
+2024-04-23 10:58:24,243 - __main__ - INFO - Message sent
+2024-04-23 10:58:26,245 - __main__ - INFO - XML is valid
+2024-04-23 10:58:26,245 - __main__ - INFO - Message sent
+2024-04-23 10:58:28,246 - __main__ - INFO - XML is valid
+2024-04-23 10:58:28,246 - __main__ - INFO - Message sent
+2024-04-23 10:58:30,247 - __main__ - INFO - XML is valid
+2024-04-23 10:58:30,248 - __main__ - INFO - Message sent
+2024-04-23 10:58:32,248 - __main__ - INFO - XML is valid
+2024-04-23 10:58:32,248 - __main__ - INFO - Message sent
+2024-04-23 10:58:34,249 - __main__ - INFO - XML is valid
+2024-04-23 10:58:34,250 - __main__ - INFO - Message sent
+2024-04-23 10:58:36,251 - __main__ - INFO - XML is valid
+2024-04-23 10:58:36,251 - __main__ - INFO - Message sent
+2024-04-23 10:58:38,252 - __main__ - INFO - XML is valid
+2024-04-23 10:58:38,253 - __main__ - INFO - Message sent
+2024-04-23 10:58:40,253 - __main__ - INFO - XML is valid
+2024-04-23 10:58:40,255 - __main__ - INFO - Message sent
+2024-04-23 10:58:42,256 - __main__ - INFO - XML is valid
+2024-04-23 10:58:42,256 - __main__ - INFO - Message sent
+2024-04-23 10:58:44,257 - __main__ - INFO - XML is valid
+2024-04-23 10:58:44,257 - __main__ - INFO - Message sent
+2024-04-23 10:58:46,258 - __main__ - INFO - XML is valid
+2024-04-23 10:58:46,258 - __main__ - INFO - Message sent
+2024-04-23 10:58:48,259 - __main__ - INFO - XML is valid
+2024-04-23 10:58:48,259 - __main__ - INFO - Message sent
+2024-04-23 10:58:50,260 - __main__ - INFO - XML is valid
+2024-04-23 10:58:50,260 - __main__ - INFO - Message sent
+2024-04-23 10:58:52,261 - __main__ - INFO - XML is valid
+2024-04-23 10:58:52,261 - __main__ - INFO - Message sent
+2024-04-23 10:58:54,262 - __main__ - INFO - XML is valid
+2024-04-23 10:58:54,262 - __main__ - INFO - Message sent
+2024-04-23 10:58:56,263 - __main__ - INFO - XML is valid
+2024-04-23 10:58:56,263 - __main__ - INFO - Message sent
+2024-04-23 10:58:58,264 - __main__ - INFO - XML is valid
+2024-04-23 10:58:58,264 - __main__ - INFO - Message sent
+2024-04-23 10:59:00,265 - __main__ - INFO - XML is valid
+2024-04-23 10:59:00,266 - __main__ - INFO - Message sent
+2024-04-23 10:59:02,267 - __main__ - INFO - XML is valid
+2024-04-23 10:59:02,267 - __main__ - INFO - Message sent
+2024-04-23 10:59:04,268 - __main__ - INFO - XML is valid
+2024-04-23 10:59:04,269 - __main__ - INFO - Message sent
+2024-04-23 10:59:06,270 - __main__ - INFO - XML is valid
+2024-04-23 10:59:06,270 - __main__ - INFO - Message sent
+2024-04-23 10:59:08,271 - __main__ - INFO - XML is valid
+2024-04-23 10:59:08,271 - __main__ - INFO - Message sent
+2024-04-23 10:59:10,272 - __main__ - INFO - XML is valid
+2024-04-23 10:59:10,272 - __main__ - INFO - Message sent
+2024-04-23 10:59:12,273 - __main__ - INFO - XML is valid
+2024-04-23 10:59:12,273 - __main__ - INFO - Message sent
+2024-04-23 10:59:14,274 - __main__ - INFO - XML is valid
+2024-04-23 10:59:14,274 - __main__ - INFO - Message sent
+2024-04-23 10:59:16,275 - __main__ - INFO - XML is valid
+2024-04-23 10:59:16,275 - __main__ - INFO - Message sent
+2024-04-23 10:59:18,276 - __main__ - INFO - XML is valid
+2024-04-23 10:59:18,276 - __main__ - INFO - Message sent
+2024-04-23 10:59:20,278 - __main__ - INFO - XML is valid
+2024-04-23 10:59:20,278 - __main__ - INFO - Message sent
+2024-04-23 10:59:22,279 - __main__ - INFO - XML is valid
+2024-04-23 10:59:22,279 - __main__ - INFO - Message sent
+2024-04-23 10:59:24,280 - __main__ - INFO - XML is valid
+2024-04-23 10:59:24,280 - __main__ - INFO - Message sent
+2024-04-23 10:59:26,281 - __main__ - INFO - XML is valid
+2024-04-23 10:59:26,282 - __main__ - INFO - Message sent
+2024-04-23 10:59:28,283 - __main__ - INFO - XML is valid
+2024-04-23 10:59:28,284 - __main__ - INFO - Message sent
+2024-04-23 10:59:30,285 - __main__ - INFO - XML is valid
+2024-04-23 10:59:30,286 - __main__ - INFO - Message sent
+2024-04-23 10:59:32,286 - __main__ - INFO - XML is valid
+2024-04-23 10:59:32,287 - __main__ - INFO - Message sent
+2024-04-23 10:59:34,288 - __main__ - INFO - XML is valid
+2024-04-23 10:59:34,288 - __main__ - INFO - Message sent
+2024-04-23 10:59:36,289 - __main__ - INFO - XML is valid
+2024-04-23 10:59:36,289 - __main__ - INFO - Message sent
+2024-04-23 10:59:38,290 - __main__ - INFO - XML is valid
+2024-04-23 10:59:38,291 - __main__ - INFO - Message sent
+2024-04-23 10:59:40,292 - __main__ - INFO - XML is valid
+2024-04-23 10:59:40,294 - __main__ - INFO - Message sent
+2024-04-23 10:59:42,294 - __main__ - INFO - XML is valid
+2024-04-23 10:59:42,294 - __main__ - INFO - Message sent
+2024-04-23 10:59:44,296 - __main__ - INFO - XML is valid
+2024-04-23 10:59:44,296 - __main__ - INFO - Message sent
+2024-04-23 10:59:46,297 - __main__ - INFO - XML is valid
+2024-04-23 10:59:46,298 - __main__ - INFO - Message sent
+2024-04-23 10:59:48,299 - __main__ - INFO - XML is valid
+2024-04-23 10:59:48,299 - __main__ - INFO - Message sent
+2024-04-23 10:59:50,301 - __main__ - INFO - XML is valid
+2024-04-23 10:59:50,302 - __main__ - INFO - Message sent
+2024-04-23 10:59:52,303 - __main__ - INFO - XML is valid
+2024-04-23 10:59:52,304 - __main__ - INFO - Message sent
+2024-04-23 10:59:54,304 - __main__ - INFO - XML is valid
+2024-04-23 10:59:54,304 - __main__ - INFO - Message sent
+2024-04-23 10:59:56,305 - __main__ - INFO - XML is valid
+2024-04-23 10:59:56,306 - __main__ - INFO - Message sent
+2024-04-23 10:59:58,307 - __main__ - INFO - XML is valid
+2024-04-23 10:59:58,307 - __main__ - INFO - Message sent
+2024-04-23 11:00:00,309 - __main__ - INFO - XML is valid
+2024-04-23 11:00:00,309 - __main__ - INFO - Message sent
+2024-04-23 11:00:02,310 - __main__ - INFO - XML is valid
+2024-04-23 11:00:02,310 - __main__ - INFO - Message sent
+2024-04-23 11:00:04,311 - __main__ - INFO - XML is valid
+2024-04-23 11:00:04,311 - __main__ - INFO - Message sent
+2024-04-23 11:00:06,312 - __main__ - INFO - XML is valid
+2024-04-23 11:00:06,313 - __main__ - INFO - Message sent
+2024-04-23 11:00:08,314 - __main__ - INFO - XML is valid
+2024-04-23 11:00:08,315 - __main__ - INFO - Message sent
+2024-04-23 11:00:10,316 - __main__ - INFO - XML is valid
+2024-04-23 11:00:10,317 - __main__ - INFO - Message sent
+2024-04-23 11:00:12,318 - __main__ - INFO - XML is valid
+2024-04-23 11:00:12,318 - __main__ - INFO - Message sent
+2024-04-23 11:00:14,319 - __main__ - INFO - XML is valid
+2024-04-23 11:00:14,320 - __main__ - INFO - Message sent
+2024-04-23 11:00:16,320 - __main__ - INFO - XML is valid
+2024-04-23 11:00:16,321 - __main__ - INFO - Message sent
+2024-04-23 11:00:18,322 - __main__ - INFO - XML is valid
+2024-04-23 11:00:18,323 - __main__ - INFO - Message sent
+2024-04-23 11:00:20,324 - __main__ - INFO - XML is valid
+2024-04-23 11:00:20,325 - __main__ - INFO - Message sent
+2024-04-23 11:00:22,325 - __main__ - INFO - XML is valid
+2024-04-23 11:00:22,325 - __main__ - INFO - Message sent
+2024-04-23 11:00:24,326 - __main__ - INFO - XML is valid
+2024-04-23 11:00:24,326 - __main__ - INFO - Message sent
+2024-04-23 11:00:26,328 - __main__ - INFO - XML is valid
+2024-04-23 11:00:26,329 - __main__ - INFO - Message sent
+2024-04-23 11:00:28,329 - __main__ - INFO - XML is valid
+2024-04-23 11:00:28,330 - __main__ - INFO - Message sent
+2024-04-23 11:00:30,332 - __main__ - INFO - XML is valid
+2024-04-23 11:00:30,332 - __main__ - INFO - Message sent
+2024-04-23 11:00:32,334 - __main__ - INFO - XML is valid
+2024-04-23 11:00:32,335 - __main__ - INFO - Message sent
+2024-04-23 11:00:34,336 - __main__ - INFO - XML is valid
+2024-04-23 11:00:34,337 - __main__ - INFO - Message sent
+2024-04-23 11:00:36,338 - __main__ - INFO - XML is valid
+2024-04-23 11:00:36,339 - __main__ - INFO - Message sent
+2024-04-23 11:00:38,339 - __main__ - INFO - XML is valid
+2024-04-23 11:00:38,339 - __main__ - INFO - Message sent
+2024-04-23 11:00:40,341 - __main__ - INFO - XML is valid
+2024-04-23 11:00:40,342 - __main__ - INFO - Message sent
+2024-04-23 11:00:42,343 - __main__ - INFO - XML is valid
+2024-04-23 11:00:42,344 - __main__ - INFO - Message sent
+2024-04-23 11:00:44,344 - __main__ - INFO - XML is valid
+2024-04-23 11:00:44,345 - __main__ - INFO - Message sent
+2024-04-23 11:00:46,346 - __main__ - INFO - XML is valid
+2024-04-23 11:00:46,346 - __main__ - INFO - Message sent
+2024-04-23 11:00:48,347 - __main__ - INFO - XML is valid
+2024-04-23 11:00:48,349 - __main__ - INFO - Message sent
+2024-04-23 11:00:50,349 - __main__ - INFO - XML is valid
+2024-04-23 11:00:50,349 - __main__ - INFO - Message sent
+2024-04-23 11:00:52,351 - __main__ - INFO - XML is valid
+2024-04-23 11:00:52,351 - __main__ - INFO - Message sent
+2024-04-23 11:00:54,352 - __main__ - INFO - XML is valid
+2024-04-23 11:00:54,352 - __main__ - INFO - Message sent
+2024-04-23 11:00:56,353 - __main__ - INFO - XML is valid
+2024-04-23 11:00:56,354 - __main__ - INFO - Message sent
+2024-04-23 11:00:58,355 - __main__ - INFO - XML is valid
+2024-04-23 11:00:58,356 - __main__ - INFO - Message sent
+2024-04-23 11:01:00,356 - __main__ - INFO - XML is valid
+2024-04-23 11:01:00,357 - __main__ - INFO - Message sent
+2024-04-23 11:01:02,358 - __main__ - INFO - XML is valid
+2024-04-23 11:01:02,359 - __main__ - INFO - Message sent
+2024-04-23 11:01:04,360 - __main__ - INFO - XML is valid
+2024-04-23 11:01:04,361 - __main__ - INFO - Message sent
+2024-04-23 11:01:06,362 - __main__ - INFO - XML is valid
+2024-04-23 11:01:06,363 - __main__ - INFO - Message sent
+2024-04-23 11:01:08,364 - __main__ - INFO - XML is valid
+2024-04-23 11:01:08,364 - __main__ - INFO - Message sent
+2024-04-23 11:01:10,365 - __main__ - INFO - XML is valid
+2024-04-23 11:01:10,365 - __main__ - INFO - Message sent
+2024-04-23 11:01:12,366 - __main__ - INFO - XML is valid
+2024-04-23 11:01:12,367 - __main__ - INFO - Message sent
+2024-04-23 11:01:14,367 - __main__ - INFO - XML is valid
+2024-04-23 11:01:14,367 - __main__ - INFO - Message sent
+2024-04-23 11:01:16,368 - __main__ - INFO - XML is valid
+2024-04-23 11:01:16,369 - __main__ - INFO - Message sent
+2024-04-23 11:01:18,369 - __main__ - INFO - XML is valid
+2024-04-23 11:01:18,369 - __main__ - INFO - Message sent
+2024-04-23 11:01:20,370 - __main__ - INFO - XML is valid
+2024-04-23 11:01:20,371 - __main__ - INFO - Message sent
+2024-04-23 11:01:22,371 - __main__ - INFO - XML is valid
+2024-04-23 11:01:22,372 - __main__ - INFO - Message sent
+2024-04-23 11:01:24,372 - __main__ - INFO - XML is valid
+2024-04-23 11:01:24,373 - __main__ - INFO - Message sent
+2024-04-23 11:01:26,374 - __main__ - INFO - XML is valid
+2024-04-23 11:01:26,374 - __main__ - INFO - Message sent
+2024-04-23 11:01:28,376 - __main__ - INFO - XML is valid
+2024-04-23 11:01:28,377 - __main__ - INFO - Message sent
+2024-04-23 11:01:30,378 - __main__ - INFO - XML is valid
+2024-04-23 11:01:30,379 - __main__ - INFO - Message sent
+2024-04-23 11:01:32,380 - __main__ - INFO - XML is valid
+2024-04-23 11:01:32,381 - __main__ - INFO - Message sent
+2024-04-23 11:01:34,381 - __main__ - INFO - XML is valid
+2024-04-23 11:01:34,383 - __main__ - INFO - Message sent
+2024-04-23 11:01:36,384 - __main__ - INFO - XML is valid
+2024-04-23 11:01:36,384 - __main__ - INFO - Message sent
+2024-04-23 11:01:38,385 - __main__ - INFO - XML is valid
+2024-04-23 11:01:38,385 - __main__ - INFO - Message sent
