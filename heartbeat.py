@@ -39,9 +39,12 @@ def main():
         <xs:element name="Heartbeat">
             <xs:complexType>
                 <xs:sequence>
-                    <xs:element name="Timestamp" type="xs:dateTime" />
-                    <xs:element name="Status" type="xs:string" />
-                    <xs:element name="SystemName" type="xs:string" />
+                    <xs:element name="id" type="xs:integer" />
+                    <xs:element name="name" type="xs:string" />
+                    <xs:element name="category" type="xs:string" />
+                    <xs:element name="amount" type="xs:string" />
+                    <xs:element name="location" type="xs:string" />
+                    <xs:element name="amount_in_stock" type="xs:string" />
                 </xs:sequence>
             </xs:complexType>
         </xs:element>
@@ -63,13 +66,25 @@ def main():
     try:
         while True:
             timestamp = datetime.now()
+            # heartbeat_xml = f"""
+            # <Heartbeat>
+            #     <id>1</id>
+            #     <name>coca cola</name>
+            #     <category>softdrink</category>
+            #     <amount>2</amount>
+            # </Heartbeat>
+            # """
             heartbeat_xml = f"""
             <Heartbeat>
-                <Timestamp>{timestamp.isoformat()}</Timestamp>
-                <Status>Active</Status>
-                <SystemName>SystemNameHere</SystemName>  # Change "SystemNameHere" to actual system name
+                <id>1</id>
+                <name>coca cola</name>
+                <category>softdrink</category>
+                <amount>2</amount>
+                <location>A1</location>
+                <amount_in_stock>20</amount_in_stock>
             </Heartbeat>
             """
+
 
             # Parsing and validation
             xml_doc = etree.fromstring(heartbeat_xml.encode())
