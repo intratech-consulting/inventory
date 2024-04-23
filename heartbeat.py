@@ -27,8 +27,13 @@ def setup_logging():
 def main():
     logger = setup_logging()
     try:
-        credentials = pika.PlainCredentials('guest', 'guest')
+        # RabbitMQ setup
+        credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+        # when running application in a docker network with rabbit mq host must be name of container
+        # connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))
+
+        channel = connection.channel()
     except pika.exceptions.AMQPConnectionError as e:
         logger.error("Failed to connect to RabbitMQ", exc_info=True)
         return  # Exit if connection failed
@@ -47,14 +52,6 @@ def main():
         </xs:element>
     </xs:schema>
     """
-
-    # RabbitMQ setup
-    credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
-    #when running application in a docker network with rabbit mq host must be name of container
-    #connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))
-
-    channel = connection.channel()
 
     queue_name = 'heartbeat'  # Placeholder for queue name
     channel.queue_declare(queue=f"{queue_name}", durable=True)
