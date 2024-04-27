@@ -25,7 +25,10 @@ def send_heartbeat():
     routing_key = 'heartbeat'
 
     credentials = pika.PlainCredentials('guest', 'guest')
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    # CONNECTION INFO FOR RUNNING LOCALLY
+    # connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    # CONNECTION INFO FOR CONTAINER NETWORK
+    connection = pika.BlockingConnection(pika.ConnectionParameters('172.18.0.2', 5672, '/', credentials))
     channel = connection.channel()
     channel.queue_declare(queue=queue_name , durable=True)
     channel.exchange_declare(exchange=exchange_name, exchange_type='direct', durable=True)
@@ -76,7 +79,10 @@ def send_heartbeat():
 def receive_messages():
     # channel receiver cause using the same one create an error
     credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    #CONNECTION INFO FOR RUNNING LOCALLY
+    #connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    #CONNECTION INFO FOR CONTAINER NETWORK
+    connection = pika.BlockingConnection(pika.ConnectionParameters('172.18.0.2', 5672, '/', credentials))
     channel = connection.channel()
     channel.queue_declare(queue='heartbeat', durable=True)
 
