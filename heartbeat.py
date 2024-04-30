@@ -6,6 +6,9 @@ import logging
 import sys
 import os
 
+# ip="172.17.0.2"
+ip= "localhost"
+
 def setup_logging():
     # Setup basic logger
     logger = logging.getLogger(__name__)
@@ -28,7 +31,7 @@ def main():
     logger = setup_logging()
     try:
         credentials = pika.PlainCredentials('guest', 'guest')
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(ip, 5672, '/', credentials))
     except pika.exceptions.AMQPConnectionError as e:
         logger.error("Failed to connect to RabbitMQ", exc_info=True)
         return  # Exit if connection failed
@@ -53,7 +56,7 @@ def main():
 
     # RabbitMQ setup
     credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(ip, 5672, '/', credentials))
     #when running application in a docker network with rabbit mq host must be name of container
     #connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', credentials=credentials))
 
@@ -62,6 +65,7 @@ def main():
     queue_name = 'heartbeat'  # Placeholder for queue name
     channel.queue_declare(queue=f"{queue_name}", durable=True)
     channel.exchange_declare(exchange='heartbeat', exchange_type='direct', durable=True)
+    channel.queue_bind(exchange='heartbeat', queue=queue_name, routing_key=queue_name)
 
     try:
         while True:

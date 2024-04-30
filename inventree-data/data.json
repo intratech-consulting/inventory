@@ -1,0 +1,424 @@
+[
+  {
+    "model": "common.inventreesetting",
+    "pk": 1,
+    "fields": {
+      "value": "USD",
+      "key": "INVENTREE_DEFAULT_CURRENCY"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 2,
+    "fields": {
+      "value": "BO-{ref:04d}",
+      "key": "BUILDORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 3,
+    "fields": {
+      "value": "SO-{ref:04d}",
+      "key": "SALESORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 4,
+    "fields": {
+      "value": "PO-{ref:04d}",
+      "key": "PURCHASEORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 8,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_SCHEDULE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 9,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_EVENTS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 10,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_APP"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 11,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_URL"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 12,
+    "fields": {
+      "value": "A4",
+      "key": "REPORT_DEFAULT_PAGE_SIZE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 13,
+    "fields": {
+      "value": "http://inventree.localhost",
+      "key": "INVENTREE_BASE_URL"
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "key": "inventreebarcode",
+      "name": "InvenTreeBarcode",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "key": "inventreecorenotificationsplugin",
+      "name": "InvenTreeCoreNotificationsPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 3,
+    "fields": {
+      "metadata": {},
+      "key": "inventreecurrencyexchange",
+      "name": "InvenTreeCurrencyExchange",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 4,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabel",
+      "name": "InvenTreeLabel",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 5,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabelmachine",
+      "name": "InvenTreeLabelMachine",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 6,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabelsheet",
+      "name": "InvenTreeLabelSheet",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 7,
+    "fields": {
+      "metadata": {},
+      "key": "digikeyplugin",
+      "name": "DigiKeyPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 8,
+    "fields": {
+      "metadata": {},
+      "key": "lcscplugin",
+      "name": "LCSCPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 9,
+    "fields": {
+      "metadata": {},
+      "key": "mouserplugin",
+      "name": "MouserPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 10,
+    "fields": {
+      "metadata": {},
+      "key": "tmeplugin",
+      "name": "TMEPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "label.stockitemlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "QR Code",
+      "description": "Simple QR code label",
+      "label": "label/inventree/stockitem/qr.html",
+      "enabled": true,
+      "width": 24.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.stocklocationlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "QR Code",
+      "description": "Simple QR code label",
+      "label": "label/inventree/stocklocation/qr.html",
+      "enabled": true,
+      "width": 24.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.stocklocationlabel",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "name": "QR and text",
+      "description": "Label with QR code and name of location",
+      "label": "label/inventree/stocklocation/qr_and_text.html",
+      "enabled": true,
+      "width": 50.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.partlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Part Label",
+      "description": "Simple part label",
+      "label": "label/inventree/part/part_label.html",
+      "enabled": true,
+      "width": 70.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.partlabel",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "name": "Barcode Part Label",
+      "description": "Simple part label with Code128 barcode",
+      "label": "label/inventree/part/part_label_code128.html",
+      "enabled": true,
+      "width": 70.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.buildlinelabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Build Line Label",
+      "description": "Example build line label",
+      "label": "label/inventree/buildline/buildline_label.html",
+      "enabled": true,
+      "width": 125.0,
+      "height": 48.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.testreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Test Report",
+      "template": "report/inventree/test/inventree_test_report.html",
+      "description": "Stock item test report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": "",
+      "include_installed": false
+    }
+  },
+  {
+    "model": "report.buildreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Build Order",
+      "template": "report/inventree/build/inventree_build_order.html",
+      "description": "Build Order job sheet",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.billofmaterialsreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Bill of Materials",
+      "template": "report/inventree/bom/inventree_bill_of_materials_report.html",
+      "description": "Bill of Materials report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.purchaseorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Purchase Order",
+      "template": "report/inventree/purchaseorder/inventree_po_report.html",
+      "description": "Purchase Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.salesorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Sales Order",
+      "template": "report/inventree/salesorder/inventree_so_report.html",
+      "description": "Sales Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.returnorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Return Order",
+      "template": "report/inventree/returnorder/inventree_return_order_report.html",
+      "description": "Return Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.stocklocationreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Stock Location",
+      "template": "report/inventree/slr/inventree_slr_report.html",
+      "description": "Stock Location example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "users.owner",
+    "pk": 1,
+    "fields": {
+      "owner_type": [
+        "auth",
+        "user"
+      ],
+      "owner_id": 1
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$lu034quz7Xpr8Dj4X9aFko$f+uyDZstt6yKtsTELoFM5LekqMPPANowXcLd3kkId0U=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "robbe",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-04-30T12:00:11.280Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

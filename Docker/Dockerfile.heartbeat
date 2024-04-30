@@ -9,6 +9,7 @@ COPY /Docker/heartbeat-requirements.txt ./
 
 # Copy the heartbeat.py script from one level up from the Docker directory
 COPY ./heartbeat.py ./
+COPY ./receiver.py ./
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r heartbeat-requirements.txt

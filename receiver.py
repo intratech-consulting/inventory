@@ -7,10 +7,12 @@ import logging
 import sys
 import os
 
+# ip = "172.17.0.2"
+ip = "localhost"
 #!/usr/bin/env python
 def main():
     credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(ip, 5672, '/', credentials))
     channel = connection.channel()
 
     channel.queue_declare(queue='heartbeat', durable=True)
