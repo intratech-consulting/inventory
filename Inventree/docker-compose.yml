@@ -40,8 +40,6 @@ services:
     inventree-db:
         image: postgres:13
         container_name: inventree-db
-        networks:
-            - inventree_network
         expose:
             - ${INVENTREE_DB_PORT:-5432}/tcp
         environment:
@@ -61,8 +59,6 @@ services:
         container_name: inventree-cache
         depends_on:
             - inventree-db
-        networks:
-            - inventree_network
         profiles:
             - redis
         env_file:
@@ -82,8 +78,6 @@ services:
             - 8000
         depends_on:
             - inventree-db
-        networks:
-            - inventree_network
         env_file:
             - .env
         volumes:
@@ -99,8 +93,6 @@ services:
         command: invoke worker
         depends_on:
             - inventree-server
-        networks:
-            - inventree_network
         env_file:
             - .env
         volumes:
@@ -116,8 +108,6 @@ services:
         restart: always
         depends_on:
             - inventree-server
-        networks:
-            - inventree_network
         ports:
             - ${INVENTREE_WEB_PORT:-80}:80
             - 443:443
@@ -130,13 +120,3 @@ services:
             - ${INVENTREE_EXT_VOLUME}:/var/log:z
             - ${INVENTREE_EXT_VOLUME}:/data:z
             - ${INVENTREE_EXT_VOLUME}:/config:z
-
-    receiver:
-        build: .  # Path to your receiver script directory
-        depends_on:
-            - inventree-server
-        networks:
-            - inventree_network
-
-networks:
-    inventree_network:
