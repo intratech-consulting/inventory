@@ -1,10 +1,12 @@
 from lxml import etree
+import test
 import pika
 import time
 from datetime import datetime
 import logging
 import sys
 import os
+import requests
 
 # ip="172.17.0.2"
 ip= "localhost"
@@ -99,9 +101,15 @@ def main():
             else:
                 logger.error('XML is not valid')
 
+            health=test.checkHealth()
+            # if(health==1):
+            #     channel.basic_publish(exchange='heartbeat', routing_key=queue_name, body=heartbeat_xml)
+            #     logger.info('Message sent')
+            #     time.sleep(3)  # Send message every 2 seconds
             channel.basic_publish(exchange='heartbeat', routing_key=queue_name, body=heartbeat_xml)
             logger.info('Message sent')
-            time.sleep(2)  # Send message every 2 seconds
+            time.sleep(3) 
+            
     except KeyboardInterrupt:
         logger.info("Stopping gracefully...")
         try:
@@ -115,3 +123,10 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# API
+token = 'token'
+data = {'...'}
+headers={'AUTHORIZATION':f'Token{token}'}
+response= requests.get('http://localhost:8080/api/part/', data= data, headers= headers)
