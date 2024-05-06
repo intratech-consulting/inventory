@@ -113,20 +113,21 @@ def health_check_thread(url,interval):
     # function that performs healthcheck
     def check_health(url):
         try:
-            token = 'MY-TOKEN-VALUE-HERE'
             headers = {
-                'AUTHORIZATION': f'Token {token}'
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic bHVjYXM6cm9vdA==',
+                'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
             }
-            response = requests.get(url, headers=headers)
+            response = requests.request("GET", url, headers=headers)
             if response.status_code == 200:
                 print(f"Connection to {url} is established.")
-                manager.set_health(True)
+                manager.set_health=True
             else:
                 print(f"Connection to {url} returned status code {response.status_code}.")
-                manager.set_health(True)
+                manager.set_health=False
         except Exception as e:
             print(f"Connection to {url} failed: {e}")
-            manager.set_health(True)
+            manager.set_health=False
     
     # performs healthcheck every x-amount of time
     def periodic_health_check(url, interval):
@@ -144,7 +145,7 @@ def main():
     sender_thread.start()
     receiver_thread.start()
 
-    url = 'https://www.kfdemoedigevrenden.be/'
+    url = 'https://www.kfdemoedigevrienden.be/'
     # url='inventree.localhost/api/stock/#'
     interval = 5
     health_check_thread(url, interval)
