@@ -138,5 +138,12 @@ services:
         networks:
             - inventree_network
 
+    heartbeat:
+        build: .  # Path to your receiver script directory
+        depends_on:
+            - inventree-server
+        networks:
+            - inventree_network
+
 networks:
     inventree_network:

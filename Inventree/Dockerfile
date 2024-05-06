@@ -6,9 +6,10 @@ WORKDIR /app
 
 # Copy the script into the container
 COPY receiver.py .
+COPY heartbeat.py .
 
 # Install any dependencies required by the script
-RUN pip install pika requests
+RUN pip install pika requests lxml
 
 # Run the script when the container starts
-CMD ["python", "receiver.py"]
+CMD ["python", "receiver.py", "heartbeat.py"]
