@@ -2814,3 +2814,135 @@
 2024-04-22 22:53:37,470 - __main__ - ERROR - XML is not valid
 2024-04-22 22:53:37,470 - __main__ - INFO - Message sent
 2024-04-22 22:53:37,877 - __main__ - INFO - Stopping gracefully...
+2024-04-27 13:42:48,252 - __main__ - INFO - XML is valid
+2024-04-27 13:42:48,252 - __main__ - INFO - XML is valid
+2024-04-27 13:42:48,296 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:48,296 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:50,297 - __main__ - INFO - XML is valid
+2024-04-27 13:42:50,297 - __main__ - INFO - XML is valid
+2024-04-27 13:42:50,347 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:50,347 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:52,348 - __main__ - INFO - XML is valid
+2024-04-27 13:42:52,348 - __main__ - INFO - XML is valid
+2024-04-27 13:42:52,397 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:52,397 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:54,400 - __main__ - INFO - XML is valid
+2024-04-27 13:42:54,400 - __main__ - INFO - XML is valid
+2024-04-27 13:42:54,446 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:54,446 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:56,447 - __main__ - INFO - XML is valid
+2024-04-27 13:42:56,447 - __main__ - INFO - XML is valid
+2024-04-27 13:42:56,494 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:56,494 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:58,496 - __main__ - INFO - XML is valid
+2024-04-27 13:42:58,496 - __main__ - INFO - XML is valid
+2024-04-27 13:42:58,547 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:42:58,547 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:00,548 - __main__ - INFO - XML is valid
+2024-04-27 13:43:00,548 - __main__ - INFO - XML is valid
+2024-04-27 13:43:00,595 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:00,595 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:02,596 - __main__ - INFO - XML is valid
+2024-04-27 13:43:02,596 - __main__ - INFO - XML is valid
+2024-04-27 13:43:02,647 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:02,647 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:04,647 - __main__ - INFO - XML is valid
+2024-04-27 13:43:04,647 - __main__ - INFO - XML is valid
+2024-04-27 13:43:04,697 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:04,697 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:06,699 - __main__ - INFO - XML is valid
+2024-04-27 13:43:06,699 - __main__ - INFO - XML is valid
+2024-04-27 13:43:06,745 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:06,745 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:08,746 - __main__ - INFO - XML is valid
+2024-04-27 13:43:08,746 - __main__ - INFO - XML is valid
+2024-04-27 13:43:08,796 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:08,796 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:10,797 - __main__ - INFO - XML is valid
+2024-04-27 13:43:10,797 - __main__ - INFO - XML is valid
+2024-04-27 13:43:10,846 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:10,846 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:12,847 - __main__ - INFO - XML is valid
+2024-04-27 13:43:12,847 - __main__ - INFO - XML is valid
+2024-04-27 13:43:12,895 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:12,895 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:14,895 - __main__ - INFO - XML is valid
+2024-04-27 13:43:14,895 - __main__ - INFO - XML is valid
+2024-04-27 13:43:14,946 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:14,946 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:16,947 - __main__ - INFO - XML is valid
+2024-04-27 13:43:16,947 - __main__ - INFO - XML is valid
+2024-04-27 13:43:16,994 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:16,994 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:18,995 - __main__ - INFO - XML is valid
+2024-04-27 13:43:18,995 - __main__ - INFO - XML is valid
+2024-04-27 13:43:19,048 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:19,048 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:21,049 - __main__ - INFO - XML is valid
+2024-04-27 13:43:21,049 - __main__ - INFO - XML is valid
+2024-04-27 13:43:21,094 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:21,094 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:23,095 - __main__ - INFO - XML is valid
+2024-04-27 13:43:23,095 - __main__ - INFO - XML is valid
+2024-04-27 13:43:23,144 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:23,144 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:25,145 - __main__ - INFO - XML is valid
+2024-04-27 13:43:25,145 - __main__ - INFO - XML is valid
+2024-04-27 13:43:25,195 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:25,195 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:27,196 - __main__ - INFO - XML is valid
+2024-04-27 13:43:27,196 - __main__ - INFO - XML is valid
+2024-04-27 13:43:27,244 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:27,244 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:29,245 - __main__ - INFO - XML is valid
+2024-04-27 13:43:29,245 - __main__ - INFO - XML is valid
+2024-04-27 13:43:29,295 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:29,295 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:31,296 - __main__ - INFO - XML is valid
+2024-04-27 13:43:31,296 - __main__ - INFO - XML is valid
+2024-04-27 13:43:31,346 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:31,346 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:33,347 - __main__ - INFO - XML is valid
+2024-04-27 13:43:33,347 - __main__ - INFO - XML is valid
+2024-04-27 13:43:33,394 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:33,394 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:35,394 - __main__ - INFO - XML is valid
+2024-04-27 13:43:35,394 - __main__ - INFO - XML is valid
+2024-04-27 13:43:35,443 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:35,443 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:37,445 - __main__ - INFO - XML is valid
+2024-04-27 13:43:37,445 - __main__ - INFO - XML is valid
+2024-04-27 13:43:37,494 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:37,494 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:39,495 - __main__ - INFO - XML is valid
+2024-04-27 13:43:39,495 - __main__ - INFO - XML is valid
+2024-04-27 13:43:39,543 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:39,543 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:41,545 - __main__ - INFO - XML is valid
+2024-04-27 13:43:41,545 - __main__ - INFO - XML is valid
+2024-04-27 13:43:41,593 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:41,593 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:43,594 - __main__ - INFO - XML is valid
+2024-04-27 13:43:43,594 - __main__ - INFO - XML is valid
+2024-04-27 13:43:43,643 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:43,643 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:45,645 - __main__ - INFO - XML is valid
+2024-04-27 13:43:45,645 - __main__ - INFO - XML is valid
+2024-04-27 13:43:45,693 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:45,693 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:47,694 - __main__ - INFO - XML is valid
+2024-04-27 13:43:47,694 - __main__ - INFO - XML is valid
+2024-04-27 13:43:47,743 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:47,743 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:49,744 - __main__ - INFO - XML is valid
+2024-04-27 13:43:49,744 - __main__ - INFO - XML is valid
+2024-04-27 13:43:49,793 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:49,793 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:51,794 - __main__ - INFO - XML is valid
+2024-04-27 13:43:51,794 - __main__ - INFO - XML is valid
+2024-04-27 13:43:51,844 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:51,844 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:53,845 - __main__ - INFO - XML is valid
+2024-04-27 13:43:53,845 - __main__ - INFO - XML is valid
+2024-04-27 13:43:53,891 - __main__ - ERROR - Message sent but not confirmed
+2024-04-27 13:43:53,891 - __main__ - ERROR - Message sent but not confirmed
