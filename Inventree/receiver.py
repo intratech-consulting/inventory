@@ -4,13 +4,11 @@ import html
 import json
 import requests
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
-queue = channel.queue_declare('order_notify')
-queue_name = queue.method.queue
+queue = channel.queue_declare(queue='order', durable=True)
 
-channel.queue_bind(exchange='order', queue=queue_name, routing_key='order.notify')
 
 def removeItemFromStock(primary_key, quantity):
     url = f"http://inventree-server:8000/api/stock/{primary_key}/"
@@ -24,7 +22,7 @@ def removeItemFromStock(primary_key, quantity):
     if current_quantity - quantity < 1:
         print("De stock is leeg")
         return
-    
+
     url = "http://inventree-server:8000/api/stock/remove/"
     payload = json.dumps({
         "items": [
@@ -49,15 +47,15 @@ def removeItemFromStock(primary_key, quantity):
 def callback(ch, method, properties, body):
     decoded_body = html.unescape(body.decode())
     root = ET.fromstring(decoded_body)
-    
+
     order_elem = root.find('order')
-    
+
     order_id = order_elem.find('id').text if order_elem.find('id') is not None else None
     user_id = order_elem.find('user_id').text if order_elem.find('user_id') is not None else None
     company_id = order_elem.find('company_id').text if order_elem.find('company_id') is not None else None
     total_price = order_elem.find('total_price').text if order_elem.find('total_price') is not None else None
     status = order_elem.find('status').text if order_elem.find('status') is not None else None
-    
+
     products = []
     for product_elem in order_elem.findall('.//product'):
         product_id = product_elem.find('id').text if product_elem.find('id') is not None else None
@@ -78,7 +76,7 @@ def callback(ch, method, properties, body):
             'total_ex_btw': total_ex_btw,
             'btw': btw
         })
-    
+
     print('[x] Parsed order message:')
     print(f"Order ID: {order_id}")
     print(f"User ID: {user_id}")
@@ -92,7 +90,7 @@ def callback(ch, method, properties, body):
         removeItemFromStock(id, quantity)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
-channel.basic_consume(on_message_callback=callback, queue=queue_name)
+channel.basic_consume(on_message_callback=callback, queue=queue)
 print(' [*] Waiting for order messages. To exit press CTRL+C')
 
 channel.start_consuming()
