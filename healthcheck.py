@@ -8,9 +8,11 @@ def health_check(url):
     try:
         token = 'MY-TOKEN-VALUE-HERE'
         headers = {
-            'AUTHORIZATION': f'Token {token}'
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic bHVjYXM6cm9vdA==',
+            'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
         }
-        response = requests.get(url, headers=headers)
+        response = requests.request("GET", url, headers=headers)
         if response.status_code == 200:
             print(f"Connection to {url} is established.")
             
