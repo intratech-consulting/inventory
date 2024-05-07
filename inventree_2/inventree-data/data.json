@@ -1,0 +1,952 @@
+[
+  {
+    "model": "common.inventreesetting",
+    "pk": 1,
+    "fields": {
+      "value": "USD",
+      "key": "INVENTREE_DEFAULT_CURRENCY"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 2,
+    "fields": {
+      "value": "BO-{ref:04d}",
+      "key": "BUILDORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 3,
+    "fields": {
+      "value": "SO-{ref:04d}",
+      "key": "SALESORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 4,
+    "fields": {
+      "value": "PO-{ref:04d}",
+      "key": "PURCHASEORDER_REFERENCE_PATTERN"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 8,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_SCHEDULE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 9,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_EVENTS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 10,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_APP"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 11,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_URL"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 12,
+    "fields": {
+      "value": "A4",
+      "key": "REPORT_DEFAULT_PAGE_SIZE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 13,
+    "fields": {
+      "value": "http://inventree.localhost",
+      "key": "INVENTREE_BASE_URL"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 18,
+    "fields": {
+      "value": "False",
+      "key": "INVENTREE_INSTANCE_TITLE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 19,
+    "fields": {
+      "value": "False",
+      "key": "LOGIN_ENABLE_REG"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 20,
+    "fields": {
+      "value": "True",
+      "key": "LOGIN_ENABLE_PWD_FORGOT"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 21,
+    "fields": {
+      "value": "False",
+      "key": "LOGIN_ENABLE_SSO"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 22,
+    "fields": {
+      "value": "False",
+      "key": "DISPLAY_FULL_NAMES"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 23,
+    "fields": {
+      "value": "False",
+      "key": "LOGIN_ENFORCE_MFA"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 24,
+    "fields": {
+      "value": "True",
+      "key": "BARCODE_ENABLE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 25,
+    "fields": {
+      "value": "True",
+      "key": "REPORT_ENABLE_TEST_REPORT"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 26,
+    "fields": {
+      "value": "False",
+      "key": "RETURNORDER_ENABLED"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 27,
+    "fields": {
+      "value": "False",
+      "key": "REPORT_ENABLE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 28,
+    "fields": {
+      "value": "False",
+      "key": "SERVER_RESTART_REQUIRED"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 29,
+    "fields": {
+      "value": "True",
+      "key": "LABEL_ENABLE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 30,
+    "fields": {
+      "value": "False",
+      "key": "INVENTREE_RESTRICT_ABOUT"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 31,
+    "fields": {
+      "value": "False",
+      "key": "ENABLE_PLUGINS_NAVIGATION"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 32,
+    "fields": {
+      "value": "False",
+      "key": "STOCK_ENABLE_EXPIRY"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 33,
+    "fields": {
+      "value": "0",
+      "key": "STOCK_STALE_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 34,
+    "fields": {
+      "value": "30",
+      "key": "INVENTREE_DELETE_TASKS_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 35,
+    "fields": {
+      "value": "30",
+      "key": "INVENTREE_DELETE_ERRORS_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 37,
+    "fields": {
+      "value": "7",
+      "key": "INVENTREE_UPDATE_CHECK_INTERVAL"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 38,
+    "fields": {
+      "value": "30",
+      "key": "INVENTREE_DELETE_NOTIFICATIONS_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 39,
+    "fields": {
+      "value": "False",
+      "key": "INVENTREE_BACKUP_ENABLE"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 40,
+    "fields": {
+      "value": "1",
+      "key": "CURRENCY_UPDATE_INTERVAL"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 41,
+    "fields": {
+      "value": "30",
+      "key": "PRICING_UPDATE_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 42,
+    "fields": {
+      "value": "30",
+      "key": "STOCKTAKE_DELETE_REPORT_DAYS"
+    }
+  },
+  {
+    "model": "common.inventreesetting",
+    "pk": 43,
+    "fields": {
+      "value": "False",
+      "key": "STOCKTAKE_ENABLE"
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 1,
+    "fields": {
+      "feed_id": "/news/2024/03/13/0.14.2",
+      "title": "0.14.2 Release",
+      "link": "/news/2024/03/13/0.14.2",
+      "published": "2024-03-13T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.14.2 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 2,
+    "fields": {
+      "feed_id": "/news/2024/01/22/0.13.3",
+      "title": "0.13.3 Release",
+      "link": "/news/2024/01/22/0.13.3",
+      "published": "2024-01-22T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.13.3 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 3,
+    "fields": {
+      "feed_id": "/news/2024/01/17/0.13.2",
+      "title": "0.13.2 Release",
+      "link": "/news/2024/01/17/0.13.2",
+      "published": "2024-01-17T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.13.2 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 4,
+    "fields": {
+      "feed_id": "/news/2024/01/13/0.13.1",
+      "title": "0.13.1 Release",
+      "link": "/news/2024/01/13/0.13.1",
+      "published": "2024-01-13T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.13.1 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 5,
+    "fields": {
+      "feed_id": "/news/2023/12/15/0.13.0",
+      "title": "0.13.0 Release",
+      "link": "/news/2023/12/15/0.13.0",
+      "published": "2023-12-15T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.13.0 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 6,
+    "fields": {
+      "feed_id": "/news/2023/07/13/0.12.1",
+      "title": "0.12.1 Release",
+      "link": "/news/2023/07/13/0.12.1",
+      "published": "2023-07-13T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.12.1 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 7,
+    "fields": {
+      "feed_id": "/news/2023/06/26/0.12.0",
+      "title": "0.12.0 Release",
+      "link": "/news/2023/06/26/0.12.0",
+      "published": "2023-06-26T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "0.12.0 Release",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 8,
+    "fields": {
+      "feed_id": "/news/2023/01/30/introducing-the-plugin-list",
+      "title": "Introducing the Plugin List",
+      "link": "/news/2023/01/30/introducing-the-plugin-list",
+      "published": "2023-01-30T00:00:00Z",
+      "author": "matmair",
+      "summary": "Getting ready for 0.10.0, Website Updates and the Plugin List.",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 9,
+    "fields": {
+      "feed_id": "/news/2022/12/12/0.9.0",
+      "title": "0.9.0 Release",
+      "link": "/news/2022/12/12/0.9.0",
+      "published": "2022-12-12T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "InvenTree 0.9.0 stable release now available!",
+      "read": false
+    }
+  },
+  {
+    "model": "common.newsfeedentry",
+    "pk": 10,
+    "fields": {
+      "feed_id": "/news/2022/11/14/website",
+      "title": "New Website",
+      "link": "/news/2022/11/14/website",
+      "published": "2022-11-14T00:00:00Z",
+      "author": "SchrodingersGat",
+      "summary": "Introducing the new InvenTree website!",
+      "read": false
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "key": "inventreebarcode",
+      "name": "InvenTreeBarcode",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "key": "inventreecorenotificationsplugin",
+      "name": "InvenTreeCoreNotificationsPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 3,
+    "fields": {
+      "metadata": {},
+      "key": "inventreecurrencyexchange",
+      "name": "InvenTreeCurrencyExchange",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 4,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabel",
+      "name": "InvenTreeLabel",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 5,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabelmachine",
+      "name": "InvenTreeLabelMachine",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 6,
+    "fields": {
+      "metadata": {},
+      "key": "inventreelabelsheet",
+      "name": "InvenTreeLabelSheet",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 7,
+    "fields": {
+      "metadata": {},
+      "key": "digikeyplugin",
+      "name": "DigiKeyPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 8,
+    "fields": {
+      "metadata": {},
+      "key": "lcscplugin",
+      "name": "LCSCPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 9,
+    "fields": {
+      "metadata": {},
+      "key": "mouserplugin",
+      "name": "MouserPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "plugin.pluginconfig",
+    "pk": 10,
+    "fields": {
+      "metadata": {},
+      "key": "tmeplugin",
+      "name": "TMEPlugin",
+      "package_name": null,
+      "active": true
+    }
+  },
+  {
+    "model": "label.stockitemlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "QR Code",
+      "description": "Simple QR code label",
+      "label": "label/inventree/stockitem/qr.html",
+      "enabled": true,
+      "width": 24.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.stocklocationlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "QR Code",
+      "description": "Simple QR code label",
+      "label": "label/inventree/stocklocation/qr.html",
+      "enabled": true,
+      "width": 24.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.stocklocationlabel",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "name": "QR and text",
+      "description": "Label with QR code and name of location",
+      "label": "label/inventree/stocklocation/qr_and_text.html",
+      "enabled": true,
+      "width": 50.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.partlabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Part Label",
+      "description": "Simple part label",
+      "label": "label/inventree/part/part_label.html",
+      "enabled": true,
+      "width": 70.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.partlabel",
+    "pk": 2,
+    "fields": {
+      "metadata": {},
+      "name": "Barcode Part Label",
+      "description": "Simple part label with Code128 barcode",
+      "label": "label/inventree/part/part_label_code128.html",
+      "enabled": true,
+      "width": 70.0,
+      "height": 24.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "label.buildlinelabel",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Build Line Label",
+      "description": "Example build line label",
+      "label": "label/inventree/buildline/buildline_label.html",
+      "enabled": true,
+      "width": 125.0,
+      "height": 48.0,
+      "filename_pattern": "label.pdf",
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.testreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Test Report",
+      "template": "report/inventree/test/inventree_test_report.html",
+      "description": "Stock item test report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": "",
+      "include_installed": false
+    }
+  },
+  {
+    "model": "report.buildreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Build Order",
+      "template": "report/inventree/build/inventree_build_order.html",
+      "description": "Build Order job sheet",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.billofmaterialsreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "Bill of Materials",
+      "template": "report/inventree/bom/inventree_bill_of_materials_report.html",
+      "description": "Bill of Materials report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.purchaseorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Purchase Order",
+      "template": "report/inventree/purchaseorder/inventree_po_report.html",
+      "description": "Purchase Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.salesorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Sales Order",
+      "template": "report/inventree/salesorder/inventree_so_report.html",
+      "description": "Sales Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.returnorderreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Return Order",
+      "template": "report/inventree/returnorder/inventree_return_order_report.html",
+      "description": "Return Order example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "report.stocklocationreport",
+    "pk": 1,
+    "fields": {
+      "metadata": {},
+      "name": "InvenTree Stock Location",
+      "template": "report/inventree/slr/inventree_slr_report.html",
+      "description": "Stock Location example report",
+      "revision": 2,
+      "page_size": "A4",
+      "landscape": false,
+      "filename_pattern": "report.pdf",
+      "enabled": true,
+      "filters": ""
+    }
+  },
+  {
+    "model": "users.owner",
+    "pk": 1,
+    "fields": {
+      "owner_type": [
+        "auth",
+        "user"
+      ],
+      "owner_id": 1
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$uiuSbmYhY4JQoxtgAescoz$1/NmbPpI0XQBZ9SWMZTg5VDSNcfsjRvb8SY+hjJ8A4I=",
+      "last_login": "2024-05-07T08:57:42.382Z",
+      "is_superuser": true,
+      "username": "root",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-05-07T08:56:46.105Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 1,
+    "fields": {
+      "value": "False",
+      "key": "STICKY_HEADER",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 2,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_HIDE_INACTIVE",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 3,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_PART_STARRED",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 4,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_CATEGORY_STARRED",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 5,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_PART_LATEST",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 6,
+    "fields": {
+      "value": "False",
+      "key": "HOMEPAGE_BOM_REQUIRES_VALIDATION",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 7,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_STOCK_RECENT",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 8,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_STOCK_LOW",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 9,
+    "fields": {
+      "value": "False",
+      "key": "HOMEPAGE_SHOW_STOCK_DEPLETED",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 10,
+    "fields": {
+      "value": "False",
+      "key": "HOMEPAGE_BUILD_STOCK_NEEDED",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 11,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_BUILD_PENDING",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 12,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_BUILD_OVERDUE",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 13,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_PO_OUTSTANDING",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 14,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_PO_OVERDUE",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 15,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_SO_OUTSTANDING",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 16,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_SO_OVERDUE",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 17,
+    "fields": {
+      "value": "True",
+      "key": "HOMEPAGE_SO_SHIPMENTS_PENDING",
+      "user": [
+        "root"
+      ]
+    }
+  },
+  {
+    "model": "common.inventreeusersetting",
+    "pk": 18,
+    "fields": {
+      "value": "False",
+      "key": "HOMEPAGE_NEWS",
+      "user": [
+        "root"
+      ]
+    }
+  }
+]

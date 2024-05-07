@@ -115,8 +115,8 @@ def health_check_thread(url,interval):
         try:
             headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic bHVjYXM6cm9vdA==',
-                'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
+                'Authorization': 'Basic cm9vdDpyb2JiZQ==',
+                'Cookie': 'csrftoken=ymtnbUEffT6QNAothXZwOKHGRd6UxeBU; sessionid=9r1knsy734k2duc6ja5vqm7ob8juj0sg'
             }
             response = requests.request("GET", url, headers=headers)
             if response.status_code == 200:

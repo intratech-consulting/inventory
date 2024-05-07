@@ -1,17 +1,16 @@
 import requests
 import time
 import threading
-import HealthManager.py
+from health_manager import HealthManager
 
 # function that performs healthcheck
 def health_check(url):
     try:
         token = 'MY-TOKEN-VALUE-HERE'
         headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic bHVjYXM6cm9vdA==',
-            'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
-        }
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic cm9vdDpyb2JiZQ=='
+            }
         response = requests.request("GET", url, headers=headers)
         if response.status_code == 200:
             print(f"Connection to {url} is established.")
@@ -40,7 +39,7 @@ def start_health_check_thread(url, interval):
     print(f"Health check thread started for {url}. Checking every {interval} seconds.")
  
 if __name__ == "__main__":
-    url = 'https://www.kfdemoedigevrenden.be/'
+    url = 'http://inventree.localhost/api/stock/#'
     interval = 5
     start_health_check_thread(url, interval)
    
