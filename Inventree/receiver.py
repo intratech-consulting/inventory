@@ -5,7 +5,7 @@ import json
 import requests
 
 # RabbitMQ connection parameters
-credentials = pika.PlainCredentials('guest', 'guest')
+credentials = pika.PlainCredentials('user', 'password')
 parameters = pika.ConnectionParameters('rabbitmq', 5672, '/', credentials)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
