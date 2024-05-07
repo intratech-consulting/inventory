@@ -36,7 +36,7 @@ xsd_doc = etree.fromstring(heartbeat_xsd.encode())
 schema = etree.XMLSchema(xsd_doc)
 
 # Setup RabbitMQ connection
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', pika.PlainCredentials('guest', 'guest')))
 channel = connection.channel()
 channel.queue_declare(queue='heartbeat_queue', durable=True)
 
