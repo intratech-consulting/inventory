@@ -2,7 +2,10 @@ import pika
 import xml.etree.ElementTree as ET
 import html
 import json
+import logging
 import requests
+
+logging.basicConfig(level=logging.INFO)  # Set logging level to INFO (adjust as needed)
 
 # Define RabbitMQ server connection parameters
 credentials = pika.PlainCredentials('user', 'password')
@@ -55,6 +58,8 @@ def removeItemFromStock(primary_key, quantity, headers):
         print(response.text)
     except requests.exceptions.RequestException as e:
         print(f"HTTP request failed: {e}")
+        logging.info(f"ERROR: HTTP request failed {e}")
+        
 
 def callback(ch, method, properties, body):
     decoded_body = html.unescape(body.decode())
@@ -111,6 +116,7 @@ def callback(ch, method, properties, body):
 
 # Set up basic consumer with the correct queue name and callback function
 channel.basic_consume(on_message_callback=callback, queue=queue_name)
+logging.info('messages can be succesfully consumed')
 print(' [*] Waiting for order messages. To exit press CTRL+C')
 
 # Start consuming messages
