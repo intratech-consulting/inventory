@@ -120,7 +120,8 @@ services:
             - inventree_network
         ports:
             - ${INVENTREE_WEB_PORT:-80}:80
-            - 443:443
+            - 445:445
+            #het is hier en nergens anders dat je de poort voor de proxy kan veranderen
         env_file:
             - .env
         volumes:
