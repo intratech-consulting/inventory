@@ -1,29 +1,62 @@
 import pika
 import xml.etree.ElementTree as ET
-import html
-import json
 import requests
+import json
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', pika.PlainCredentials('user', 'password')))
+# Establish connection to RabbitMQ server
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
-queue = channel.queue_declare(queue='order', durable=True)
+# Declare the exchange
+exchange_name = "amq.topic"
+channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
+# Declare a queue
+queue_name = "inventory"
+channel.queue_declare(queue=queue_name, durable=True)
 
+# Bind the queue to the exchange with routing key 'order.kassa'
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.kassa')
+
+print(' [*] Waiting for messages. To exit, press CTRL+C')
+
+# Define a callback function to handle incoming messages
+def callback(ch, method, properties, body):
+    print(" [x] Received %r" % body)
+    # Process the XML message
+    root = ET.fromstring(body)
+    order_id = root.find('id').text
+    user_id = root.find('user_id').text
+    total_price = root.find('total_price').text
+    status = root.find('status').text
+    print(f"Order ID: {order_id}, User ID: {user_id}, Total Price: {total_price}, Status: {status}")
+
+    # Extract product details and remove from stock
+    products = root.find('products')
+    for product in products.findall('product'):
+        product_id = product.find('id').text
+        quantity = int(product.find('amount').text)
+        print(f"Removing {quantity} units of product ID {product_id} from stock...")
+        removeItemFromStock(product_id, quantity)
+
+    # Acknowledge the message
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+# Function to remove items from stock via API call
 def removeItemFromStock(primary_key, quantity):
-    url = f"http://inventree-server:8000/api/stock/{primary_key}/"
+    url = f"http://10.2.160.51:880/api/stock/{primary_key}/"
     payload = {}
     headers = {
-        'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
+        'Cookie': 'csrftoken=U4f3aiFMtXqeenAz6du2wfmD9e5ymh1K; sessionid=fnoffjbzoqhv66k0n1zonlsjt0qoqrzj'
     }
     response = requests.request("GET", url, headers=headers, data=payload)
     item_data = response.json()
     current_quantity = item_data.get("quantity", 100)
     if current_quantity - quantity < 1:
-        print("De stock is leeg")
+        print("The stock is empty")
         return
 
-    url = "http://inventree-server:8000/api/stock/remove/"
+    url = "http://10.2.160.51:880/api/stock/remove/"
     payload = json.dumps({
         "items": [
             {
@@ -38,59 +71,14 @@ def removeItemFromStock(primary_key, quantity):
     })
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic bHVjYXM6cm9vdA==',
-        'Cookie': 'csrftoken=V2WgldExQx0XKqBh7VaEjKQAVdwv4HV2; sessionid=viptlrlxu6uqvfsmdebrqyh0f1n4kvk2'
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
 
-def callback(ch, method, properties, body):
-    decoded_body = html.unescape(body.decode())
-    root = ET.fromstring(decoded_body)
+# Consume messages from the queue
+channel.basic_consume(queue=queue_name, on_message_callback=callback)
 
-    order_elem = root.find('order')
-
-    order_id = order_elem.find('id').text if order_elem.find('id') is not None else None
-    user_id = order_elem.find('user_id').text if order_elem.find('user_id') is not None else None
-    company_id = order_elem.find('company_id').text if order_elem.find('company_id') is not None else None
-    total_price = order_elem.find('total_price').text if order_elem.find('total_price') is not None else None
-    status = order_elem.find('status').text if order_elem.find('status') is not None else None
-
-    products = []
-    for product_elem in order_elem.findall('.//product'):
-        product_id = product_elem.find('id').text if product_elem.find('id') is not None else None
-        name = product_elem.find('name').text if product_elem.find('name') is not None else None
-        price = product_elem.find('price').text if product_elem.find('price') is not None else None
-        amount = product_elem.find('amount').text if product_elem.find('amount') is not None else None
-        category = product_elem.find('category').text if product_elem.find('category') is not None else None
-        total = product_elem.find('total').text if product_elem.find('total') is not None else None
-        total_ex_btw = product_elem.find('totalExBtw').text if product_elem.find('totalExBtw') is not None else None
-        btw = product_elem.find('btw').text if product_elem.find('btw') is not None else None
-        products.append({
-            'id': product_id,
-            'name': name,
-            'price': price,
-            'amount': amount,
-            'category': category,
-            'total': total,
-            'total_ex_btw': total_ex_btw,
-            'btw': btw
-        })
-
-    print('[x] Parsed order message:')
-    print(f"Order ID: {order_id}")
-    print(f"User ID: {user_id}")
-    print(f"Company ID: {company_id}")
-    print(f"Total Price: {total_price}")
-    print(f"Status: {status}")
-    print("Products:")
-    for product in products:
-        id = product['id']
-        quantity = int(product['amount'])
-        removeItemFromStock(id, quantity)
-    ch.basic_ack(delivery_tag=method.delivery_tag)
-
-channel.basic_consume(on_message_callback=callback, queue=queue)
-print(' [*] Waiting for order messages. To exit press CTRL+C')
-
+# Start consuming
 channel.start_consuming()
