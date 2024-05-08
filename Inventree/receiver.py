@@ -4,14 +4,26 @@ import html
 import json
 import requests
 
-# RabbitMQ connection parameters
+# Define RabbitMQ server connection parameters
 credentials = pika.PlainCredentials('user', 'password')
-parameters = pika.ConnectionParameters('rabbitmq', 5672, '/', credentials)
+hostname = 'rabbitmq-rabbitmq-1'  # Correct hostname without extra characters
+port = 5672  # RabbitMQ default port
+virtual_host = '/'  # RabbitMQ default virtual host
+
+# Create connection parameters object
+parameters = pika.ConnectionParameters(hostname, port, virtual_host, credentials)
+
+# Establish a connection to RabbitMQ server
 connection = pika.BlockingConnection(parameters)
+
+# Create a channel
 channel = connection.channel()
 
+# Now you can use the 'channel' object to interact with RabbitMQ
+
+
 # Declare the queue and get the queue name
-queue_result = channel.queue_declare(queue='order', durable=True)
+queue_result = channel.queue_declare(queue='inventory', durable=True)
 queue_name = queue_result.method.queue
 
 def removeItemFromStock(primary_key, quantity, headers):
