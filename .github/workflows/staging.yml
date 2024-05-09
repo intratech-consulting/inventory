@@ -121,19 +121,23 @@ jobs:
       - name: Connect to Staging Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-          if [ -d ${{ env.WORK_DIR }} ]; then
-            echo "Directory exists, proceeding with deployment..."
-            cd ${{ env.WORK_DIR }}
-            git fetch --all
-            git checkout staging
-            git reset --hard origin/staging
-            cd inventree
-            docker-compose down
-            docker-compose up -d
+          cd ${{ env.WORK_DIR }}
+          ls -la  # Check the directory content
+          if [ -d ".git" ]; then
+              echo "Git directory exists, proceeding with Git operations..."
+              git fetch --all
+              git checkout staging
+              git reset --hard origin/staging
           else
-            echo "Directory does not exist, deployment aborted."
+              echo "Not a Git repository. Exiting."
+              exit 1
           fi
+          echo "Restarting services..."
+          cd inventree
+          docker-compose down
+          docker-compose up -d
           ENDSSH
+      
 
       - name: Cleanup
         run: rm -rf ~/.ssh
