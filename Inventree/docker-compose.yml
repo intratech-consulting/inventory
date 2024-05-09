@@ -43,7 +43,7 @@ services:
         networks:
             - inventree_network
         expose:
-            - ${INVENTREE_DB_PORT:-5432}/tcp
+            - "${INVENTREE_DB_PORT:-5432}/tcp"
         environment:
             - PGDATA=/var/lib/postgresql/data/pgdb
             - POSTGRES_USER=${INVENTREE_DB_USER}
