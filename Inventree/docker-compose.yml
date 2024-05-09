@@ -13,10 +13,10 @@ version: "3.8"
 
 # -----------------------------
 # Setting environment variables
-# ----------------------------------------
+# -----------------------------
 # Shared environment variables should be stored in the .env file
 # Changes made to this file are reflected across all containers!
-#
+
 # IMPORTANT NOTE:
 # You should not have to change *anything* within this docker-compose.yml file!
 # Instead, make any changes in the .env file!
@@ -35,109 +35,115 @@ version: "3.8"
 #
 
 services:
-    # Database service
-    # Use PostgreSQL as the database backend
-    inventree-db:
-        image: postgres:13
-        container_name: inventree-db
-        networks:
-            - inventree_network
-        expose:
-            - ${INVENTREE_DB_PORT}:-5433/tcp
-        environment:
-            - PGDATA=/var/lib/postgresql/data/pgdb
-            - POSTGRES_USER=${INVENTREE_DB_USER}
-            - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD}
-            - POSTGRES_DB=${INVENTREE_DB_NAME}
-        volumes:
-            # Map 'data' volume such that postgres database is stored externally
-            - ${INVENTREE_EXT_VOLUME}:/var/lib/postgresql/data/:z
-        restart: unless-stopped
+  # Database service
+  # Use PostgreSQL as the database backend
+  inventree-db:
+    image: postgres:13
+    container_name: inventree-db
+    networks:
+      - inventree_network
+    expose:
+      - ${INVENTREE_DB_PORT:-5433}/tcp
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdb
+      - POSTGRES_USER=${INVENTREE_DB_USER:?You must provide the 'INVENTREE_DB_USER' variable in the .env file}
+      - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD:?You must provide the 'INVENTREE_DB_PASSWORD' variable in the .env file}
+      - POSTGRES_DB=${INVENTREE_DB_NAME:?You must provide the 'INVENTREE_DB_NAME' variable in the .env file}
+    volumes:
+      - ${INVENTREE_EXT_VOLUME:?You must specify the 'INVENTREE_EXT_VOLUME' variable in the .env file!}:/var/lib/postgresql/data/:z
+    restart: unless-stopped
 
-    # redis acts as database cache manager
-    # only runs under the "redis" profile : https://docs.docker.com/compose/profiles/
-    inventree-cache:
-        image: redis:7.0
-        container_name: inventree-cache
-        depends_on:
-            - inventree-db
-        networks:
-            - inventree_network
-        profiles:
-            - redis
-        env_file:
-            - .env
-        expose:
-            - ${INVENTREE_CACHE_PORT:-6379}
-        restart: always
+  # redis acts as database cache manager
+  # only runs under the "redis" profile : https://docs.docker.com/compose/profiles/
+  inventree-cache:
+    image: redis:7.0
+    container_name: inventree-cache
+    depends_on:
+      - inventree-db
+    networks:
+      - inventree_network
+    profiles:
+      - redis
+    env_file:
+      - .env
+    expose:
+      - ${INVENTREE_CACHE_PORT:-6379}
+    restart: always
 
-    # InvenTree web server service
-    # Uses gunicorn as the web server
-    inventree-server:
-        # If you wish to specify a particular InvenTree version, do so here
-        image: inventree/inventree:${INVENTREE_TAG:-stable}
-        container_name: inventree-server
-        # Only change this port if you understand the stack.
-        expose:
-            - 8000
-        depends_on:
-            - inventree-db
-        networks:
-            - inventree_network
-        env_file:
-            - .env
-        volumes:
-            # Data volume must map to /home/inventree/data
-            - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
-        restart: unless-stopped
+  # InvenTree web server service
+  # Uses gunicorn as the web server
+  inventree-server:
+    image: inventree/inventree:${INVENTREE_TAG:-stable}
+    container_name: inventree-server
+    expose:
+      - 8000
+    depends_on:
+      - inventree-db
+    networks:
+      - inventree_network
+    env_file:
+      - .env
+    volumes:
+      - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
+    restart: unless-stopped
 
-    # Background worker process handles long-running or periodic tasks
-    inventree-worker:
-        # If you wish to specify a particular InvenTree version, do so here
-        image: inventree/inventree:${INVENTREE_TAG:-stable}
-        container_name: inventree-worker
-        command: invoke worker
-        depends_on:
-            - inventree-server
-        networks:
-            - inventree_network
-        env_file:
-            - .env
-        volumes:
-            # Data volume must map to /home/inventree/data
-            - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
-        restart: unless-stopped
+  # Background worker process handles long-running or periodic tasks
+  inventree-worker:
+    image: inventree/inventree:${INVENTREE_TAG:-stable}
+    container_name: inventree-worker
+    command: invoke worker
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+    env_file:
+      - .env
+    volumes:
+      - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
+    restart: unless-stopped
 
-    # caddy acts as reverse proxy and static file server
-    # https://hub.docker.com/_/caddy
-    inventree-proxy:
-        container_name: inventree-proxy
-        image: caddy:alpine
-        restart: always
-        depends_on:
-            - inventree-server
-        networks:
-            - inventree_network
-        ports:
-            - ${INVENTREE_WEB_PORT:-80}:80
-            - 445:445
-            #het is hier en nergens anders dat je de poort voor de proxy kan veranderen
-        env_file:
-            - .env
-        volumes:
-            - ./Caddyfile:/etc/caddy/Caddyfile:ro
-            - ${INVENTREE_EXT_VOLUME}/static:/var/www/static:z
-            - ${INVENTREE_EXT_VOLUME}/media:/var/www/media:z
-            - ${INVENTREE_EXT_VOLUME}:/var/log:z
-            - ${INVENTREE_EXT_VOLUME}:/data:z
-            - ${INVENTREE_EXT_VOLUME}:/config:z
+  # caddy acts as reverse proxy and static file server
+  inventree-proxy:
+    container_name: inventree-proxy
+    image: caddy:alpine
+    restart: always
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+    ports:
+      - ${INVENTREE_WEB_PORT:-880}:80
+      - 8443:443
+    env_file:
+      - .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${INVENTREE_EXT_VOLUME}/static:/var/www/static:z
+      - ${INVENTREE_EXT_VOLUME}/media:/var/www/media:z
+      - ${INVENTREE_EXT_VOLUME}:/var/log:z
+      - ${INVENTREE_EXT_VOLUME}:/data:z
+      - ${INVENTREE_EXT_VOLUME}:/config:z
 
-    receiver:
-        build: .  # Path to your receiver script directory
-        depends_on:
-            - inventree-server
-        networks:
-            - inventree_network
+  receiver:
+    build: .
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+      - my_shared_network
+
+  heartbeat_sender:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.heartbeat
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket to access Docker API
+    depends_on:
+      - inventree-db
+    networks:
+      - my_shared_network
 
 networks:
-    inventree_network:
+  inventree_network:
+  my_shared_network:
+    external: true
