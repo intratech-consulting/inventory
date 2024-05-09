@@ -1,9 +1,5 @@
 #To ignore the inventree-data
-/Inventree/inventree-data/
-
-#Log file
-/heartbeat.log
-
+inventree-data/
 
 #dot env file
 .env
