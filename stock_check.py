@@ -10,10 +10,10 @@ def get_stock():
     url = "http://inventree.localhost/api/stock/"
     category_url = "http://inventree.localhost/api/part/category/"
     payload = {}
-    headers = {
+    headers = { #Vul headers in
         'Content-Type': 'application/json',
-        'Authorization': 'Basic cm9vdDpxdWVudGluMTIz',
-        'Cookie': 'csrftoken=U4f3aiFMtXqeenAz6du2wfmD9e5ymh1K; sessionid=fnoffjbzoqhv66k0n1zonlsjt0qoqrzv'
+        'Authorization': 'xxx',
+        'Cookie': 'xxx; sessionid=xxx'
     }
 
     #get de categorie data
