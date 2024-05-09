@@ -1,21 +1,43 @@
+payload = f'''
 
-import pika
-import xml.etree.ElementTree as ET
-import requests
-import json
+    <user__c>
 
-user_data = {
-        'user_id': "5",
-        'first_name': "bob",
-        'last_name': "bobette",
-        'email': "yay.be@hotmail.be",
-        'telephone': "123456",
-        'company': "hilo",
-        'company_id': "5",
-        'user_role': "speaker"
-    }
+        <user_id__c>1</user_id__c>
 
-array=[]
-array.append( user_id='5')
-# print(f"Company name is:{user_data['company']} \n Company id is:{user_data['company_id']}\n User role is: {user_data['user_role']}")
-print(array[0])
+        <first_name__c>2</first_name__c>
+
+        <last_name__c>3</last_name__c>
+
+        <email__c>4</email__c>
+
+        <telephone__c>5</telephone__c>
+
+        <birthday__c>6</birthday__c>
+
+        <country__c>7</country__c>
+
+        <state__c>8</state__c>
+
+        <city__c>9</city__c>
+
+        <zip__c>10</zip__c>
+
+        <street__c>11</street__c>
+
+        <house_number__c>12</house_number__c>
+
+        <company_email__c>13</company_email__c>
+
+        <company_id__c>14</company_id__c>
+
+        <source__c>15</source__c>
+
+        <user_role__c>16</user_role__c>
+
+        <invoice__c>17</invoice__c>
+
+        <calendar_link__c>18</calendar_link__c>
+
+    </user__c>
+
+    '''

@@ -22,7 +22,7 @@ print(' [*] Waiting for messages. To exit, press CTRL+C')
 
 # Define a callback function to handle incoming messages
 def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+    print(f" [x] Received {body.decode('utf-8')}")
     # Process the XML message
     root = ET.fromstring(body)
     first_name= root.find('first_name__c').text
@@ -57,15 +57,17 @@ def addUser(first_name,last_name,email,telephone):
     #     return
 
     url = "http://10.2.160.51:880/api/company/"
-    payload = {
-    "name": f"{first_name} {last_name}",
-    "phone": f'{telephone}',  # Use telephone from 
-    "email": f'{email}',  # Use email from 
-    "currency": "EUR",  # Set the currency (e.g., Australian Dollar)
-    "is_customer": True,  # Example boolean values (modify as needed)
-    "is_manufacturer": False,
-    "is_supplier": False
-    }
+    payload = json.dumps(
+        {
+            "name": f"{first_name} {last_name}",
+            "phone": f"{telephone}",
+            "email": f"{telephone}",
+            "currency": "EUR",
+            "is_customer": True,
+            "is_manufacturer": False,
+            "is_supplier": False,
+        }
+    )
 
     headers = {
         'Content-Type': 'application/json',

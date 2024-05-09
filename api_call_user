@@ -1,0 +1,26 @@
+import pika
+import xml.etree.ElementTree as ET
+import requests
+import json
+
+url = "http://10.2.160.51:880/api/company/"
+payload = json.dumps(
+        {
+            "name": "Robbeploet",
+            "phone": "string",
+            "email": "user@example.com",
+            "currency": "EUR",
+            "is_customer": True,
+            "is_manufacturer": False,
+            "is_supplier": False,
+        }
+    )
+
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+    'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+}
+response = requests.request("POST", url, headers=headers, data=payload)
+print(response.text)

@@ -10,31 +10,50 @@ exchange_name = "amq.topic"
 channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
 # Define the XML message payload
-order_xml = """
-<user__c>
-    <user_id__c>1</user_id__c>
-    <first_name__c>James</first_name__c>
-    <last_name__c>Bond</last_name__c>
-    <email__c>James.Bond007@hotmail.uk</email__c>
-    <telephone__c>911</telephone__c>
-    <birthday__c>11/11/1956</birthday__c>
-    <country__c>United Kingdom</country__c>
-    <state__c>null</state__c>
-    <city__c>London</city__c>
-    <zip__c>null</zip__c>
-    <street__c>null</street__c>
-    <house_number__c>null</house_number__c>
-    <company_email__c>MI6@hotmail.uk/company_email__c>
-    <company_id__c>5</company_id__c>
-    <source__c>null</source__c>
-    <user_role__c>null</user_role__c>
-    <invoice__c>null</invoice__c>
-    <calendar_link__c>null</calendar_link__c>
-</user__c>
-"""
+payload = f'''
+
+    <user__c>
+
+        <first_name__c>James</first_name__c>
+
+        <last_name__c>Bond</last_name__c>
+
+        <email__c>James.Bond@hotmail.com</email__c>
+
+        <telephone__c>911</telephone__c>
+
+        <birthday__c>6</birthday__c>
+
+        <country__c>7</country__c>
+
+        <state__c>8</state__c>
+
+        <city__c>9</city__c>
+
+        <zip__c>10</zip__c>
+
+        <street__c>11</street__c>
+
+        <house_number__c>12</house_number__c>
+
+        <company_email__c>13</company_email__c>
+
+        <company_id__c>14</company_id__c>
+
+        <source__c>15</source__c>
+
+        <user_role__c>16</user_role__c>
+
+        <invoice__c>17</invoice__c>
+
+        <calendar_link__c>18</calendar_link__c>
+
+    </user__c>
+
+    '''
 
 # Publish the message to the exchange with routing key 'user.crm'
-channel.basic_publish(exchange=exchange_name, routing_key='inventree.user.test', body=order_xml)
+channel.basic_publish(exchange=exchange_name, routing_key='user.inventree', body=payload)
 
 print(" [x] Sent test order message")
 # print(order_xml) #onnodig

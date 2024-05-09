@@ -37,13 +37,13 @@ def callback(ch, method, properties, body):
         product_id = product.find('id').text
         quantity = int(product.find('amount').text)
         print(f"Removing {quantity} units of product ID {product_id} from stock...")
-        removeItemFromStock(product_id, quantity)
+        removeItemFromStock(product_id, quantity, order_id)
 
     # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 # Function to remove items from stock via API call
-def removeItemFromStock(primary_key, quantity):
+def removeItemFromStock(primary_key, quantity, order_id):
     url = f"http://10.2.160.51:880/api/stock/{primary_key}/"
     payload = {}
     headers = {
