@@ -13,7 +13,7 @@ version: "3.8"
 
 # -----------------------------
 # Setting environment variables
-# -----------------------------
+# ----------------------------------------
 # Shared environment variables should be stored in the .env file
 # Changes made to this file are reflected across all containers!
 #
