@@ -97,7 +97,7 @@ jobs:
   deploy:
     name: Deploy to Staging
     runs-on: self-hosted
-    environment: staging
+#    environment: staging
     env:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
