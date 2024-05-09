@@ -46,11 +46,11 @@ services:
 #      - "${INVENTREE_DB_PORT:-5433}/tcp"
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdb
-      - POSTGRES_USER=${INVENTREE_DB_USER:?You must provide the 'INVENTREE_DB_USER' variable in the .env file}
-      - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD:?You must provide the 'INVENTREE_DB_PASSWORD' variable in the .env file}
-      - POSTGRES_DB=${INVENTREE_DB_NAME:?You must provide the 'INVENTREE_DB_NAME' variable in the .env file}
+      - POSTGRES_USER=${INVENTREE_DB_USER}
+      - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD}
+      - POSTGRES_DB=${INVENTREE_DB_NAME}
     volumes:
-      - ${INVENTREE_EXT_VOLUME:?You must specify the 'INVENTREE_EXT_VOLUME' variable in the .env file!}:/var/lib/postgresql/data/:z
+      - ${INVENTREE_EXT_VOLUME}:/var/lib/postgresql/data/:z
     restart: unless-stopped
 
   # redis acts as database cache manager
