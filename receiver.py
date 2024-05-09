@@ -12,7 +12,7 @@ exchange_name = "amq.topic"
 channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
 # Declare a queue
-queue_name = "order_queue"
+queue_name = "inventory"
 channel.queue_declare(queue=queue_name, durable=True)
 
 # Bind the queue to the exchange with routing key 'order.kassa'
@@ -39,7 +39,8 @@ def callback(ch, method, properties, body):
         print(f"Removing {quantity} units of product ID {product_id} from stock...")
         removeItemFromStock(product_id, quantity)
 
-    ch.manual_ack(delivery_tag=method.delivery_tag)
+    # Acknowledge the message
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
 # Function to remove items from stock via API call
 def removeItemFromStock(primary_key, quantity):
@@ -66,7 +67,7 @@ def removeItemFromStock(primary_key, quantity):
                 "status": ""
             }
         ],
-        "notes": "string"
+        "notes": order_id
     })
     headers = {
         'Content-Type': 'application/json',
