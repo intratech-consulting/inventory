@@ -104,6 +104,7 @@ jobs:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       WORK_DIR: ${{ secrets.WORK_DIR }}
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -118,7 +119,7 @@ jobs:
 
       - name: Connect to Staging Server and Deploy
         run: |
-          ssh -T -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.SSH_HOST }} <<EOF
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
           cd ${{ env.WORK_DIR }}
           git fetch --all
           git checkout staging
