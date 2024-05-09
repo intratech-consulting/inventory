@@ -47,7 +47,6 @@ jobs:
           fi
           echo "Restarting services..."
           cd inventree
-          docker-compose down
           ENDSSH
       
 
