@@ -121,7 +121,7 @@ jobs:
       - name: Connect to Staging Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-          if [ -d ${{ env.WORK_DIR }}/Inventree ]; then
+          if [ -d ${{ env.WORK_DIR }}/inventree ]; then
             echo "Directory exists, proceeding with deployment..."
             cd ${{ env.WORK_DIR }}/Inventree
             git fetch --all
