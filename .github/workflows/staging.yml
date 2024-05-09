@@ -135,7 +135,6 @@ jobs:
           echo "Restarting services..."
           cd inventree
           docker-compose down
-#          docker-compose up -d
           ENDSSH
       
 
