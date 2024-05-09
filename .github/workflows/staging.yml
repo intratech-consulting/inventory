@@ -121,12 +121,13 @@ jobs:
       - name: Connect to Staging Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-          if [ -d ${{ env.WORK_DIR }}/inventree ]; then
+          if [ -d ${{ env.WORK_DIR }} ]; then
             echo "Directory exists, proceeding with deployment..."
-            cd ${{ env.WORK_DIR }}/Inventree
+            cd ${{ env.WORK_DIR }}
             git fetch --all
             git checkout staging
             git reset --hard origin/staging
+            cd inventree
             docker-compose down
             docker-compose up -d
           else
