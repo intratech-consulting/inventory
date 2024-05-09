@@ -11,9 +11,9 @@ def get_stock():
     category_url = "http://inventree.localhost/api/part/category/"
     payload = {}
     headers = { #Vul headers in
-        'Content-Type': 'application/json',
-        'Authorization': 'xxx',
-        'Cookie': 'xxx; sessionid=xxx'
+        #'Content-Type'
+        #'Authorization'
+        #'Cookie'
     }
 
     #get de categorie data
