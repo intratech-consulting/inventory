@@ -13,7 +13,7 @@ jobs:
     env:
       SSH_HOST: ${{ secrets.SSH_HOST_PROD }}
       SSH_USER: ${{ secrets.SSH_USER }}
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       WORK_DIR: ${{ secrets.WORK_DIR_PROD }}
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
@@ -26,15 +26,17 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SSH_HOST }} >> ~/.ssh/known_hosts
           sudo apt-get install sshpass
 
       - name: Connect to Production Server and Deploy
         run: |
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_PROD }} <<'ENDSSH'
-         
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          eval "$(ssh-agent -s)"                      # Start the SSH agent
+          ssh-add ${{ env.SSH_KEY_DIR }}              # Add your private key to the agent
+          cd ${{ env.WORK_DIR }}
           echo "Current directory:" $(pwd)
           echo "Checking directory contents..."
           ls -la
