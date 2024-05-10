@@ -47,6 +47,7 @@ jobs:
               exit 1
           fi
           echo "Restarting services..."
+          pwd
           cd Inventree
           ENDSSH
       
