@@ -1,47 +1,3 @@
-#name: Deploy to Staging server
-#
-#on:
-#  push:
-#    branches:
-#      - stagging
-#
-#jobs:
-#  deploy:
-#    name: DEPLOY TO STAGGING
-#    runs-on: [ self-hosted ]
-#    environment: staging
-#    env:
-#      SSH_HOST: ${{ secrets.SSH_HOST }}
-#      SSH_USER: ${{ secrets.SSH_USER }}
-#      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-#      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-#      SSH_PORT: ${{ secrets.SSH_PORT }}
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Write ssh keys
-#        run: |
-#          install -m 600 -D /dev/null ~/.ssh/id_rsa
-#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-#          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-#
-#      - name: Connect and deploy
-#        run: |
-#          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-#          cd ${{ secrets.WORK_DIR }} &&
-#          git checkout main ${{ secrets.MAIN_BRANCH }} &&
-#          git pull &&
-#          # Add checks here (replace with your actual checks)
-#          if [ $(grep 'SUCCESS' some_status_file.txt) ]; then  # Simulates a check
-#              docker-compose -d up
-#          else
-#              echo 'Checks failed. Deployment skipped.'
-#          fi &&
-#          exit"
-#      - name: Cleanup
-#        run: rm -rf ~/.ssh
 
 name: Deploy to Staging
 
@@ -54,34 +10,47 @@ jobs:
   deploy:
     name: Deploy to Staging
     runs-on: self-hosted
-    environment: staging
+#    environment: staging
     env:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       WORK_DIR: ${{ secrets.WORK_DIR }}
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      SSH_KEY_DIR: ${{ secrets.SSH_KEY_DIR }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.SSH_HOST }} > ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ env.SSH_HOST }} >> ~/.ssh/known_hosts
+          sudo apt-get install sshpass
 
-      - name: Connect to Staging Server and Pull Latest Changes
+      - name: Connect to Staging Server and Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "cd ${{ env.WORK_DIR }} && 
-          git fetch --all &&
-          git checkout staging &&
-          git reset --hard origin/staging &&
-          # Here you can add commands to restart services or docker containers if necessary
-          docker-compose down && 
-          docker-compose up -d"
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          eval "$(ssh-agent -s)"                      # Start the SSH agent
+          ssh-add ${{ env.SSH_KEY_DIR }}          # Add your private key to the agent
+          cd ${{ env.WORK_DIR }}
+          pwd
+          ls -la  # Check the directory content
+          if [ -d ".git" ]; then
+              echo "Git directory exists, proceeding with Git operations..."
+              
+          else
+              echo "Not a Git repository. Exiting."
+              exit 1
+          fi
+          echo "Restarting services..."
+          cd Inventree
+          ENDSSH
+      
 
       - name: Cleanup
         run: rm -rf ~/.ssh
