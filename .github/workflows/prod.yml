@@ -54,6 +54,7 @@ jobs:
           cd Inventree
           # Additional deployment commands can be added here
           ENDSSH
+      
 
       - name: Cleanup
         run: |
