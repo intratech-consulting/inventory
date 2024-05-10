@@ -45,10 +45,10 @@ def process_user(body):
     # Parse XML message
     user_xml = ET.fromstring(body)
     # Extract required fields
-    first_name = user_xml.find('first_name__c').text
-    last_name = user_xml.find('last_name__c').text
-    phone = user_xml.find('telephone__c').text
-    email = user_xml.find('email__c').text
+    first_name = user_xml.find('first_name').text
+    last_name = user_xml.find('last_name').text
+    phone = user_xml.find('telephone').text
+    email = user_xml.find('email').text
     # Call the API to create a company
     createCompany(first_name, last_name, phone, email)
 
