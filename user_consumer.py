@@ -16,7 +16,7 @@ queue_name = "inventory"
 channel.queue_declare(queue=queue_name, durable=True)
 
 # Bind the queue to the exchange with routing key 'user.crm'
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='inventree.user.test')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.inventree')
 
 print(' [*] Waiting for messages. To exit, press CTRL+C')
 
@@ -25,10 +25,10 @@ def callback(ch, method, properties, body):
     print(f" [x] Received {body.decode('utf-8')}")
     # Process the XML message
     root = ET.fromstring(body)
-    first_name= root.find('first_name__c').text
-    last_name= root.find('last_name__c').text
-    email= root.find('email__c').text
-    telephone= root.find('telephone__c').text
+    first_name= root.find('first_name').text
+    last_name= root.find('last_name').text
+    email= root.find('email').text
+    telephone= root.find('telephone').text
     addUser(first_name,last_name,email,telephone)
 
     # Extract product details and remove from stock

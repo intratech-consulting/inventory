@@ -7,53 +7,60 @@ channel = connection.channel()
 
 # Declare the exchange
 exchange_name = "amq.topic"
+routing_key='user.inventree'
 channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
 # Define the XML message payload
 payload = f'''
 
-    <user__c>
+    <user>
 
-        <first_name__c>James</first_name__c>
+        <routing_key>{routing_key}<routing_key>
 
-        <last_name__c>Bond</last_name__c>
+        <first_name>James</first_name>
 
-        <email__c>James.Bond@hotmail.com</email__c>
+        <last_name>Bond</last_name>
 
-        <telephone__c>911</telephone__c>
+        <email>James.Bond@hotmail.com</email>
 
-        <birthday__c>6</birthday__c>
+        <telephone>911</telephone>
 
-        <country__c>7</country__c>
+        <birthday>6</birthday>
 
-        <state__c>8</state__c>
+        <address>
+        
+            <country>United Kingdom</country>
 
-        <city__c>9</city__c>
+            <state>8</state>
 
-        <zip__c>10</zip__c>
+            <city>9</city>
 
-        <street__c>11</street__c>
+            <zip>10</zip>
 
-        <house_number__c>12</house_number__c>
+            <street>11</street>
 
-        <company_email__c>13</company_email__c>
+        </address>
 
-        <company_id__c>14</company_id__c>
+        <house_number>7</house_number>
 
-        <source__c>15</source__c>
+        <company_email></company_email>
 
-        <user_role__c>16</user_role__c>
+        <company_id>14</company_id>
 
-        <invoice__c>17</invoice__c>
+        <source>15</source>
 
-        <calendar_link__c>18</calendar_link__c>
+        <user_role>Speaker</user_role>
 
-    </user__c>
+        <invoice>17</invoice>
+
+        <calendar_link>18</calendar_link>
+
+    </user>
 
     '''
 
 # Publish the message to the exchange with routing key 'user.crm'
-channel.basic_publish(exchange=exchange_name, routing_key='user.inventree', body=payload)
+channel.basic_publish(exchange=exchange_name, routing_key=routing_key, body=payload)
 
 print(" [x] Sent test order message")
 # print(order_xml) #onnodig
