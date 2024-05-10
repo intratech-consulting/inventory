@@ -36,7 +36,7 @@ jobs:
           cd ${{ env.WORK_DIR }}
           pwd
           ls -la  # Check the directory content
-          if [ -a ".git" ]; then
+          if [ -d ".git" ]; then
               echo "Git directory exists, proceeding with Git operations..."
               git checkout staging
               git fetch --all
