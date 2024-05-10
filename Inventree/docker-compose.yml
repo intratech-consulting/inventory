@@ -1,6 +1,42 @@
-
 version: "3.8"
+
+# Docker compose recipe for a production-ready InvenTree setup, with the following containers:
+# - PostgreSQL as the database backend
+# - gunicorn as the InvenTree web server
+# - django-q as the InvenTree background worker process
+# - Caddy as a reverse proxy
+# - redis as the cache manager (optional, disabled by default)
+
+# ---------------------
+# READ BEFORE STARTING!
+# ---------------------
+
+# -----------------------------
+# Setting environment variables
+# -----------------------------
+# Shared environment variables should be stored in the .env file
+# Changes made to this file are reflected across all containers!
+
+# IMPORTANT NOTE:
+# You should not have to change *anything* within this docker-compose.yml file!
+# Instead, make any changes in the .env file!
+
+# ------------------------
+# InvenTree Image Versions
+# ------------------------
+# By default, this docker-compose script targets the STABLE version of InvenTree,
+# image: inventree/inventree:stable
+#
+# To run the LATEST (development) version of InvenTree,
+# change the INVENTREE_TAG variable (in the .env file) to "latest"
+#
+# Alternatively, you could target a specific tagged release version with (for example):
+# INVENTREE_TAG=0.7.5
+#
+
 services:
+  # Database service
+  # Use PostgreSQL as the database backend
   inventree-db:
     image: postgres:13
     container_name: inventree-db
@@ -10,12 +46,15 @@ services:
       - ${INVENTREE_DB_PORT:-5433}/tcp
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdb
-      - POSTGRES_USER=${INVENTREE_DB_USER}
-      - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD}
-      - POSTGRES_DB=${INVENTREE_DB_NAME}
+      - POSTGRES_USER=${INVENTREE_DB_USER:?You must provide the 'INVENTREE_DB_USER' variable in the .env file}
+      - POSTGRES_PASSWORD=${INVENTREE_DB_PASSWORD:?You must provide the 'INVENTREE_DB_PASSWORD' variable in the .env file}
+      - POSTGRES_DB=${INVENTREE_DB_NAME:?You must provide the 'INVENTREE_DB_NAME' variable in the .env file}
     volumes:
-      - ${INVENTREE_EXT_VOLUME}:/var/lib/postgresql/data/:z
+      - ${INVENTREE_EXT_VOLUME:?You must specify the 'INVENTREE_EXT_VOLUME' variable in the .env file!}:/var/lib/postgresql/data/:z
     restart: unless-stopped
+
+  # redis acts as database cache manager
+  # only runs under the "redis" profile : https://docs.docker.com/compose/profiles/
   inventree-cache:
     image: redis:7.0
     container_name: inventree-cache
@@ -30,6 +69,9 @@ services:
     expose:
       - ${INVENTREE_CACHE_PORT:-6379}
     restart: always
+
+  # InvenTree web server service
+  # Uses gunicorn as the web server
   inventree-server:
     image: inventree/inventree:${INVENTREE_TAG:-stable}
     container_name: inventree-server
@@ -44,6 +86,8 @@ services:
     volumes:
       - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
     restart: unless-stopped
+
+  # Background worker process handles long-running or periodic tasks
   inventree-worker:
     image: inventree/inventree:${INVENTREE_TAG:-stable}
     container_name: inventree-worker
@@ -57,6 +101,8 @@ services:
     volumes:
       - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
     restart: unless-stopped
+
+  # caddy acts as reverse proxy and static file server
   inventree-proxy:
     container_name: inventree-proxy
     image: caddy:alpine
@@ -77,6 +123,7 @@ services:
       - ${INVENTREE_EXT_VOLUME}:/var/log:z
       - ${INVENTREE_EXT_VOLUME}:/data:z
       - ${INVENTREE_EXT_VOLUME}:/config:z
+
   receiver:
     build: .
     depends_on:
@@ -84,17 +131,19 @@ services:
     networks:
       - inventree_network
       - my_shared_network
+
   heartbeat_sender:
     build:
       context: ../
       dockerfile: Docker/Dockerfile.heartbeat
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket to access Docker API
     depends_on:
       - inventree-db
     networks:
       - my_shared_network
+
 networks:
-  inventree_network: null
+  inventree_network:
   my_shared_network:
     external: true

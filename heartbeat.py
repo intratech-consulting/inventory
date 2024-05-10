@@ -1,111 +1,94 @@
-import threading
+import datetime
 import time
-from datetime import datetime
 import pika
-import logging
-import sys
-import os
 from lxml import etree
+import docker  # Import Docker library
 
-def setup_logging():
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    handler = logging.FileHandler('heartbeat.log')
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    return logger
+TEAM = 'inventree'  # Service name
 
-def send_heartbeat():
+# Define your XML and XSD as strings
+heartbeat_xml = """
+<Heartbeat>
+    <Timestamp>{timestamp}</Timestamp>
+    <Status>{status}</Status>
+    <SystemName>{system_name}</SystemName>
+    <ErrorLog>{error_log}</ErrorLog>
+</Heartbeat>
+"""
 
-    logger = setup_logging()
-    #connection = connect_to_rabbit()
-    #channel = connection.channel()
+heartbeat_xsd = """
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Heartbeat">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Timestamp" type="xs:dateTime" />
+                <xs:element name="Status" type="xs:string" />
+                <xs:element name="SystemName" type="xs:string" />
+                <xs:element name="ErrorLog" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+"""
 
-    # Declare the queue and exchange, and make sure they are bound
-    queue_name = 'heartbeat'
-    exchange_name = 'heartbeat'
-    routing_key = 'heartbeat'
+# Parse the documents
+xsd_doc = etree.fromstring(heartbeat_xsd.encode())
+schema = etree.XMLSchema(xsd_doc)
 
-    credentials = pika.PlainCredentials('guest', 'guest')
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
-    channel = connection.channel()
-    channel.queue_declare(queue='heartbeat', durable=True)
-    channel.exchange_declare(exchange='heartbeat', exchange_type='direct', durable=True)
+# Setup RabbitMQ connection
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', pika.PlainCredentials('user', 'password')))
+channel = connection.channel()
+channel.queue_declare(queue='heartbeat_queue', durable=True)
 
-    # Confirm that RabbitMQ will confirm messages
-    channel.confirm_delivery()
+# Setup Docker client
+client = docker.from_env()
 
+def is_container_running(container_name):
+    """Check if the specified container is running and return status or error message."""
     try:
-        while True:
-            timestamp = datetime.now()
-            heartbeat_xml = f"""
-               <Heartbeat>
-                   <Timestamp>{timestamp.isoformat()}</Timestamp>
-                   <Status>Active</Status>
-                   <SystemName>SystemNameHere</SystemName>
-               </Heartbeat>
-               """
-            xml_doc = etree.fromstring(heartbeat_xml.encode())
-            xsd_doc = etree.fromstring("""
-               <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-                   <xs:element name="Heartbeat">
-                       <xs:complexType>
-                           <xs:sequence>
-                               <xs:element name="Timestamp" type="xs:dateTime" />
-                               <xs:element name="Status" type="xs:string" />
-                               <xs:element name="SystemName" type="xs:string" />
-                           </xs:sequence>
-                       </xs:complexType>
-                   </xs:element>
-               </xs:schema>
-               """.encode())
-            schema = etree.XMLSchema(xsd_doc)
-            if schema.validate(xml_doc):
-                logger.info('XML is valid')
-                if channel.basic_publish(exchange=exchange_name, routing_key=routing_key, body=heartbeat_xml,
-                                         mandatory=True):
-                    logger.info('Message sent and confirmed')
-                else:
-                    logger.error('Message sent but not confirmed')
-            else:
-                logger.error('XML is not valid')
-            time.sleep(2)
-    except pika.exceptions.UnroutableError:
-        logger.error("Message was unroutable")
-    finally:
-        connection.close()
+        container = client.containers.get(container_name)
+        if container.status == 'running':
+            return True, ""
+        else:
+            return False, f"Container status is {container.status}."
+    except Exception as e:
+        return False, f"Error getting container status: {e}"
 
-def receive_messages():
-    # channel receiver cause using the same one create an error
-    credentials = pika.PlainCredentials('guest', 'guest')  # Placeholder for credentials
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
-    channel = connection.channel()
-    channel.queue_declare(queue='heartbeat', durable=True)
+container_name = 'inventree-db'  # Docker container name
 
-    def callback(ch, method, properties, body):
-        print(f" [x] Received {body}")
-    channel.basic_consume(queue='heartbeat', on_message_callback=callback, auto_ack=True)
-    print(' [*] Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
+# Loop to send heartbeat message
+try:
+    while True:
+        running, error_log = is_container_running(container_name)
+        if running:
+            status = 'Active'
+            error_log = ""  # Clear error log when container is running
+        else:
+            status = 'Inactive'
+            print(f"{error_log}, retrying in 5 seconds.")
+            time.sleep(5)  # Wait for 5 seconds before retrying
+            continue  # Skip sending the message when container is down
 
-def main():
-    logger = setup_logging()
-    sender_thread = threading.Thread(target=send_heartbeat)
-    receiver_thread = threading.Thread(target=receive_messages)
-    sender_thread.start()
-    receiver_thread.start()
+        # Prepare XML with error log
+        formatted_heartbeat_xml = heartbeat_xml.format(
+            timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f"),
+            status=status,
+            system_name=TEAM,  # Use the TEAM variable for SystemName
+            error_log=error_log
+        )
+        xml_doc = etree.fromstring(formatted_heartbeat_xml.encode())
 
-    sender_thread.join()
-    receiver_thread.join()
+        # Validate XML
+        if schema.validate(xml_doc):
+            print('XML is valid')
+            channel.basic_publish(exchange='', routing_key='heartbeat_queue', body=formatted_heartbeat_xml)
+            print('Message sent')
+        else:
+            print('XML is not valid')
 
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print('Interrupted')
-        try:
-            sys.exit(0)
-        except SystemExit:
-            os._exit(0)
+        time.sleep(1)  # Wait for 1 second before sending another message
+except KeyboardInterrupt:
+    print("Script interrupted by user.")
+finally:
+    connection.close()
+    print("Connection closed.")
