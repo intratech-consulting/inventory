@@ -38,15 +38,15 @@ jobs:
           ls -la  # Check the directory content
           if [ -d ".git" ]; then
               echo "Git directory exists, proceeding with Git operations..."
-              git fetch --all
               git checkout staging
+              git fetch --all
               git reset --hard origin staging
           else
               echo "Not a Git repository. Exiting."
               exit 1
           fi
           echo "Restarting services..."
-          cd inventree
+          cd Inventree
           ENDSSH
       
 
