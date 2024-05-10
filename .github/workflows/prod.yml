@@ -33,7 +33,7 @@ jobs:
 
       - name: Connect to Production Server and Deploy
         run: |
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_PROD }} <<'ENDSSH'
           eval "$(ssh-agent -s)"                      # Start the SSH agent
           ssh-add ${{ env.SSH_KEY_DIR }}              # Add your private key to the agent
           cd ${{ env.WORK_DIR }}
