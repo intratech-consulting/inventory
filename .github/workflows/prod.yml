@@ -29,7 +29,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SSH_HOST }} >> ~/.ssh/known_hosts
-          sudo apt-get update
           sudo apt-get install sshpass
 
       - name: Connect to Production Server and Deploy
