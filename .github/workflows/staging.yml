@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure SSH
         run: |
@@ -42,9 +42,7 @@ jobs:
           ls -la  # Check the directory content
           if [ -d ".git" ]; then
               echo "Git directory exists, proceeding with Git operations..."
-              git checkout staging
-              git fetch origin staging
-              git reset --hard origin/staging
+              
           else
               echo "Not a Git repository. Exiting."
               exit 1
