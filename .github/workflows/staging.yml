@@ -18,6 +18,7 @@ jobs:
       SSH_PORT: ${{ secrets.SSH_PORT }}
       WORK_DIR: ${{ secrets.WORK_DIR }}
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      SSH_KEY_DIR: ${{ secrets.SSH_KEY_DIR }}
 
     steps:
       - name: Checkout code
@@ -34,6 +35,8 @@ jobs:
       - name: Connect to Staging Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
+          eval "$(ssh-agent -s)"                      # Start the SSH agent
+          ssh-add ${{ env.SSH_KEY_DIR }}          # Add your private key to the agent
           cd ${{ env.WORK_DIR }}
           pwd
           ls -la  # Check the directory content
