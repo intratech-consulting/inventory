@@ -29,11 +29,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SSH_HOST }} >> ~/.ssh/known_hosts
           sudo apt-get update
-          sudo apt-get install -y sshpass
+          sudo apt-get install sshpass
 
       - name: Connect to Production Server and Deploy
         run: |
-          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no -p ${{ env.SSH_PORT }} ${{ env.SSH_USER }}@${{ env.SSH_HOST }} <<'ENDSSH'
+          sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@$${{ secrets.SSH_HOST_PROD }} <<'ENDSSH'
           eval "$(ssh-agent -s)"                      # Start the SSH agent
           ssh-add ${{ env.SSH_KEY_DIR }}              # Add your private key to the agent
           cd ${{ env.WORK_DIR }}
