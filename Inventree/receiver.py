@@ -49,10 +49,37 @@ def process_user(body):
     last_name = user_xml.find('last_name').text
     phone = user_xml.find('telephone').text
     email = user_xml.find('email').text
-    # Call the API to create a company
-    createCompany(first_name, last_name, phone, email)
+    uid=user_xml.find('id').text
+    crud=user_xml.find('crud_operation').text
+    local_id=filter_users(uid)
+    def switchCase(crud):
+        switcher = {
+            "create":createCompany(first_name, last_name, phone, email, uid),
+            "update":updateCompany(first_name, last_name, phone, email, uid, local_id),
+            "delete":deleteCompany(local_id),
+        }
+    switchCase(crud)
+    
+    
 
 
+
+def filter_users(uid):
+    url = "http://10.2.160.51:880/api/company/"
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("GET", url, headers=headers)
+    data=response.json()
+    for user in data:
+        description=user["description"]
+        if (description==uid):
+            id=user["pk"]
+            return id
+        
 def removeItemFromStock(primary_key, quantity, order_id):
     url = f"http://10.2.160.51:880/api/stock/{primary_key}/"
     payload = {}
@@ -87,14 +114,15 @@ def removeItemFromStock(primary_key, quantity, order_id):
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
 
-def createCompany(first_name, last_name, phone, email):
-    company_name = f"{first_name} {last_name}"
+def createCompany(first_name, last_name, phone, email, uid):
+    user_name = f"{first_name} {last_name}"
     url = "http://10.2.160.51:880/api/company/"
     payload = json.dumps(
             {
-                "name": company_name,
+                "name": user_name,
                 "phone": phone,
                 "email": email,
+                "description": uid,
                 "currency": "EUR",
                 "is_customer": True,
                 "is_manufacturer": False,
@@ -107,9 +135,40 @@ def createCompany(first_name, last_name, phone, email):
         'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
+
+def updateCompany(first_name, last_name, phone, email, uid, local_id):
+    user_name = f"{first_name} {last_name}"
+    url = f"http://10.2.160.51:880/api/company/{local_id}"
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "phone": phone,
+                "email": email,
+                "description": uid,
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("PUT", url, headers=headers, data=payload)
     print(response.text)
 
-
+def deleteCompany(id):
+    url = f"http://10.2.160.51/api/company/{id}/"
+    payload={}
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("DELETE", url, headers=headers, data=payload)
 # Consume messages from the queue
 channel.basic_consume(queue=queue_name, on_message_callback=callback)
 # Start consuming
