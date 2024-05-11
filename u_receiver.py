@@ -51,19 +51,24 @@ def process_user(body):
     email = user_xml.find('email').text
     uid=user_xml.find('id').text
     crud=user_xml.find('crud_operation').text
-    local_id=filter_users(uid)
-    def switchCase(crud):
-        switcher = {
-            "create":createCompany(first_name, last_name, phone, email, uid),
-            "update":updateCompany(first_name, last_name, phone, email, uid, local_id),
-            "delete":deleteCompany(local_id),
-        }
-    switchCase(crud)
+    user_pk=filter_users(uid)
+
+    if crud == "create":
+        createCompany(first_name, last_name, phone, email, uid)
+    elif crud == "update":
+        updateCompany(first_name, last_name, phone, email, uid, user_pk)
+    elif crud == "delete":
+        deleteCompany(user_pk)
+    else:
+        print("crud not found")
+    # def switchCase(crud):
+    #     switcher = {
+    #         "create":createCompany(first_name, last_name, phone, email, uid),
+    #         "update":updateCompany(first_name, last_name, phone, email, uid, user_pk),
+    #         "delete":deleteCompany(user_pk),
+    #     }
+    # switchCase(crud)
     
-    
-
-
-
 def filter_users(uid):
     url = "http://10.2.160.51:880/api/company/"
     
@@ -136,10 +141,7 @@ def createCompany(first_name, last_name, phone, email, uid):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
-    payload_= {}
-    pk_response = requests.request("GET", url, headers=headers, data=payload_)
-    pk_data = pk_response.json()
-    user_pk = pk_data["pk"]
+    user_pk = filter_users(uid)
 
     #MasterUuid
     masterUuid_url = "http://10.2.160.51:6000/addServiceId"
@@ -150,12 +152,18 @@ def createCompany(first_name, last_name, phone, email, uid):
             "ServiceId": f"{user_pk}"
         }
     )
-    response = requests.request("POST", masterUuid_url, data=masterUuid_payload)
+    uid_headers={
+    'Content-type':'application/json', 
+    'Accept':'application/json'
+    }
+    print(f"uid: {uid}")
+    print(f"pk: {user_pk}")
+    response = requests.request("POST", masterUuid_url, headers=uid_headers ,data=masterUuid_payload)
+    print(response)
 
-
-def updateCompany(first_name, last_name, phone, email, uid, local_id):
+def updateCompany(first_name, last_name, phone, email, uid, user_pk):
     user_name = f"{first_name} {last_name}"
-    url = f"http://10.2.160.51:880/api/company/{local_id}"
+    url = f"http://10.2.160.51:880/api/company/{user_pk}"
     payload = json.dumps(
             {
                 "name": user_name,
