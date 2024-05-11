@@ -139,6 +139,8 @@ services:
     networks:
       - inventree_network
       - my_shared_network
+    volumes:
+      - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
       
 
   heartbeat_sender:
