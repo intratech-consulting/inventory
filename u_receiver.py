@@ -4,7 +4,7 @@ import requests
 import json
 
 # Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.54', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
 # Declare the exchange
@@ -13,6 +13,7 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 
 # Declare queue and bind it to the exchange with routing key pattern
 queue_name = 'inventory'
+ip="http://10.2.160.54:"
 channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
@@ -45,16 +46,48 @@ def process_user(body):
     # Parse XML message
     user_xml = ET.fromstring(body)
     # Extract required fields
-    first_name = user_xml.find('first_name__c').text
-    last_name = user_xml.find('last_name__c').text
-    phone = user_xml.find('telephone__c').text
-    email = user_xml.find('email__c').text
-    # Call the API to create a company
-    createCompany(first_name, last_name, phone, email)
+    first_name = user_xml.find('first_name').text
+    last_name = user_xml.find('last_name').text
+    phone = user_xml.find('telephone').text
+    email = user_xml.find('email').text
+    uid=user_xml.find('id').text
+    crud=user_xml.find('crud_operation').text
+    
 
-
+    if crud == "create":
+        createCompany(first_name, last_name, phone, email, uid)
+    elif crud == "update":
+        updateCompany(first_name, last_name, phone, email, uid)
+    elif crud == "delete":
+        deleteCompany(uid)
+    else:
+        print("crud not found")
+    # def switchCase(crud):
+    #     switcher = {
+    #         "create":createCompany(first_name, last_name, phone, email, uid),
+    #         "update":updateCompany(first_name, last_name, phone, email, uid, user_pk),
+    #         "delete":deleteCompany(user_pk),
+    #     }
+    # switchCase(crud)
+    
+def filter_users(uid):
+    url = f"{ip}880/api/company/"
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("GET", url, headers=headers)
+    data=response.json()
+    for user in data:
+        description=user["description"]
+        if (description==uid):
+            id=user["pk"]
+            return id
+        
 def removeItemFromStock(primary_key, quantity, order_id):
-    url = f"http://10.2.160.51:880/api/stock/{primary_key}/"
+    url = f"{ip}880/api/stock/{primary_key}/"
     payload = {}
     headers = {
         'Cookie': 'csrftoken=U4f3aiFMtXqeenAz6du2wfmD9e5ymh1K; sessionid=fnoffjbzoqhv66k0n1zonlsjt0qoqrzj'
@@ -66,7 +99,7 @@ def removeItemFromStock(primary_key, quantity, order_id):
         print("The stock is empty")
         return
 
-    url = "http://10.2.160.51:880/api/stock/remove/"
+    url = f"{ip}880/api/stock/remove/"
     payload = json.dumps({
         "items": [
             {
@@ -87,14 +120,15 @@ def removeItemFromStock(primary_key, quantity, order_id):
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
 
-def createCompany(first_name, last_name, phone, email):
-    company_name = f"{first_name} {last_name}"
-    url = "http://10.2.160.51:880/api/company/"
+def createCompany(first_name, last_name, phone, email, uid):
+    user_name = f"{first_name} {last_name}"
+    url = f"{ip}880/api/company/"
     payload = json.dumps(
             {
-                "name": company_name,
+                "name": user_name,
                 "phone": phone,
                 "email": email,
+                "description": uid,
                 "currency": "EUR",
                 "is_customer": True,
                 "is_manufacturer": False,
@@ -107,9 +141,84 @@ def createCompany(first_name, last_name, phone, email):
         'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
+    # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
+    user_pk = filter_users(uid)
+
+    #MasterUuid
+    masterUuid_url = f"{ip}6000/addServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "MasterUuid": f"{uid}",
+            "Service": "inventory",
+            "ServiceId": f"{user_pk}"
+        }
+    )
+    uid_headers={
+    'Content-type':'application/json', 
+    'Accept':'application/json'
+    }
+    print(f"uid: {uid}")
+    print(f"pk: {user_pk}")
+    response = requests.request("POST", masterUuid_url, headers=uid_headers ,data=masterUuid_payload)
+    print(response)
+
+def updateCompany(first_name, last_name, phone, email, uid):
+    user_name = f"{first_name} {last_name}"
+    user_pk=get_user_pk(uid)
+    url = f"{ip}880/api/company/{user_pk}"
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "phone": phone,
+                "email": email,
+                "description": uid,
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("PUT", url, headers=headers, data=payload)
     print(response.text)
 
+def deleteCompany(uid):
+    user_pk=get_user_pk(uid)
+    print(user_pk)
+    url = f"{ip}880/api/company/{user_pk}/"
+    payload={}
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    print(uid)
+    response = requests.request("DELETE", url, headers=headers, data=payload)
+    print(response)
 
+def get_user_pk(uid):
+    #MasterUuid
+    masterUuid_url = f"{ip}6000/getServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "MASTERUUID": f"{uid}",
+            "Service": "inventory"
+        }
+    )
+    uid_headers={
+    'Content-type':'application/json', 
+    'Accept':'application/json'
+    }
+    print(f"uid: {uid}")
+    response = requests.request("POST", masterUuid_url, headers=uid_headers ,data=masterUuid_payload)
+    data=response.json()
+    user_pk=data['inventory']
+    print(user_pk)
+    return(user_pk)
 # Consume messages from the queue
 channel.basic_consume(queue=queue_name, on_message_callback=callback)
 # Start consuming
