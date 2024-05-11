@@ -86,29 +86,30 @@ def get_stock():
     time.sleep(30) ### kies interval ###
 
 class Item():
-    def __init__(self, part_id, item_name, item_price, category):
+    def __init__(self,routing_key, crud_operation, part_id, item_name, item_price, category):
+        self.routing_key = "product.inventory"
+        self.crud_operation = "create"
         self.part_id = part_id
         self.item_name = item_name
         self.item_price = item_price
         self.category = category
-        self.total = "-1"
-        self.totalExBtw = "-1"
         self.amount = "-1"
         self.btw = "-1"
 
 def create_xml(item: Item):
     product = ET.Element("product")
+    ET.SubElement(product, "routing_key").text = "product.crm"
+    ET.SubElement(product, "crud_operation").text = "create"
     ET.SubElement(product, "id").text = str(item.part_id)
     ET.SubElement(product, "name").text = str(item.item_name)
     ET.SubElement(product, "price").text = str(item.item_price)
     ET.SubElement(product, "amount").text = str(item.amount)
     ET.SubElement(product, "category").text = str(item.category)
-    ET.SubElement(product, "total").text = str(item.total)
-    ET.SubElement(product, "total_ex_btw").text = str(item.totalExBtw)
     ET.SubElement(product, "btw").text = str(item.btw)
 
     xml_data = ET.tostring(product, encoding="unicode", method="xml")
     return xml_data
+
 
 
 while True:
