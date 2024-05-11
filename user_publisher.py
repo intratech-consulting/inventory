@@ -14,10 +14,10 @@ payload = '''
 <user>
     <routing_key>user.crm</routing_key>
     <crud_operation>create</crud_operation>
-    <id>23c844a1-ea8c-4169-b839-c72a647c8400</id>
-    <first_name>8John</first_name>
+    <id>4ec0f607-5bd3-44df-a132-a395bbad7ef0</id>
+    <first_name>robin</first_name>
     <last_name>8Doe</last_name>
-    <email>9john.doe@mail.com</email>
+    <email>12john.doe@mail.com</email>
     <telephone>+32467179912</telephone>
     <birthday>2024-04-14</birthday>
     <address>
