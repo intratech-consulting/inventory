@@ -14,10 +14,10 @@ payload = '''
 <user>
     <routing_key>user.crm</routing_key>
     <crud_operation>create</crud_operation>
-    <id>1238740192847</id>
-    <first_name>John</first_name>
-    <last_name>Doe</last_name>
-    <email>john.doe@mail.com</email>
+    <id>23c844a1-ea8c-4169-b839-c72a647c8400</id>
+    <first_name>8John</first_name>
+    <last_name>8Doe</last_name>
+    <email>9john.doe@mail.com</email>
     <telephone>+32467179912</telephone>
     <birthday>2024-04-14</birthday>
     <address>
@@ -28,7 +28,7 @@ payload = '''
         <street>Nijverheidskaai</street>
         <house_number>170</house_number>
     </address>
-    <company_email>john.doe@company.com</company_email>
+    <company_email>8john.doe@company.com</company_email>
     <company_id>a03Qy000004cOQUIA2</company_id>
     <source>salesforce</source>
     <user_role>speaker</user_role>
