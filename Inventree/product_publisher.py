@@ -64,11 +64,8 @@ def get_stock():
         category_id = item_data["category"]
         category = category_mapping.get(category_id, "")
 
-        if part_id not in product_list:
+        if part_id not in [item.part_id for item in product_list]:
             #als item niet in de lijst is, toevoegen
-
-
-
             item = Item(part_id, item_name, item_price, category)
             product_list.append(item)
             print(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
@@ -86,7 +83,7 @@ def get_stock():
     time.sleep(30) ### kies interval ###
 
 class Item():
-    def __init__(self,routing_key, crud_operation, part_id, item_name, item_price, category):
+    def __init__(self, part_id, item_name, item_price, category):
         self.routing_key = "product.inventory"
         self.crud_operation = "create"
         self.part_id = part_id
