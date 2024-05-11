@@ -1,0 +1,47 @@
+import pika
+import xml.etree.ElementTree as ET
+import requests
+import json
+
+def editCompany():
+    filter_users()
+    url = "http://10.2.160.51:880/api/company/"
+    payload = json.dumps(
+            {
+                "name": 'bob bobette',
+                "description":"123",
+                "phone": '123465789',
+                "email": 'bob.bobette@hotmail.be',
+                "currency": "EUR",
+                "is_customer": False,
+                "is_manufacturer": True,
+                "is_supplier": False,
+            }
+        )
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("PUT", url, headers=headers, data=payload)
+    print(response.text)
+
+# createCompany()
+
+def filter_users(uid):
+    url = "http://10.2.160.51:880/api/company/"
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("GET", url, headers=headers)
+    data=response.json()
+    for user in data:
+        description=user["description"]
+        if (description==uid):
+            id=user["pk"]
+            return id
+
+filter_users("123")
