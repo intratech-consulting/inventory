@@ -1,61 +1,45 @@
 import pika
-import xml.etree.ElementTree as ET
 
 # Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
 # Declare the exchange
 exchange_name = "amq.topic"
+routing_key = 'user.inventree'
 channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
-# Define the XML message payload
-payload = f'''
-
-    <user__c>
-
-        <first_name__c>lames</first_name__c>
-
-        <last_name__c>Bond</last_name__c>
-
-        <email__c>James.Bond@hotmail.com</email__c>
-
-        <telephone__c>911</telephone__c>
-
-        <birthday__c>6</birthday__c>
-
-        <country__c>7</country__c>
-
-        <state__c>8</state__c>
-
-        <city__c>9</city__c>
-
-        <zip__c>10</zip__c>
-
-        <street__c>11</street__c>
-
-        <house_number__c>12</house_number__c>
-
-        <company_email__c>13</company_email__c>
-
-        <company_id__c>14</company_id__c>
-
-        <source__c>15</source__c>
-
-        <user_role__c>16</user_role__c>
-
-        <invoice__c>17</invoice__c>
-
-        <calendar_link__c>18</calendar_link__c>
-
-    </user__c>
-
-    '''
+# Define the updated XML message payload
+payload = '''
+<user>
+    <routing_key>user.crm</routing_key>
+    <crud_operation>create</crud_operation>
+    <id>4ec0f607-5bd3-44df-a132-a395bbad7ef0</id>
+    <first_name>robin</first_name>
+    <last_name>8Doe</last_name>
+    <email>12john.doe@mail.com</email>
+    <telephone>+32467179912</telephone>
+    <birthday>2024-04-14</birthday>
+    <address>
+        <country>Belgium</country>
+        <state>Brussels</state>
+        <city>Brussels</city>
+        <zip>1000</zip>
+        <street>Nijverheidskaai</street>
+        <house_number>170</house_number>
+    </address>
+    <company_email>8john.doe@company.com</company_email>
+    <company_id>a03Qy000004cOQUIA2</company_id>
+    <source>salesforce</source>
+    <user_role>speaker</user_role>
+    <invoice>BE00 0000 0000 0000</invoice>
+    <calendar_link>www.example.com</calendar_link>
+</user>
+'''
 
 # Publish the message to the exchange with routing key 'user.crm'
-channel.basic_publish(exchange=exchange_name, routing_key='user.inventree', body=payload)
+channel.basic_publish(exchange=exchange_name, routing_key=routing_key, body=payload)
 
 print(" [x] Sent test order message")
-# print(order_xml) #onnodig
 # Close the connection
 connection.close()
