@@ -7,12 +7,9 @@ import pika
 
 product_list = []
 
-def establish_connection():
-    connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
-    return connection
 
 def publish_xml(xml_data):
-    connection = establish_connection()
+    connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
     channel = connection.channel()
 
     exchange_name = "amq.topic"
@@ -95,7 +92,7 @@ class Item():
 
 def create_xml(item: Item):
     product = ET.Element("product")
-    ET.SubElement(product, "routing_key").text = "product.crm"
+    ET.SubElement(product, "routing_key").text = "product.inventory"
     ET.SubElement(product, "crud_operation").text = "create"
     ET.SubElement(product, "id").text = str(item.part_id)
     ET.SubElement(product, "name").text = str(item.item_name)
