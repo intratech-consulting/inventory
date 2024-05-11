@@ -4,24 +4,24 @@ import xml.etree.ElementTree as ET
 def callback(ch, method, properties, body):
     # Parse the XML data received from the message body
     root = ET.fromstring(body)
+    routing_key = root.find('routing_key').text
+    crud_operation = root.find('crud_operation').text
     product_id = root.find('id').text
     product_name = root.find('name').text
     product_price = root.find('price').text
     product_amount = root.find('amount').text
     product_category = root.find('category').text
-    product_total = root.find('total').text
-    product_total_ex_btw = root.find('total_ex_btw').text
     product_btw = root.find('btw').text
 
     # Process the data as required
     print(f"Received order message:")
+    print(f"Routing Key: {routing_key}")
+    print(f"CRUD Operation: {crud_operation}")
     print(f"Product ID: {product_id}")
     print(f"Product Name: {product_name}")
     print(f"Product Price: {product_price}")
     print(f"Product Amount: {product_amount}")
     print(f"Product Category: {product_category}")
-    print(f"Total: {product_total}")
-    print(f"Total Excluding VAT: {product_total_ex_btw}")
     print(f"VAT: {product_btw}")
     print("")
 
