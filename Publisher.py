@@ -18,7 +18,7 @@ order_xml = """
     <company_id>3210</company_id>
     <products>
         <product>
-            <product_id>987</product_id>
+            <product_id>1</product_id>
             <name>Coca Cola</name>
             <amount>5</amount>
         </product>
