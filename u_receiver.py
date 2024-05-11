@@ -136,6 +136,22 @@ def createCompany(first_name, last_name, phone, email, uid):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
+    payload_= {}
+    pk_response = requests.request("GET", url, headers=headers, data=payload_)
+    pk_data = pk_response.json()
+    user_pk = pk_data["pk"]
+
+    #MasterUuid
+    masterUuid_url = "http://10.2.160.51:6000/addServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "MasterUuid": f"{uid}",
+            "Service": "inventory",
+            "ServiceId": f"{user_pk}"
+        }
+    )
+    response = requests.request("POST", masterUuid_url, data=masterUuid_payload)
+
 
 def updateCompany(first_name, last_name, phone, email, uid, local_id):
     user_name = f"{first_name} {last_name}"
