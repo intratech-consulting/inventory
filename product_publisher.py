@@ -22,8 +22,6 @@ def publish_xml(xml_data):
 
     channel.basic_publish(exchange=exchange_name, routing_key='product.inventory', body=xml_data)
 
-    logging.info("Sent test order message")  # Changed print statement to logging
-
     connection.close()
 
 def get_stock():
