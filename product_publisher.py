@@ -8,6 +8,7 @@ import logging
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 product_list = []
 
@@ -20,8 +21,6 @@ def publish_xml(xml_data):
     channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
 
     channel.basic_publish(exchange=exchange_name, routing_key='product.inventory', body=xml_data)
-
-    logging.info("Sent test order message")  # Changed print statement to logging
 
     connection.close()
 
@@ -69,9 +68,8 @@ def get_stock():
             #als item niet in de lijst is, toevoegen
             item = Item(part_id, item_name, item_price, category)
             product_list.append(item)
-            logging.info(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
             xml_data = create_xml(item)
-            logging.info(xml_data)
+            logger.info("Sending message: %s", xml_message)
             publish_xml(xml_data) # Publisher voor kassa komt hier!!! #
             new_item_found = True
 
