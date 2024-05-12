@@ -31,6 +31,8 @@ def publish_xml(xml_data):
 def get_stock():
     global product_list
 
+    time.sleep(30) ### kies interval ###
+
     stock_url = "http://10.2.160.53:880/api/stock/"
     category_url = "http://10.2.160.53:880/api/part/category/"
     payload = {}
@@ -84,7 +86,6 @@ def get_stock():
     #for item in product_list:
     #    print(f"ID: {item.part_id}, Name: {item.item_name}, Price: {item.item_price}, Category: {item.category}")
 
-    time.sleep(30) ### kies interval ###
 
 class Item():
     def __init__(self, part_id, item_name, item_price, category):
