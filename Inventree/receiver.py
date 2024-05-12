@@ -4,7 +4,7 @@ import requests
 import json
 
 # Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
 # Declare the exchange
@@ -13,7 +13,7 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 
 # Declare queue and bind it to the exchange with routing key pattern
 queue_name = 'inventory'
-IP="http://10.2.160.51:"
+IP="http://10.2.160.53:"
 channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
