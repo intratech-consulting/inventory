@@ -133,14 +133,14 @@ services:
       - my_shared_network
   
   product_publisher:
-    build: .
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.product_publisher
     depends_on:
       - inventree-server
     networks:
       - inventree_network
       - my_shared_network
-    volumes:
-      - ${INVENTREE_EXT_VOLUME}:/home/inventree/data:z
       
 
   heartbeat_sender:
