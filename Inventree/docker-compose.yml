@@ -131,6 +131,16 @@ services:
       - inventree_network
       - my_shared_network
 
+  product_publisher:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.product_publisher
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+      - my_shared_network
+
   heartbeat_sender:
     build:
       context: ../
