@@ -4,7 +4,7 @@ import requests
 import json
 import datetime
 # from .utilities import API_calls
-from utilities import API_calls
+# from utilities import API_calls
 # Establish connection to RabbitMQ server
 IP="10.2.160.51"
 connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
@@ -29,7 +29,7 @@ def callback(ch, method, properties, body):
             process_user(body)
         except Exception as e:
             error_message= "Error processing user message:\n"+ str(e)
-            API_calls.log_to_controller_room('processing user message',error_message,True,datetime.datetime.now())
+            # API_calls.log_to_controller_room('processing user message',error_message,True,datetime.datetime.now())
 
     elif method.routing_key.startswith('order'):
         print("Received order message:")
@@ -37,10 +37,11 @@ def callback(ch, method, properties, body):
             process_order(body)
         except Exception as e:
             error_message= "Error processing order message:\n"+ str(e)
-            API_calls.log_to_controller_room('processing order message',error_message,True,datetime.datetime.now())
+            # API_calls.log_to_controller_room('processing order message',error_message,True,datetime.datetime.now())
     # Acknowledge the message
     else:
-        API_calls.log_to_controller_room('None',"message was not an order or user",True,datetime.datetime.now())
+        print("hi")
+        # API_calls.log_to_controller_room('None',"message was not an order or user",True,datetime.datetime.now())
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def process_order(body):
@@ -90,43 +91,45 @@ def process_user(body):
     # switchCase(crud)
     
 def filter_users(uid):
-    response = API_calls.get_users()
-    data=response.json()
-    for user in data:
-        description=user["description"]
-        if (description==uid):
-            id=user["pk"]
-            return id
+    print ("hi")
+    # response = API_calls.get_users()
+    # data=response.json()
+    # for user in data:
+    #     description=user["description"]
+    #     if (description==uid):
+    #         id=user["pk"]
+    #         return id
         
 def removeItemFromStock(primary_key, quantity, order_id):
-    response = API_calls.get_one_from_stock(primary_key)
-    item_data = response.json()
-    current_quantity = item_data.get("quantity", 100)
-    if current_quantity - quantity < 1:
-        print("The stock is empty")
-        return
-    API_calls.remove_from_stock(primary_key,quantity,order_id)
+    print ("hi")
+    # response = API_calls.get_one_from_stock(primary_key)
+    # item_data = response.json()
+    # current_quantity = item_data.get("quantity", 100)
+    # if current_quantity - quantity < 1:
+    #     print("The stock is empty")
+    #     return
+    # API_calls.remove_from_stock(primary_key,quantity,order_id)
 
 def create_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
     
-    response = API_calls.create_user(user_name,phone,email,uid)
+    # response = API_calls.create_user(user_name,phone,email,uid)
     # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
-    user_pk = filter_users(uid)
+    # user_pk = filter_users(uid)
 
     #MasterUuid
     
-    response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
-    print(response)
+    # response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
+    # print(response)
 
 def update_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
-    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
-    API_calls.update_user(user_name,phone,email,uid,user_pk)
+    # user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+    # API_calls.update_user(user_name,phone,email,uid,user_pk)
 
 def delete_user(uid):
-    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
-    print(user_pk)
+    # user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+    print("hi")
     
 
 
