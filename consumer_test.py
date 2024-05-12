@@ -10,7 +10,7 @@ import os
 # ip = "172.17.0.2"
 ip = "rabbitmq-rabbitmq-1"
 #!/usr/bin/env python
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
 
 # Create a channel
 channel = connection.channel()

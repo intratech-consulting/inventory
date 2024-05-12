@@ -140,7 +140,7 @@ services:
     networks:
       - inventree_network
       - my_shared_network
-
+      
   heartbeat_sender:
     build:
       context: ../
