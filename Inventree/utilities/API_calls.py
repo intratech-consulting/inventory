@@ -2,9 +2,11 @@ import lxml
 from lxml import etree
 import pika
 from datetime import datetime
+import datetime
 import requests
 import json
 import logging
+
 # import xml.etree.ElementTree as ET
 
 # Create a logger
@@ -82,7 +84,7 @@ def log_to_controller_room(function_name,msg,error,time):
     channel.queue_bind(exchange='amq.topic', queue='Loggin_queue', routing_key='logs')
 
     # Format the XML with the current timestamp
-    formatted_Loggin_xml = Loggin_xml.format(datetime.utcnow().isoformat())
+    formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.now().isoformat())
 
     # Parse the XML
     xml_doc = etree.fromstring(formatted_Loggin_xml.encode())
@@ -90,14 +92,24 @@ def log_to_controller_room(function_name,msg,error,time):
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         print('XML is valid')
-        logger.info('XML is not valid')
+        logger.info('XML is valid')
         # Publish the message to the queue
         channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
         print('Message sent')
-        logger.info('XML is not valid')
     else:
         print('XML is not valid')
         logger.info('XML is not valid')
+
+    # if True:
+    #     print('XML is valid')
+    #     logger.info('XML is valid')
+    #     # Publish the message to the queue
+    #     channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
+    #     print('Message sent')
+    #     logger.info('XML is not valid')
+    # else:
+    #     print('XML is not valid')
+    #     logger.info('XML is not valid')
 
     # Close the connection
     connection.close()
