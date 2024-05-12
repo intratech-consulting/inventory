@@ -36,7 +36,7 @@ def process_order(body):
     # Call the API to remove item from stock
     order_xml = ET.fromstring(body)
     order_id = order_xml.find('id').text
-    product_id = order_xml.find('products/product/id').text
+    product_id = order_xml.find('products/product/product_id').text
     quantity = int(order_xml.find('products/product/amount').text)
     removeItemFromStock(product_id, quantity, order_id)
 
