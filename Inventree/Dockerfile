@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the script into the container
 COPY receiver.py .
-COPY utilities .
+COPY utilities ./utilities
 COPY __init__.py .
 
 # Install any dependencies required by the script
