@@ -13,9 +13,9 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 payload = '''
 <user>
     <routing_key>user.crm</routing_key>
-    <crud_operation>create</crud_operation>
+    <crud_operation>delete</crud_operation>
     <id>5e2531a0-71cf-4540-a56b-475a8f31bb80</id>
-    <first_name>Damien</first_name>
+    <first_name>Zico</first_name>
     <last_name>Doe</last_name>
     <email>12john.doe@mail.com</email>
     <telephone>+32467179912</telephone>
