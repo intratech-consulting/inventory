@@ -4,6 +4,10 @@ import json
 import time
 import xml.etree.ElementTree as ET
 import pika
+import logging
+
+# Setting up logging
+logging.basicConfig(level=logging.INFO)
 
 product_list = []
 
@@ -17,7 +21,7 @@ def publish_xml(xml_data):
 
     channel.basic_publish(exchange=exchange_name, routing_key='product.inventory', body=xml_data)
 
-    print(" [x] Sent test order message")
+    logging.info("Sent test order message")  # Changed print statement to logging
 
     connection.close()
 
@@ -65,14 +69,14 @@ def get_stock():
             #als item niet in de lijst is, toevoegen
             item = Item(part_id, item_name, item_price, category)
             product_list.append(item)
-            print(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
+            logging.info(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
             xml_data = create_xml(item)
-            print(xml_data)
+            logging.info(xml_data)
             publish_xml(xml_data) # Publisher voor kassa komt hier!!! #
             new_item_found = True
 
     if not new_item_found:
-        print("Geen nieuwe items gevonden...")
+        logging.info("Geen nieuwe items gevonden...")
 
     #for item in product_list:
     #    print(f"ID: {item.part_id}, Name: {item.item_name}, Price: {item.item_price}, Category: {item.category}")
@@ -103,8 +107,6 @@ def create_xml(item: Item):
 
     xml_data = ET.tostring(product, encoding="unicode", method="xml")
     return xml_data
-
-
 
 while True:
     get_stock()
