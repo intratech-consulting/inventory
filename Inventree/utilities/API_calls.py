@@ -4,7 +4,23 @@ import pika
 from datetime import datetime
 import requests
 import json
+import logging
 # import xml.etree.ElementTree as ET
+
+# Create a logger
+logger = logging.getLogger(name)
+logger.setLevel(logging.DEBUG)  # Set the logging level to DEBUG
+
+# Define the log format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Create a console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Set the console logging level to INFO
+console_handler.setFormatter(formatter)
+
+# Add the console handler to the logger
+logger.addHandler(console_handler)
 
 IP="10.2.160.51"
 
@@ -74,11 +90,14 @@ def log_to_controller_room(function_name,msg,error,time):
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         print('XML is valid')
+        logger.info('XML is not valid')
         # Publish the message to the queue
         channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
         print('Message sent')
+        logger.info('XML is not valid')
     else:
         print('XML is not valid')
+        logger.info('XML is not valid')
 
     # Close the connection
     connection.close()

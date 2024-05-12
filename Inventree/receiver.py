@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import requests
 import json
 import datetime
+import logging
 # from .utilities import API_calls
 from utilities import API_calls
 # Establish connection to RabbitMQ server
