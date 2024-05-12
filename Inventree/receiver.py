@@ -4,7 +4,7 @@ import requests
 import json
 
 # Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
 # Declare the exchange
@@ -13,7 +13,7 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 
 # Declare queue and bind it to the exchange with routing key pattern
 queue_name = 'inventory'
-IP="http://10.2.160.53:"
+IP="http://10.2.160.51:"
 channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
@@ -36,7 +36,7 @@ def process_order(body):
     # Call the API to remove item from stock
     order_xml = ET.fromstring(body)
     order_id = order_xml.find('id').text
-    product_id = order_xml.find('products/product/product_id').text
+    product_id = order_xml.find('products/product/id').text
     quantity = int(order_xml.find('products/product/amount').text)
     removeItemFromStock(product_id, quantity, order_id)
 
@@ -52,7 +52,7 @@ def process_user(body):
     email = user_xml.find('email').text
     uid=user_xml.find('id').text
     crud=user_xml.find('crud_operation').text
-
+    
 
     if crud == "create":
         createCompany(first_name, last_name, phone, email, uid)
@@ -69,10 +69,10 @@ def process_user(body):
     #         "delete":deleteCompany(user_pk),
     #     }
     # switchCase(crud)
-
+    
 def filter_users(uid):
     url = f"{IP}880/api/company/"
-
+    
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Basic YWRtaW46ZWhiMTIz',
@@ -85,7 +85,7 @@ def filter_users(uid):
         if (description==uid):
             id=user["pk"]
             return id
-
+        
 def removeItemFromStock(primary_key, quantity, order_id):
     url = f"{IP}880/api/stock/{primary_key}/"
     payload = {}
@@ -154,7 +154,7 @@ def createCompany(first_name, last_name, phone, email, uid):
         }
     )
     uid_headers={
-    'Content-type':'application/json',
+    'Content-type':'application/json', 
     'Accept':'application/json'
     }
     print(f"uid: {uid}")
@@ -210,7 +210,7 @@ def get_user_pk(uid):
         }
     )
     uid_headers={
-    'Content-type':'application/json',
+    'Content-type':'application/json', 
     'Accept':'application/json'
     }
     print(f"uid: {uid}")
@@ -223,3 +223,4 @@ def get_user_pk(uid):
 channel.basic_consume(queue=queue_name, on_message_callback=callback)
 # Start consuming
 print('Waiting for messages. To exit press CTRL+C')
+channel.start_consuming()
