@@ -69,6 +69,7 @@ def get_stock():
             item = Item(part_id, item_name, item_price, category)
             product_list.append(item)
             xml_data = create_xml(item)
+            xml_message = f"<product><routing_key>product.inventory</routing_key><crud_operation>create</crud_operation><id>{id}</id><name>{name}</name><price>{price}</price><amount>-1</amount><category>{category}</category><btw>-1</btw></product>"
             logger.info("Sending message: %s", xml_message)
             publish_xml(xml_data) # Publisher voor kassa komt hier!!! #
             new_item_found = True
