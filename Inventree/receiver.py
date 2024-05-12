@@ -13,7 +13,7 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 
 # Declare queue and bind it to the exchange with routing key pattern
 queue_name = 'inventory'
-ip="http://10.2.160.53:"
+IP="http://10.2.160.53:"
 channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
@@ -52,7 +52,7 @@ def process_user(body):
     email = user_xml.find('email').text
     uid=user_xml.find('id').text
     crud=user_xml.find('crud_operation').text
-    
+
 
     if crud == "create":
         createCompany(first_name, last_name, phone, email, uid)
@@ -69,10 +69,10 @@ def process_user(body):
     #         "delete":deleteCompany(user_pk),
     #     }
     # switchCase(crud)
-    
+
 def filter_users(uid):
-    url = f"{ip}880/api/company/"
-    
+    url = f"{IP}880/api/company/"
+
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Basic YWRtaW46ZWhiMTIz',
@@ -85,9 +85,9 @@ def filter_users(uid):
         if (description==uid):
             id=user["pk"]
             return id
-        
+
 def removeItemFromStock(primary_key, quantity, order_id):
-    url = f"{ip}880/api/stock/{primary_key}/"
+    url = f"{IP}880/api/stock/{primary_key}/"
     payload = {}
     headers = {
         'Cookie': 'csrftoken=U4f3aiFMtXqeenAz6du2wfmD9e5ymh1K; sessionid=fnoffjbzoqhv66k0n1zonlsjt0qoqrzj'
@@ -99,7 +99,7 @@ def removeItemFromStock(primary_key, quantity, order_id):
         print("The stock is empty")
         return
 
-    url = f"{ip}880/api/stock/remove/"
+    url = f"{IP}880/api/stock/remove/"
     payload = json.dumps({
         "items": [
             {
@@ -122,7 +122,7 @@ def removeItemFromStock(primary_key, quantity, order_id):
 
 def createCompany(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
-    url = f"{ip}880/api/company/"
+    url = f"{IP}880/api/company/"
     payload = json.dumps(
             {
                 "name": user_name,
@@ -145,7 +145,7 @@ def createCompany(first_name, last_name, phone, email, uid):
     user_pk = filter_users(uid)
 
     #MasterUuid
-    masterUuid_url = f"{ip}6000/addServiceId"
+    masterUuid_url = f"{IP}6000/addServiceId"
     masterUuid_payload = json.dumps(
         {
             "MasterUuid": f"{uid}",
@@ -154,7 +154,7 @@ def createCompany(first_name, last_name, phone, email, uid):
         }
     )
     uid_headers={
-    'Content-type':'application/json', 
+    'Content-type':'application/json',
     'Accept':'application/json'
     }
     print(f"uid: {uid}")
@@ -165,7 +165,7 @@ def createCompany(first_name, last_name, phone, email, uid):
 def updateCompany(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
     user_pk=get_user_pk(uid)
-    url = f"{ip}880/api/company/{user_pk}"
+    url = f"{IP}880/api/company/{user_pk}"
     payload = json.dumps(
             {
                 "name": user_name,
@@ -189,7 +189,7 @@ def updateCompany(first_name, last_name, phone, email, uid):
 def deleteCompany(uid):
     user_pk=get_user_pk(uid)
     print(user_pk)
-    url = f"{ip}880/api/company/{user_pk}/"
+    url = f"{IP}880/api/company/{user_pk}/"
     payload={}
     headers = {
         'Content-Type': 'application/json',
@@ -202,7 +202,7 @@ def deleteCompany(uid):
 
 def get_user_pk(uid):
     #MasterUuid
-    masterUuid_url = f"{ip}6000/getServiceId"
+    masterUuid_url = f"{IP}6000/getServiceId"
     masterUuid_payload = json.dumps(
         {
             "MASTERUUID": f"{uid}",
@@ -210,7 +210,7 @@ def get_user_pk(uid):
         }
     )
     uid_headers={
-    'Content-type':'application/json', 
+    'Content-type':'application/json',
     'Accept':'application/json'
     }
     print(f"uid: {uid}")
@@ -223,4 +223,3 @@ def get_user_pk(uid):
 channel.basic_consume(queue=queue_name, on_message_callback=callback)
 # Start consuming
 print('Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
