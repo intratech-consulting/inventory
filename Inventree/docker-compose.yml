@@ -127,7 +127,6 @@ services:
     build: .
     depends_on:
       - inventree-server
-    command: ["./wait-for-it.sh", "service1:port", "--", "your_command_to_start_service2"]
     networks:
       - inventree_network
       - my_shared_network
