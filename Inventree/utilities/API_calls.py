@@ -8,7 +8,7 @@ import logging
 # import xml.etree.ElementTree as ET
 
 # Create a logger
-logger = logging.getLogger(name)
+logger = logging.getLogger("INFO")
 logger.setLevel(logging.DEBUG)  # Set the logging level to DEBUG
 
 # Define the log format
