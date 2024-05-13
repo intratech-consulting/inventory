@@ -41,17 +41,20 @@ def callback(ch, method, properties, body):
             API_calls.log_to_controller_room('processing order message',error_message,True,datetime.datetime.now())
     # Acknowledge the message
     else:
-        API_calls.log_to_controller_room('None',"message was not an order or user",True,datetime.datetime.now())
+        API_calls.log_to_controller_room('Uknown',"message was not an order or user",True,datetime.datetime.now())
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def process_order(body):
     # Process order message
     print(body.decode())
     # Call the API to remove item from stock
-    order_xml = ET.fromstring(body)
-    order_id = order_xml.find('id').text
-    product_id = order_xml.find('products/product/product_id').text
-    quantity = int(order_xml.find('products/product/amount').text)
+    try:
+        order_xml = ET.fromstring(body)
+        order_id = order_xml.find('id').text
+        product_id = order_xml.find('products/product/product_id').text
+        quantity = int(order_xml.find('products/product/amount').text)
+    except Exception as e:
+        raise Exception("error in XML parsing or field extraction")
     removeItemFromStock(product_id, quantity, order_id)
 
 def process_user(body):
@@ -79,7 +82,8 @@ def process_user(body):
         elif crud == "delete":
             delete_user(uid)
         else:
-            print("crud not found")
+            API_calls.log_to_controller_room('processing user message',"CRUD was invalid",True,datetime.datetime.now())
+            return
     except Exception as e:
         raise Exception("error in given CRUD")
     # def switchCase(crud):
@@ -90,14 +94,14 @@ def process_user(body):
     #     }
     # switchCase(crud)
     
-def filter_users(uid):
-    response = API_calls.get_users()
-    data=response.json()
-    for user in data:
-        description=user["description"]
-        if (description==uid):
-            id=user["pk"]
-            return id
+# def filter_users(uid):
+#     response = API_calls.get_users()
+#     data=response.json()
+#     for user in data:
+#         description=user["description"]
+#         if (description==uid):
+#             id=user["pk"]
+#             return id
         
 def removeItemFromStock(primary_key, quantity, order_id):
     response = API_calls.get_one_from_stock(primary_key)
@@ -109,12 +113,12 @@ def removeItemFromStock(primary_key, quantity, order_id):
     
     try:
         response= API_calls.remove_from_stock(primary_key,quantity,order_id)
-        if response.status_code==200:
-            API_calls.log_to_controller_room('processing order message for delete in stock',f"order with id:{order_id} has been processed",False,datetime.datetime.now())
+        if response.status_code==201:
+            API_calls.log_to_controller_room('processing order message for remove in stock',f"order with id:{order_id} has been processed",False,datetime.datetime.now())
         else:
-            API_calls.log_to_controller_room('processing order message for delete in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
+            API_calls.log_to_controller_room('processing order message for remove in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with deleting from stock with order id:{order_id}")
+        raise Exception(f"Error with removing from stock with order id:{order_id}")
 
 def create_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
