@@ -120,7 +120,7 @@ def create_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
     try:
         response = API_calls.create_user(user_name,phone,email,uid)
-        if response.status_code==200:
+        if response.status_code==201:
             API_calls.log_to_controller_room('processing user message for create',f"user with uid:{uid} has been created",False,datetime.datetime.now())
         else:
             API_calls.log_to_controller_room('processing user message for create',f"something went wrong when creating user with uid:{uid}",True,datetime.datetime.now())
@@ -161,14 +161,17 @@ def update_user(first_name, last_name, phone, email, uid):
     
 
 def delete_user(uid):
+    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
     try:
-        response=API_calls.get_user_pk_from_masterUuid(uid)
-        if response.status_code==200:
+        response=API_calls.delete_user(user_pk)
+        if response.status_code==204:
             API_calls.log_to_controller_room('processing user message for delete',f"user with uid:{uid} has been deleted",False,datetime.datetime.now())
         else:
             API_calls.log_to_controller_room('processing user message for delete',f"something went wrong when deleting user with uid:{uid}",True,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with deleting user {uid}")
+    
+    
 
     
     

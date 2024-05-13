@@ -1,5 +1,5 @@
 import lxml
-from xml import etree
+from lxml import etree
 import pika
 from datetime import datetime
 import datetime
@@ -197,7 +197,8 @@ def get_user_pk_from_masterUuid(uid):
     try:
         response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
         if response.status_code!=200:
-            log_to_controller_room('processing user message for update',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())            
+            log_to_controller_room('processing user message for update',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())
+            return            
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with accessing {uid}")
 
