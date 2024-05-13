@@ -1,5 +1,5 @@
 import lxml
-from lxml import etree
+from xml import etree
 import pika
 from datetime import datetime
 import datetime
@@ -89,6 +89,9 @@ def log_to_controller_room(function_name,msg,error,time):
     # Parse the XML
     xml_doc = etree.fromstring(formatted_Loggin_xml.encode())
 
+    logger.info(function_name)
+    logger.info(msg)
+    logger.info(error)
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         print('XML is valid')
@@ -134,8 +137,7 @@ def remove_from_stock(primary_key,quantity,order_id):
         "notes": order_id
     })
 
-    response = requests.request("POST", url, headers=HEADERS, data=payload)
-    print(response.text)
+    return requests.request("POST", url, headers=HEADERS, data=payload)
 
 def get_one_from_stock(primary_key):
     url = f"http://{IP}:880/api/stock/{primary_key}/"
@@ -172,14 +174,14 @@ def update_user(user_name,phone,email,uid,user_pk):
                 "is_supplier": False,
             }
         )
-    response = requests.request("PUT", url, headers=HEADERS, data=payload)
-    print(response.text)
+    return requests.request("PUT", url, headers=HEADERS, data=payload)
+    
 
 def delete_user(user_pk):
     url = f"http://{IP}:880/api/company/{user_pk}/"
     payload={}
-    response = requests.request("DELETE", url, headers=HEADERS, data=payload)
-    print(response)
+    return requests.request("DELETE", url, headers=HEADERS, data=payload)
+    
 
 def get_user_pk_from_masterUuid(uid):
     #MasterUuid
@@ -191,7 +193,15 @@ def get_user_pk_from_masterUuid(uid):
         }
     )
     print(f"uid: {uid}")
-    response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        if response.status_code!=200:
+            log_to_controller_room('processing user message for update',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())            
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with accessing {uid}")
+
+    
     data=response.json()
     user_pk=data['inventory']
     print(user_pk)

@@ -106,28 +106,71 @@ def removeItemFromStock(primary_key, quantity, order_id):
     if current_quantity - quantity < 1:
         print("The stock is empty")
         return
-    API_calls.remove_from_stock(primary_key,quantity,order_id)
+    
+    try:
+        response= API_calls.remove_from_stock(primary_key,quantity,order_id)
+        if response.status_code==200:
+            API_calls.log_to_controller_room('processing order message for delete in stock',f"order with id:{order_id} has been processed",False,datetime.datetime.now())
+        else:
+            API_calls.log_to_controller_room('processing order message for delete in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with deleting from stock with order id:{order_id}")
 
 def create_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
+    try:
+        response = API_calls.create_user(user_name,phone,email,uid)
+        if response.status_code==200:
+            API_calls.log_to_controller_room('processing user message for create',f"user with uid:{uid} has been created",False,datetime.datetime.now())
+        else:
+            API_calls.log_to_controller_room('processing user message for create',f"something went wrong when creating user with uid:{uid}",True,datetime.datetime.now())
+            return
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with creating user {uid}")
     
-    response = API_calls.create_user(user_name,phone,email,uid)
-    # dan nog eens filteren op uid zodat we de id krijgen van dit object om dat onze id toe te voegen aan de uid
-    user_pk = filter_users(uid)
+    data=response.json()
+    user_pk=data['pk']
 
     #MasterUuid
     
-    response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
+    try:
+        response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
+        if response.status_code!=200:
+            API_calls.log_to_controller_room('processing user message for create',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())
+            return
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with accessing user uid: {uid}")
+    
     print(response)
 
 def update_user(first_name, last_name, phone, email, uid):
     user_name = f"{first_name} {last_name}"
     user_pk=API_calls.get_user_pk_from_masterUuid(uid)
-    API_calls.update_user(user_name,phone,email,uid,user_pk)
+    
+    try:
+        response = API_calls.update_user(user_name,phone,email,uid,user_pk)
+        if response.status_code==200:
+            API_calls.log_to_controller_room('processing user message for update',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
+        else:
+            API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
+            return
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with updating user {uid}")
+    
+
+    
 
 def delete_user(uid):
-    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
-    print(user_pk)
+    try:
+        response=API_calls.get_user_pk_from_masterUuid(uid)
+        if response.status_code==200:
+            API_calls.log_to_controller_room('processing user message for delete',f"user with uid:{uid} has been deleted",False,datetime.datetime.now())
+        else:
+            API_calls.log_to_controller_room('processing user message for delete',f"something went wrong when deleting user with uid:{uid}",True,datetime.datetime.now())
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error with deleting user {uid}")
+
+    
     
 
 
