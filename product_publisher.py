@@ -8,6 +8,11 @@ import logging
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Suppress Pika logs
+pika_logger = logging.getLogger("pika")
+pika_logger.setLevel(logging.WARNING)
 
 product_list = []
 
@@ -21,12 +26,12 @@ def publish_xml(xml_data):
 
     channel.basic_publish(exchange=exchange_name, routing_key='product.inventory', body=xml_data)
 
-    logging.info("Sent test order message")  # Changed print statement to logging
-
     connection.close()
 
 def get_stock():
     global product_list
+
+    time.sleep(30) ### kies interval ###
 
     stock_url = "http://10.2.160.51:880/api/stock/"
     category_url = "http://10.2.160.51:880/api/part/category/"
@@ -81,7 +86,6 @@ def get_stock():
     #for item in product_list:
     #    print(f"ID: {item.part_id}, Name: {item.item_name}, Price: {item.item_price}, Category: {item.category}")
 
-    time.sleep(30) ### kies interval ###
 
 class Item():
     def __init__(self, part_id, item_name, item_price, category):

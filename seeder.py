@@ -3,15 +3,21 @@ import xmlrpc.client
 import pika
 import requests
 import json
+import random
 
 
 IP="http://10.2.160.51:"
-def create_category(category_name,parent_category_id):
+def create_category(category_name,parent_category_id = ""):
     url = f"{IP}880/api/part/category/"
-    payload = json.dumps({
-        "name":category_name,
-        "parent": parent_category_id
+    if parent_category_id == "":
+        payload = json.dumps({
+        "name":category_name
     })
+    else:
+        payload = json.dumps({
+            "name":category_name,
+            "parent": parent_category_id
+        })
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Basic YWRtaW46ZWhiMTIz',
@@ -19,11 +25,13 @@ def create_category(category_name,parent_category_id):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
+
 def create_part(part_name, category_id):
     url = f"{IP}880/api/part/"
     payload = json.dumps({
         "name":part_name,
-        "category": category_id
+        "category": category_id,
+        "minimum_stock":1
     })
     headers = {
         'Content-Type': 'application/json',
@@ -32,6 +40,7 @@ def create_part(part_name, category_id):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
+
 def create_stock(part_id,quantity,purchase_prise):
     url = f"{IP}880/api/stock/"
     payload = json.dumps({
@@ -50,10 +59,51 @@ def create_stock(part_id,quantity,purchase_prise):
     print(response.text)
 
 # create_category("nurriture",5)
-create_part("peren",6)
-create_stock(8,100,20)
+#create_part("peren",6)
+#create_stock(8,100,20)
 
+cold_drink_list = ["Coca-Cola", "Sprite", "Fanta", "Iced-Tea", "Iced-Coffee", "Orange Juice"]
+hot_drink_list = ["Mint Tea", "Hot Chocolate", "Espresso", "Cappuccino", "Latte", "Mocha"]
 
+snack_list = ["Chips", "Cookies", "Popcorn", "Crackers"]
+sandwich_list = ["Grilled Cheese", "Tuna Salad", "Vegetarian", "Chicken Caesar", "Ham and Cheese"]
+fruit_list = ["Apples", "Bananas", "Grapes", "Strawberries", "Pineapple", "Watermelon", "Kiwi"]
+
+def seeder():
+    create_category("Drinks")          #id  #1
+    create_category("Cold Drinks", 1)  #id  #2
+    create_category("Hot Drinks", 1)   #id  #3
+
+    create_category("Food")            #id  #4
+    create_category("Snacks", 4)       #id  #5
+    create_category("Sandwiches", 4)   #id  #6
+    create_category("Fruit", 4)        #id  #7
+
+    x = 1
+    for drink in cold_drink_list:
+        create_part(drink, 2)
+        create_stock(x, random.randint(300, 400), round(random.uniform(1.5, 2.5), 2))
+        x += 1
+    
+    for drink in hot_drink_list:
+        create_part(drink, 3)
+        create_stock(x, random.randint(300, 400), round(random.uniform(2.0, 3.0), 2))
+        x += 1
+    
+    for snack in snack_list:
+        create_part(snack, 5)
+        create_stock(x, random.randint(300, 400), round(random.uniform(0.7, 2.0), 2))
+        x += 1
+    
+    for sandwich in sandwich_list:
+        create_part(sandwich, 6)
+        create_stock(x, random.randint(300, 400), round(random.uniform(3.0, 4.5), 2))
+        x += 1
+    
+    for fruit in fruit_list:
+        create_part(fruit, 7)
+        create_stock(x, random.randint(300, 400), round(random.uniform(1.0, 2.0), 2))
+        x += 1
 
 
 

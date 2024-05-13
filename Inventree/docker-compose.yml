@@ -131,6 +131,7 @@ services:
     networks:
       - inventree_network
       - my_shared_network
+    restart: unless-stopped
   
   product_publisher:
     build:
@@ -141,6 +142,7 @@ services:
     networks:
       - inventree_network
       - my_shared_network
+    restart: unless-stopped
       
 
   heartbeat_sender:
@@ -153,6 +155,7 @@ services:
       - inventree-db
     networks:
       - my_shared_network
+    restart: unless-stopped
 
 networks:
   inventree_network:
