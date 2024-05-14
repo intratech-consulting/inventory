@@ -82,8 +82,9 @@ def process_user(body):
         elif crud == "delete":
             delete_user(uid)
         else:
-            API_calls.log_to_controller_room('processing user message',"CRUD was invalid",True,datetime.datetime.now())
-            return
+            raise Exception(f"CRUD was invalid for user with uid:{uid}")
+            # API_calls.log_to_controller_room('processing user message',"CRUD was invalid",True,datetime.datetime.now())
+            # return
     except Exception as e:
         raise Exception("error in given CRUD")
     # def switchCase(crud):
@@ -116,7 +117,8 @@ def removeItemFromStock(primary_key, quantity, order_id):
         if response.status_code==201:
             API_calls.log_to_controller_room('processing order message for remove in stock',f"order with id:{order_id} has been processed",False,datetime.datetime.now())
         else:
-            API_calls.log_to_controller_room('processing order message for remove in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
+            raise Exception(f"Error with removing from stock with order id:{order_id}")
+            # API_calls.log_to_controller_room('processing order message for remove in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with removing from stock with order id:{order_id}")
 
@@ -127,8 +129,9 @@ def create_user(first_name, last_name, phone, email, uid):
         if response.status_code==201:
             API_calls.log_to_controller_room('processing user message for create',f"user with uid:{uid} has been created",False,datetime.datetime.now())
         else:
-            API_calls.log_to_controller_room('processing user message for create',f"something went wrong when creating user with uid:{uid}",True,datetime.datetime.now())
-            return
+            raise Exception(f"Error with creating user {uid}, status_code was not 201")
+            # API_calls.log_to_controller_room('processing user message for create',f"something went wrong when creating user with uid:{uid}",True,datetime.datetime.now())
+            # return
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with creating user {uid}")
     
@@ -140,8 +143,8 @@ def create_user(first_name, last_name, phone, email, uid):
     try:
         response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
         if response.status_code!=200:
-            API_calls.log_to_controller_room('processing user message for create',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())
-            return
+            API_calls.delete_user(user_pk)
+            raise Exception(f"Error with accessing user uid: {uid}, status_code was not 200, user is now locally deleted")            
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with accessing user uid: {uid}")
     
@@ -156,8 +159,9 @@ def update_user(first_name, last_name, phone, email, uid):
         if response.status_code==200:
             API_calls.log_to_controller_room('processing user message for update',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
         else:
-            API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
-            return
+            raise Exception(f"Error with updating user {uid}, did not receiver status_code 200")
+            # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
+            # return
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with updating user {uid}")
     
@@ -171,7 +175,8 @@ def delete_user(uid):
         if response.status_code==204:
             API_calls.log_to_controller_room('processing user message for delete',f"user with uid:{uid} has been deleted",False,datetime.datetime.now())
         else:
-            API_calls.log_to_controller_room('processing user message for delete',f"something went wrong when deleting user with uid:{uid}",True,datetime.datetime.now())
+            raise Exception(f"Error with deleting user {uid}, did not receiver status_code 204")
+            # API_calls.log_to_controller_room('processing user message for delete',f"something went wrong when deleting user with uid:{uid}",True,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with deleting user {uid}")
     
