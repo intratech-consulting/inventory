@@ -4,8 +4,10 @@ import requests
 import json
 import datetime
 import logging
+import time
 # from .utilities import API_calls
 from utilities import API_calls
+from utilities import functions
 # Establish connection to RabbitMQ server
 IP="10.2.160.51"
 connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
@@ -22,27 +24,24 @@ channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
 
+# time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
-    # Determine the publisher based on routing key
-    if method.routing_key.startswith('user'):
-        print("Received user message:")
-        try:
+    try:
+        # Determine the publisher based on routing key
+        if method.routing_key.startswith('user'):
+            print("Received user message:")
             process_user(body)
-        except Exception as e:
-            error_message= "Error processing user message:\n"+ str(e)
-            API_calls.log_to_controller_room('processing user message',error_message,True,datetime.datetime.now())
-
-    elif method.routing_key.startswith('order'):
-        print("Received order message:")
-        try:
+        elif method.routing_key.startswith('order'):
+            print("Received order message:")
             process_order(body)
-        except Exception as e:
-            error_message= "Error processing order message:\n"+ str(e)
-            API_calls.log_to_controller_room('processing order message',error_message,True,datetime.datetime.now())
-    # Acknowledge the message
-    else:
-        API_calls.log_to_controller_room('Uknown',"message was not an order or user",True,datetime.datetime.now())
-    ch.basic_ack(delivery_tag=method.delivery_tag)
+        # Acknowledge the message
+        else:
+            API_calls.log_to_controller_room('Uknown',"message was not an order or user",True,datetime.datetime.now())
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+    except Exception as e:
+        error_message=f"Error processing message:\n{str(e)}"
+        API_calls.log_to_controller_room('Processing Error', error_message, True, datetime.datetime.now())
+        ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def process_order(body):
     # Process order message
@@ -54,39 +53,30 @@ def process_order(body):
         product_id = order_xml.find('products/product/product_id').text
         quantity = int(order_xml.find('products/product/amount').text)
     except Exception as e:
-        raise Exception("error in XML parsing or field extraction")
+        raise Exception(f"Error in XML parsing or field extraction of order_id, product_id and quantity:\n{str(e)}")
     removeItemFromStock(product_id, quantity, order_id)
 
 def process_user(body):
-    # Process user message
-    print(body.decode())
-    # Parse XML message
     try:
         user_xml = ET.fromstring(body)
         # Extract required fields
-        first_name = user_xml.find('first_name').text
-        last_name = user_xml.find('last_name').text
-        phone = user_xml.find('telephone').text
-        email = user_xml.find('email').text
         uid=user_xml.find('id').text
         crud=user_xml.find('crud_operation').text
     except Exception as e:
-        raise Exception("error in XML parsing or field extraction")
+        raise Exception(f"Error in XML parsing or field extraction of uid and CRUD:\n{str(e)}")
     
 
     try:
         if crud == "create":
-            create_user(first_name, last_name, phone, email, uid)
+            create_user(uid, user_xml)
         elif crud == "update":
-            update_user(first_name, last_name, phone, email, uid)
+            update_user(uid, user_xml)
         elif crud == "delete":
             delete_user(uid)
         else:
-            raise Exception(f"CRUD was invalid for user with uid:{uid}")
-            # API_calls.log_to_controller_room('processing user message',"CRUD was invalid",True,datetime.datetime.now())
-            # return
+            raise Exception(f"CRUD was invalid for user with uid:{uid} - {str(e)}")
     except Exception as e:
-        raise Exception("error in given CRUD")
+        raise Exception(e)
     # def switchCase(crud):
     #     switcher = {
     #         "create":create_user(first_name, last_name, phone, email, uid),
@@ -122,68 +112,88 @@ def removeItemFromStock(primary_key, quantity, order_id):
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with removing from stock with order id:{order_id}")
 
-def create_user(first_name, last_name, phone, email, uid):
-    user_name = f"{first_name} {last_name}"
-    try:
-        response = API_calls.create_user(user_name,phone,email,uid)
-        if response.status_code==201:
-            API_calls.log_to_controller_room('processing user message for create',f"user with uid:{uid} has been created",False,datetime.datetime.now())
-        else:
-            raise Exception(f"Error with creating user {uid}, status_code was not 201")
-            # API_calls.log_to_controller_room('processing user message for create',f"something went wrong when creating user with uid:{uid}",True,datetime.datetime.now())
-            # return
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with creating user {uid}")
+def create_user(uid, user_xml):
+    try:        
+        # Extract required fields
+        first_name = user_xml.find('first_name').text
+        last_name = user_xml.find('last_name').text
+        phone = user_xml.find('telephone').text
+        email = user_xml.find('email').text
+        uid=user_xml.find('id').text
+    except AttributeError as e:
+        error_message = f"Error extracting user fields: {str(e)}"
+        raise Exception(error_message)
     
-    data=response.json()
-    user_pk=data['pk']
-
-    #MasterUuid
+    user_name = f"{first_name}.{last_name}"
     
     try:
-        response = API_calls.add_user_pk_to_masterUuid(user_pk,uid)
-        if response.status_code!=200:
+        response = API_calls.create_user(user_name, phone, email, uid)
+        if response.status_code != 201:
+            error_message = f"Error creating user {uid} - Status code was not 201: : {response.json()}"
+            raise Exception(error_message)
+        
+        data = response.json()
+        user_pk = data['pk']
+        
+        response = API_calls.add_user_pk_to_masterUuid(user_pk, uid)
+        if response.status_code != 200:
             API_calls.delete_user(user_pk)
-            raise Exception(f"Error with accessing user uid: {uid}, status_code was not 200, user is now locally deleted")            
+            error_message = f"Error accessing user uid: {uid} - Status code was not 200, user has been locally deleted"
+            raise Exception(error_message)
+        else:
+            API_calls.log_to_controller_room("Creating user",f"user {uid} has been successfully created",False,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with accessing user uid: {uid}")
-    
-    print(response)
+        error_message = f"Error creating user {uid} - {str(e)}"
+        raise Exception(error_message)
 
-def update_user(first_name, last_name, phone, email, uid):
-    user_name = f"{first_name} {last_name}"
-    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+def update_user(uid, user_xml):
+    print('1')
+    try:
+        user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+    except Exception as e:
+        error_message = f"Error accessing user {uid}: {str(e)}"
+        raise Exception(error_message)
+
+    try:
+        # Extract required fields        
+        payload=functions.payload_extracting_update_user(user_xml,user_pk)
+    except Exception as e:
+        error_message = f"Error accessing {uid} - {str(e)}"
+        raise Exception(error_message)
     
     try:
-        response = API_calls.update_user(user_name,phone,email,uid,user_pk)
+        response = API_calls.update_user(payload,user_pk)
         if response.status_code==200:
             API_calls.log_to_controller_room('processing user message for update',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
         else:
-            raise Exception(f"Error with updating user {uid}, did not receiver status_code 200")
+            raise Exception(f"Error with updating user {uid}, did not receiver status_code 200: {response.json()}")
             # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
             # return
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with updating user {uid}")
+        error_message = f"Error updating user {uid} - {str(e)}"
+        raise Exception(error_message)
     
 
     
 
 def delete_user(uid):
-    user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+    try:
+        user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+    except Exception as e:
+        error_message = f"Error accessing user {uid}: {str(e)}"
+        raise Exception(error_message)
+    
     try:
         response=API_calls.delete_user(user_pk)
-        if response.status_code==204:
-            API_calls.log_to_controller_room('processing user message for delete',f"user with uid:{uid} has been deleted",False,datetime.datetime.now())
+        if response.status_code != 204:
+            error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}"
+            raise Exception(error_message)
         else:
-            raise Exception(f"Error with deleting user {uid}, did not receiver status_code 204")
-            # API_calls.log_to_controller_room('processing user message for delete',f"something went wrong when deleting user with uid:{uid}",True,datetime.datetime.now())
+            API_calls.log_to_controller_room('Processing user message for delete', f"user with uid:{uid} has been deleted", True, datetime.datetime.now())
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with deleting user {uid}")
-    
-    
-
-    
-    
+        error_message = f"Error deleting user {uid} - {str(e)}"
+        raise Exception(error_message)
+ 
 
 
 # Consume messages from the queue

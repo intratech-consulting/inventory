@@ -39,7 +39,6 @@ UID_HEADERS={
 
 def log_to_controller_room(function_name,msg,error,time):
     SYSTEM="inventory"
-    print (msg)
 
     Loggin_xml = f"""
     <LogEntry>
@@ -94,13 +93,11 @@ def log_to_controller_room(function_name,msg,error,time):
     logger.info(error)
     # Validate the XML against the schema
     if schema.validate(xml_doc):
-        print('XML is valid')
         logger.info('XML is valid')
         # Publish the message to the queue
         channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
         print('Message sent')
     else:
-        print('XML is not valid')
         logger.info('XML is not valid')
 
     # if True:
@@ -117,8 +114,8 @@ def log_to_controller_room(function_name,msg,error,time):
     # Close the connection
     connection.close()
 
-def get_users():
-    url = f"http://{IP}:880/api/company/"
+def get_user(user_pk):
+    url = f"http://{IP}:880/api/company/{user_pk}"
     return requests.request("GET", url, headers=HEADERS)
     
 def remove_from_stock(primary_key,quantity,order_id):
@@ -160,20 +157,8 @@ def create_user(user_name,phone,email,uid):
         )
     return requests.request("POST", url, headers=HEADERS, data=payload)
 
-def update_user(user_name,phone,email,uid,user_pk):
-    url = f"http://{IP}:880/api/company/{user_pk}"
-    payload = json.dumps(
-            {
-                "name": user_name,
-                "phone": phone,
-                "email": email,
-                "description": uid,
-                "currency": "EUR",
-                "is_customer": True,
-                "is_manufacturer": False,
-                "is_supplier": False,
-            }
-        )
+def update_user(payload,user_pk):
+    url = f"http://{IP}:880/api/company/{user_pk}/"
     return requests.request("PUT", url, headers=HEADERS, data=payload)
     
 
@@ -197,10 +182,11 @@ def get_user_pk_from_masterUuid(uid):
     try:
         response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
         if response.status_code!=200:
-            log_to_controller_room('processing user message for update',f"something went wrong when accessing this uid:{uid}",True,datetime.datetime.now())
-            return            
+            error_message=f"something went wrong when accessing this uid:{uid}, status code was not 200: {response.text}"
+            raise Exception(error_message)           
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with accessing {uid}")
+        error_message=f"something went wrong accessing {uid} - {str(e)}"
+        raise Exception(error_message)
 
     
     data=response.json()
