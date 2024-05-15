@@ -164,7 +164,7 @@ def update_user(uid, user_xml):
     try:
         response = API_calls.update_user(payload,user_pk)
         if response.status_code==200:
-            API_calls.log_to_controller_room('processing user message for update',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
+            API_calls.log_to_controller_room('Updating user',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
         else:
             raise Exception(f"Error with updating user {uid}, did not receiver status_code 200: {response.json()}")
             # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
@@ -189,7 +189,7 @@ def delete_user(uid):
             error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}"
             raise Exception(error_message)
         else:
-            API_calls.log_to_controller_room('Processing user message for delete', f"user with uid:{uid} has been deleted", True, datetime.datetime.now())
+            API_calls.log_to_controller_room('Deleting user', f"user with uid:{uid} has been deleted", True, datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         error_message = f"Error deleting user {uid} - {str(e)}"
         raise Exception(error_message)
