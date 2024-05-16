@@ -1,7 +1,7 @@
 import pika
 
 # Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
+connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
 # Declare the exchange
@@ -16,7 +16,7 @@ payload = '''
     <crud_operation>create</crud_operation>
     <id>4ec0f607-5bd3-44df-a132-a395bbad7ef0</id>
     <first_name>robin</first_name>
-    <last_name>Doe</last_name>
+    <last_name>8Doe</last_name>
     <email>12john.doe@mail.com</email>
     <telephone>+32467179912</telephone>
     <birthday>2024-04-14</birthday>
