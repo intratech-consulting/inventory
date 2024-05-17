@@ -7,6 +7,25 @@ from utilities import functions  # Import functions module
 
 IP='10.2.160.51'
 
+# Function to that makes a payload to update the user without description(user made is ui)
+def get_payload_to_update_user(first_name,last_name,user,uid):
+    user_name=name=first_name+'.'+last_name
+    phone=user['phone']
+    email=user['email']
+
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "phone": phone,
+                "email": email,
+                "description": uid,
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+    return payload
 
 # Function that creates the XML to create an user and returns it
 def create_xml(user):
@@ -40,7 +59,13 @@ def create_xml(user):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
- 
+
+    # Get payload to update the newly created user in the ui
+    payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+
+    # Updates user in the database
+    API_calls.update_user(payload,user["pk"])
+
     xml_data = ET.tostring(user_element, encoding="unicode")
     print(f"xml_data: {xml_data}")
     return xml_data

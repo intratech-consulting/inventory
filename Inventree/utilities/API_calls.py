@@ -84,6 +84,7 @@ def log_to_controller_room(function_name,msg,error,time):
 
     # Format the XML with the current timestamp
     formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.now().isoformat())
+    # formatted_Loggin_xml = Loggin_xml.format(datetime.utcnow().isoformat())
 
     # Parse the XML
     xml_doc = etree.fromstring(formatted_Loggin_xml.encode())
