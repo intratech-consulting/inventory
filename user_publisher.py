@@ -5,7 +5,7 @@ import json
 from utilities import API_calls  # Import API calls module
 from utilities import functions  # Import functions module
 
-IP='10.2.160.51'
+IP='10.2.160.53'
 
 
 # Function that creates the XML to create an user and returns it
