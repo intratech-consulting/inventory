@@ -5,10 +5,10 @@ FROM python:3.8-slim
 WORKDIR /app
 
 # Copy the publisher script into the container
-COPY ../user_publisher.py ./
-COPY ../__init__.py ./Inventree/
-COPY ../__init__.py ./
-COPY ../utilities ./Inventree/utilities/
+COPY ../user_publisher.py .
+COPY ../__init__.py ./Inventree
+COPY ../__init__.py .
+COPY ../Inventree/utilities ./Inventree/utilities
 
 
 # Install any dependencies required by the publisher script
