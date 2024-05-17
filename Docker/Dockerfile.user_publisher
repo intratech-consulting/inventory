@@ -6,9 +6,10 @@ WORKDIR /app
 
 # Copy the publisher script into the container
 COPY user_publisher.py ../
-COPY utilities ../Inventree/utilities
 COPY __init__.py ../Inventree
 COPY __init__.py ../
+COPY utilities ../Inventree/utilities
+
 
 # Install any dependencies required by the publisher script
 RUN pip install pika requests
