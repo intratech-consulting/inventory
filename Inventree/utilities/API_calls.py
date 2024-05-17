@@ -24,7 +24,7 @@ console_handler.setFormatter(formatter)
 # Add the console handler to the logger
 logger.addHandler(console_handler)
 
-IP="10.2.160.51"
+IP="10.2.160.53"
 
 HEADERS={
     'Content-Type': 'application/json',
