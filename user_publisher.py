@@ -2,8 +2,8 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import json
-from Inventree.utilities import API_calls  # Import API calls module
-from Inventree.utilities import functions  # Import functions module
+from utilities import API_calls  # Import API calls module
+from utilities import functions  # Import functions module
 
 IP='10.2.160.51'
 
