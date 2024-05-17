@@ -69,4 +69,30 @@ def payload_update_user(user_pk,first_name=None, last_name=None, telephone=None,
     return json.dumps(payload)
 
         
+def get_user_with_same_uid(uid,list):
+    data=list
+    for user in data:
+        if user['description']==uid:
+            return user
+    return False
+        
+def find_user_in_list(list,old_user):
+    for new_user in list:
+        if new_user['description']==old_user['description']:
+            return False
+    return True
+  
+def compare_json_objects(updated_user, user_list):
+    old_user=get_user_with_same_uid(updated_user['description'], user_list)
+    if old_user==False:
+        user_list.append(updated_user)
+        return False
+
+    # obj1 = json.loads(str(updated_user))
+    # obj2 = json.loads(old_user)
     
+    # Compare the dictionaries
+    if updated_user==old_user:
+        return False
+    else:
+        return True

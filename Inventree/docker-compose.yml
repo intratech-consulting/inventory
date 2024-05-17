@@ -143,6 +143,17 @@ services:
       - inventree_network
       - my_shared_network
     restart: unless-stopped
+
+  user_publisher:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.user_publisher
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+      - my_shared_network
+    restart: unless-stopped
       
 
   heartbeat_sender:

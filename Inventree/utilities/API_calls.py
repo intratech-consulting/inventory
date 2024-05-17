@@ -117,6 +117,10 @@ def log_to_controller_room(function_name,msg,error,time):
 def get_user(user_pk):
     url = f"http://{IP}:880/api/company/{user_pk}"
     return requests.request("GET", url, headers=HEADERS)
+
+def get_users():
+    url = f"http://{IP}:880/api/company/"
+    return requests.request("GET", url, headers=HEADERS)
     
 def remove_from_stock(primary_key,quantity,order_id):
     url = f"http://{IP}:880/api/stock/remove/"
@@ -194,6 +198,28 @@ def get_user_pk_from_masterUuid(uid):
     print(user_pk)
     return(user_pk)
 
+def create_user_masterUuid(user_pk):
+    masterUuid_url = f"http://{IP}:6000/createMasterUuid"
+    masterUuid_payload = json.dumps(
+    {
+    "Service": "inventory",
+    "ServiceId":user_pk
+    }
+    )
+
+
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        print(response)
+        if response.status_code!=201:
+            error_message=f"something went wrong when creating a user with user_pk {user_pk}, status code was not 201: {response.text}"
+            raise Exception(error_message)    
+        return response.json()['MasterUuid']       
+    except requests.exceptions.RequestException as e:
+        error_message=f"something went wrong when creating a user with user_pk {user_pk} - {str(e)}"
+        raise Exception(error_message)
+    
 def add_user_pk_to_masterUuid(user_pk, uid):
     #MasterUuid
     masterUuid_url = f"http://{IP}:6000/addServiceId"
