@@ -1,4 +1,5 @@
 version: "3.8"
+
 # Docker compose recipe for a production-ready InvenTree setup, with the following containers:
 # - PostgreSQL as the database backend
 # - gunicorn as the InvenTree web server
@@ -131,7 +132,7 @@ services:
       - inventree_network
       - my_shared_network
     restart: unless-stopped
-
+  
   product_publisher:
     build:
       context: ../
@@ -142,6 +143,18 @@ services:
       - inventree_network
       - my_shared_network
     restart: unless-stopped
+
+  user_publisher:
+    build:
+      context: ../
+      dockerfile: Docker/Dockerfile.user_publisher
+    depends_on:
+      - inventree-server
+    networks:
+      - inventree_network
+      - my_shared_network
+    restart: unless-stopped
+      
 
   heartbeat_sender:
     build:

@@ -1,0 +1,18 @@
+# Use an official Python runtime as a base image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the publisher script into the container
+COPY user_publisher.py .
+COPY __init__.py .
+COPY /Inventree/utilities ./utilities
+COPY /Docker/user_publisher-requirements.txt .
+
+
+# Install any dependencies required by the publisher script
+RUN pip install pika requests
+RUN pip install --no-cache-dir -r user_publisher-requirements.txt
+# Run the publisher script when the container starts
+CMD ["python", "user_publisher.py"]
