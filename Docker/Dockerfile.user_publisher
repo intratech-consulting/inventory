@@ -8,7 +8,7 @@ WORKDIR /app
 COPY user_publisher.py .
 COPY __init__.py .
 COPY /Inventree/utilities ./utilities
-COPY /Docker/receiver-requirements.txt .
+COPY /Docker/user_publisher-requirements.txt .
 
 
 # Install any dependencies required by the publisher script
