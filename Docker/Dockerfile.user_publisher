@@ -8,10 +8,11 @@ WORKDIR /app
 COPY user_publisher.py .
 COPY __init__.py .
 COPY /Inventree/utilities ./utilities
+COPY /Docker/receiver-requirements.txt .
 
 
 # Install any dependencies required by the publisher script
 RUN pip install pika requests
-
+RUN pip install --no-cache-dir -r user_publisher-requirements.txt
 # Run the publisher script when the container starts
 CMD ["python", "user_publisher.py"]
