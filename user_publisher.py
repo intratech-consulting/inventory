@@ -2,8 +2,8 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import json
-from utilities import API_calls  # Import API calls module
-from utilities import functions  # Import functions module
+from .Inventree.utilities import API_calls  # Import API calls module
+from .Inventree.utilities import functions  # Import functions module
 
 IP='10.2.160.53'
 
@@ -40,7 +40,26 @@ def create_xml(user):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
- 
+
+    # Quick fix
+    user_name=name=name_array[0]+'.'+name_array[1]
+    phone=user['phone']
+    email=user['email']
+
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "phone": phone,
+                "email": email,
+                "description": uid,
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+
+    API_calls.update_user(payload,user["pk"])
     xml_data = ET.tostring(user_element, encoding="unicode")
     print(f"xml_data: {xml_data}")
     return xml_data
