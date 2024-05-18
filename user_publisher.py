@@ -59,7 +59,7 @@ def create_xml(user):
     ET.SubElement(user_element, "first_name").text = name_array[0]
     ET.SubElement(user_element, "last_name").text = name_array[1]
     ET.SubElement(user_element, "email").text = user['email']
-    ET.SubElement(user_element, "phone").text = user['phone']
+    ET.SubElement(user_element, "telephone").text = user['phone']
     ET.SubElement(user_element, "birthday").text = None
        
     address_element = ET.SubElement(user_element, "address")
@@ -153,7 +153,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     if updated_fields[2] is None:
         ET.SubElement(user_element, "email").text = None
     if updated_fields[3] is None:
-        ET.SubElement(user_element, "phone").text = None
+        ET.SubElement(user_element, "telephone").text = None
 
     for field in updated_fields:
         if field == "email":
@@ -162,7 +162,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
                 payload["email"]=updated_user['email']
         elif field == "phone":
             if updated_user['phone'] is not None:
-                ET.SubElement(user_element, "phone").text = updated_user['phone']
+                ET.SubElement(user_element, "telephone").text = updated_user['phone']
                 payload["phone"]=updated_user['phone']
         ET.SubElement(user_element, "birthday").text = None
 
@@ -250,7 +250,7 @@ def f_delete_xml(user_uid: str):
     ET.SubElement(user_element, "first_name").text = None
     ET.SubElement(user_element, "last_name").text = None
     ET.SubElement(user_element, "email").text = None
-    ET.SubElement(user_element, "phone").text = None
+    ET.SubElement(user_element, "telephone").text = None
     ET.SubElement(user_element, "birthday").text = None
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
