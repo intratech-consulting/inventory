@@ -202,7 +202,7 @@ def create_xml(user):
 
     if is_valid:
         API_calls.update_user(payload,user["pk"])
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
@@ -314,7 +314,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
 
     if is_valid:
         API_calls.update_user(payload,updated_user['pk'])
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
@@ -412,7 +412,7 @@ def f_delete_xml(user_uid: str):
     is_valid = xsd_schema.validate(xml_doc)
 
     if is_valid:
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
