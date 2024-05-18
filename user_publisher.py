@@ -335,21 +335,6 @@ def main():
                 users_list.remove(old_user)
 
                 change=True
-
-        
-        # Loop old user through new list to find user with same Uuid, if not found it means it has been deleted
-        for old_user in users_list:
-
-            # Function that checks if the old user is in the new list
-            if functions.find_user_in_list(updated_users, old_user):
-
-                # Handles the user to be deleted
-                handle_user_delete(old_user['description'])
-
-                change=True
-
-                # Removes the old user from the list
-                users_list.remove(old_user)
             
         if change==False:
             print("Nothing new")
