@@ -98,7 +98,7 @@ def publish_to_queue(xml_data):
 
 # Function that creates the XML to update an user and returns it
 def f_update_xml(existing_user, updated_user, updated_fields: list):
-    payload=[]
+    payload={}
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = "user.inventory"
     ET.SubElement(user_element, "crud_operation").text = "update"
