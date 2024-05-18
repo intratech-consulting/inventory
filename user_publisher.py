@@ -122,6 +122,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     if updated_fields[0]is None and updated_fields[1]is None:         
         ET.SubElement(user_element, "first_name").text = None
         ET.SubElement(user_element, "last_name").text = None
+
+        payload['name']=old_name_array[0]+'.'+old_name_array[1]
     
     if updated_fields[0]is not None and updated_fields[1]is None:
         new_name_array=updated_user["name"].split(".")
@@ -147,7 +149,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
                 payload["phone"]=updated_user['phone']
         ET.SubElement(user_element, "birthday").text = None
 
-    payload['contact']=''
+    payload['contact']=""
     payload['currency']='EUR'
        
     address_element = ET.SubElement(user_element, "address")
@@ -224,7 +226,7 @@ def f_delete_xml(user_uid: str):
 
     # Creating the body
     user_element = ET.Element("user")
-    ET.SubElement(user_element, "routing_key").text = "user.inventory"
+    ET.SubElement(user_element, "routing_key").text = "Test.inventree"
     ET.SubElement(user_element, "crud_operation").text = "delete"
     ET.SubElement(user_element, "id").text = user_uid
     # Set all other fields to None
