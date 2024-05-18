@@ -20,6 +20,7 @@ def get_payload_to_update_user(first_name,last_name,user,uid):
                 "email": email,
                 "description": uid,
                 "currency": "EUR",
+                "contact":None,
                 "is_customer": True,
                 "is_manufacturer": False,
                 "is_supplier": False,
@@ -97,6 +98,7 @@ def publish_to_queue(xml_data):
 
 # Function that creates the XML to update an user and returns it
 def f_update_xml(existing_user, updated_user, updated_fields: list):
+    payload=[]
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = "user.inventory"
     ET.SubElement(user_element, "crud_operation").text = "update"
@@ -106,12 +108,16 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         new_name_array=updated_user["name"].split(".")         
         ET.SubElement(user_element, "first_name").text = new_name_array[0]
         ET.SubElement(user_element, "last_name").text = new_name_array[1]
+
+        payload['name']=updated_user["name"]
     
     if updated_fields[0]is None and updated_fields[1]is not None:
         new_name_array=updated_user["name"].split(".")
         old_name_array=existing_user["name"].split(".")          
         ET.SubElement(user_element, "first_name").text = old_name_array[0]
         ET.SubElement(user_element, "last_name").text = new_name_array[1]
+
+        payload['name']=old_name_array[0]+'.'+new_name_array[1]
 
     if updated_fields[0]is None and updated_fields[1]is None:         
         ET.SubElement(user_element, "first_name").text = None
@@ -123,6 +129,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         ET.SubElement(user_element, "first_name").text = new_name_array[0]
         ET.SubElement(user_element, "last_name").text = old_name_array[1]
 
+        payload['name']=new_name_array[0]+'.'+old_name_array[1]
+
     if updated_fields[2] is None:
         ET.SubElement(user_element, "email").text = None
     if updated_fields[3] is None:
@@ -132,10 +140,15 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         if field == "email":
             if updated_user['email'] is not None:
                 ET.SubElement(user_element, "email").text = updated_user['email']
+                payload["email"]=updated_user['email']
         elif field == "phone":
             if updated_user['phone'] is not None:
                 ET.SubElement(user_element, "phone").text = updated_user['phone']
+                payload["phone"]=updated_user['phone']
         ET.SubElement(user_element, "birthday").text = None
+
+    payload['contact']=None
+    payload['currency']='EUR'
        
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
@@ -151,6 +164,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
+
+    API_calls.update_user(payload,updated_user['pk'])
  
     xml_data = ET.tostring(user_element, encoding="unicode")
 
@@ -275,7 +290,7 @@ def main():
 
                 # Adds the new user to the list
                 users_list.append(updated_user)
-            elif functions.compare_json_objects(updated_user,users_list):
+            elif updated_user['contact']=='update':
 
                 # Get the old user json object
                 old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
@@ -287,7 +302,20 @@ def main():
                 users_list.append(updated_user)
                 users_list.remove(old_user)
 
+
+
                 change=True
+            elif updated_user['contact']=='delete':
+                old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
+
+                handle_user_delete(old_user['description'])
+
+                API_calls.delete_user(updated_user['pk'])
+
+                users_list.remove(old_user)
+
+                change=True
+
         
         # Loop old user through new list to find user with same Uuid, if not found it means it has been deleted
         for old_user in users_list:
