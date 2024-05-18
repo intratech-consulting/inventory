@@ -188,19 +188,20 @@ def create_xml(user):
 
 
     # Updates user in the database
-    
+    #logging_xml=user_xml_str
+    #user_xsd=loggin_xsd
 
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_schema = etree.XMLSchema(etree.XML(user_xsd))
+    xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xml_doc = etree.fromstring(user_xml_str)
+    xsd_schema = etree.XMLSchema(xsd_doc)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    is_valid = xsd_schema.validate(user_xml_str)
 
     if is_valid:
         API_calls.update_user(payload,user["pk"])
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
@@ -300,20 +301,21 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
-
+    
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_schema = etree.XMLSchema(etree.XML(user_xsd))
+    xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xml_doc = etree.fromstring(user_xml_str)
+    xsd_schema = etree.XMLSchema(xsd_doc)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    is_valid = xsd_schema.validate(user_xml_str)
 
     if is_valid:
         API_calls.update_user(payload,updated_user['pk'])
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
+
 
     
  
@@ -397,16 +399,17 @@ def f_delete_xml(user_uid: str):
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
 
+
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_schema = etree.XMLSchema(etree.XML(user_xsd))
+    xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xml_doc = etree.fromstring(user_xml_str)
+    xsd_schema = etree.XMLSchema(xsd_doc)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    is_valid = xsd_schema.validate(user_xml_str)
 
     if is_valid:
-        return xml_doc
+        return user_xml_str
     else:
         API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
