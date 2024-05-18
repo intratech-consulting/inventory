@@ -22,7 +22,12 @@ queue_name = 'inventory'
 
 channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.*')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.crm')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.facturatie')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.frontend')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
 
 time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
