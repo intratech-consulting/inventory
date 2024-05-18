@@ -37,7 +37,6 @@ def get_payload_to_update_user(first_name,last_name,user,uid):
                 "email": email,
                 "description": uid,
                 "currency": "EUR",
-                "contact":None,
                 "is_customer": True,
                 "is_manufacturer": False,
                 "is_supplier": False,
