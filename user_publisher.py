@@ -2,11 +2,48 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import json
+import logging
 from utilities import API_calls  # Import API calls module
 from utilities import functions  # Import functions module
 
 IP='10.2.160.53'
 
+# Create a logger
+logger = logging.getLogger("INFO")
+logger.setLevel(logging.DEBUG)  # Set the logging level to DEBUG
+
+# Define the log format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Create a console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Set the console logging level to INFO
+console_handler.setFormatter(formatter)
+
+# Add the console handler to the logger
+logger.addHandler(console_handler)
+
+
+# Function to that makes a payload to update the user without description(user made is ui)
+def get_payload_to_update_user(first_name,last_name,user,uid):
+    user_name=name=first_name+'.'+last_name
+    phone=user['phone']
+    email=user['email']
+
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "phone": phone,
+                "email": email,
+                "description": uid,
+                "currency": "EUR",
+                "contact":None,
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+    return payload
 
 # Function that creates the XML to create an user and returns it
 def create_xml(user):
@@ -41,25 +78,12 @@ def create_xml(user):
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
 
-    # Quick fix
-    user_name=name=name_array[0]+'.'+name_array[1]
-    phone=user['phone']
-    email=user['email']
+    # Get payload to update the newly created user in the ui
+    payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
 
-    payload = json.dumps(
-            {
-                "name": user_name,
-                "phone": phone,
-                "email": email,
-                "description": uid,
-                "currency": "EUR",
-                "is_customer": True,
-                "is_manufacturer": False,
-                "is_supplier": False,
-            }
-        )
-
+    # Updates user in the database
     API_calls.update_user(payload,user["pk"])
+
     xml_data = ET.tostring(user_element, encoding="unicode")
     print(f"xml_data: {xml_data}")
     return xml_data
@@ -76,7 +100,7 @@ def publish_to_queue(xml_data):
     # Connect to RabbitMQ server
     connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
     channel = connection.channel()
- 
+    logger.info(xml_data)
     # Declare the exchange
     exchange_name = "amq.topic"
     routing_key = 'user.inventory'
@@ -91,6 +115,7 @@ def publish_to_queue(xml_data):
 
 # Function that creates the XML to update an user and returns it
 def f_update_xml(existing_user, updated_user, updated_fields: list):
+    payload={}
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = "user.inventory"
     ET.SubElement(user_element, "crud_operation").text = "update"
@@ -100,6 +125,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         new_name_array=updated_user["name"].split(".")         
         ET.SubElement(user_element, "first_name").text = new_name_array[0]
         ET.SubElement(user_element, "last_name").text = new_name_array[1]
+
+        payload['name']=updated_user["name"]
     
     if updated_fields[0]is None and updated_fields[1]is not None:
         new_name_array=updated_user["name"].split(".")
@@ -107,15 +134,22 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         ET.SubElement(user_element, "first_name").text = old_name_array[0]
         ET.SubElement(user_element, "last_name").text = new_name_array[1]
 
-    if updated_fields[0]is None and updated_fields[1]is None:         
+        payload['name']=old_name_array[0]+'.'+new_name_array[1]
+
+    if updated_fields[0]is None and updated_fields[1]is None:
+        old_name_array=existing_user["name"].split(".")         
         ET.SubElement(user_element, "first_name").text = None
         ET.SubElement(user_element, "last_name").text = None
+
+        payload["name"]=old_name_array[0]+'.'+old_name_array[1]
     
     if updated_fields[0]is not None and updated_fields[1]is None:
         new_name_array=updated_user["name"].split(".")
         old_name_array=existing_user["name"].split(".")          
         ET.SubElement(user_element, "first_name").text = new_name_array[0]
         ET.SubElement(user_element, "last_name").text = old_name_array[1]
+
+        payload["name"]=new_name_array[0]+'.'+old_name_array[1]
 
     if updated_fields[2] is None:
         ET.SubElement(user_element, "email").text = None
@@ -126,11 +160,16 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
         if field == "email":
             if updated_user['email'] is not None:
                 ET.SubElement(user_element, "email").text = updated_user['email']
+                payload["email"]=updated_user['email']
         elif field == "phone":
             if updated_user['phone'] is not None:
                 ET.SubElement(user_element, "phone").text = updated_user['phone']
+                payload["phone"]=updated_user['phone']
         ET.SubElement(user_element, "birthday").text = None
-       
+
+    payload["contact"]=""
+    payload["currency"]="EUR"
+    payload=json.dumps(payload)
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
     ET.SubElement(address_element, "state").text = None
@@ -145,6 +184,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
+
+    API_calls.update_user(payload,updated_user['pk'])
  
     xml_data = ET.tostring(user_element, encoding="unicode")
 
@@ -251,7 +292,7 @@ def main():
     while True:
         
         # Fetch updated users after 60 seconds
-        time.sleep(60)
+        time.sleep(20)
 
         # Fetches all the users in the database
         updated_users = fetch_users()
@@ -269,7 +310,7 @@ def main():
 
                 # Adds the new user to the list
                 users_list.append(updated_user)
-            elif functions.compare_json_objects(updated_user,users_list):
+            elif updated_user['contact']=='update':
 
                 # Get the old user json object
                 old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
@@ -281,21 +322,19 @@ def main():
                 users_list.append(updated_user)
                 users_list.remove(old_user)
 
+
+
                 change=True
-        
-        # Loop old user through new list to find user with same Uuid, if not found it means it has been deleted
-        for old_user in users_list:
+            elif updated_user['contact']=='delete':
+                old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
 
-            # Function that checks if the old user is in the new list
-            if functions.find_user_in_list(updated_users, old_user):
-
-                # Handles the user to be deleted
                 handle_user_delete(old_user['description'])
 
-                change=True
+                API_calls.delete_user(updated_user['pk'])
 
-                # Removes the old user from the list
                 users_list.remove(old_user)
+
+                change=True
             
         if change==False:
             print("Nothing new")

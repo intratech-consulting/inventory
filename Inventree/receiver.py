@@ -9,7 +9,7 @@ import time
 from utilities import API_calls
 from utilities import functions
 # Establish connection to RabbitMQ server
-IP="10.2.160.53"
+IP="10.2.160.51"
 connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
@@ -28,7 +28,10 @@ time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
     try:
         # Determine the publisher based on routing key
-        if method.routing_key.startswith('user'):
+        if method.routing_key.endswith('#.inventory'):
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+        elif method.routing_key.startswith('user'):
+            
             print("Received user message:")
             process_user(body)
         elif method.routing_key.startswith('order'):
