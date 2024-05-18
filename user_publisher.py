@@ -119,7 +119,8 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
 
         payload['name']=old_name_array[0]+'.'+new_name_array[1]
 
-    if updated_fields[0]is None and updated_fields[1]is None:         
+    if updated_fields[0]is None and updated_fields[1]is None:
+        old_name_array=existing_user["name"].split(".")         
         ET.SubElement(user_element, "first_name").text = None
         ET.SubElement(user_element, "last_name").text = None
 
