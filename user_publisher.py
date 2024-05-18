@@ -2,6 +2,7 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import lxml
+from lxml import entree
 import json
 import logging
 from utilities import API_calls  # Import API calls module
