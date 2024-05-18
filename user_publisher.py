@@ -103,7 +103,7 @@ def publish_to_queue(xml_data):
     logger.info(xml_data)
     # Declare the exchange
     exchange_name = "amq.topic"
-    routing_key = 'Test.inventree'
+    routing_key = 'user.inventory'
     channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
  
     # Publish XML to RabbitMQ
