@@ -1,12 +1,118 @@
 import time
 import xml.etree.ElementTree as ET
 import pika
+import lxml
 import json
 import logging
 from utilities import API_calls  # Import API calls module
 from utilities import functions  # Import functions module
 
 IP='10.2.160.51'
+
+user_xsd="""
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="user">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routing_key">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="crud_operation">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="create"/>
+                            <xs:enumeration value="update"/>
+                            <xs:enumeration value="delete"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="id">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="first_name" type="xs:string" nillable="true"/>
+                <xs:element name="last_name" type="xs:string" nillable="true"/>
+                <xs:element name="email" type="xs:string" nillable="true"/>
+                <xs:element name="telephone" type="xs:string" nillable="true"/>
+                <xs:element name="birthday">
+                    <xs:simpleType>
+                        <xs:union>
+                            <xs:simpleType>
+                                <xs:restriction base='xs:string'>
+                                    <xs:length value="0"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                            <xs:simpleType>
+                                <xs:restriction base='xs:date' />
+                            </xs:simpleType>
+                        </xs:union>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="address">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="country" type="xs:string" nillable="true"/>
+                            <xs:element name="state" type="xs:string" nillable="true"/>
+                            <xs:element name="city" type="xs:string" nillable="true"/>
+                            <xs:element name="zip">
+                                <xs:simpleType>
+                                    <xs:union>
+                                        <xs:simpleType>
+                                            <xs:restriction base='xs:string'>
+                                                <xs:length value="0"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                        <xs:simpleType>
+                                            <xs:restriction base='xs:integer' />
+                                        </xs:simpleType>
+                                    </xs:union>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="street" type="xs:string" nillable="true"/>
+                            <xs:element name="house_number">
+                                <xs:simpleType>
+                                    <xs:union>
+                                        <xs:simpleType>
+                                            <xs:restriction base='xs:string'>
+                                                <xs:length value="0"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                        <xs:simpleType>
+                                            <xs:restriction base='xs:integer' />
+                                        </xs:simpleType>
+                                    </xs:union>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="company_email" type="xs:string" nillable="true"/>
+                <xs:element name="company_id" type="xs:string" nillable="true"/>
+                <xs:element name="source" type="xs:string"  nillable="true"/>
+                <xs:element name="user_role">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="speaker"/>
+                            <xs:enumeration value="individual"/>
+                            <xs:enumeration value="employee"/>
+                            <xs:enumeration value=""/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="invoice" type="xs:string" nillable="true"/>
+                <xs:element name="calendar_link" type="xs:string" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+"""
 
 # Create a logger
 logger = logging.getLogger("INFO")
@@ -77,15 +183,35 @@ def create_xml(user):
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
 
-    # Get payload to update the newly created user in the ui
-    payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+    user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    # Updates user in the database
-    API_calls.update_user(payload,user["pk"])
 
-    xml_data = ET.tostring(user_element, encoding="unicode")
-    print(f"xml_data: {xml_data}")
-    return xml_data
+
+    xsd_doc=etree.fromstring(user_xsd.encode())
+
+    xsd_schema = etree.XMLSchema(xsd_doc)
+    xml_doc=etree.fromstring(user_xml_str)
+
+    is_valid = xsd_schema.validate(xml_doc)
+
+    if is_valid:
+        
+        # Get payload to update the newly created user in the ui
+        payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+        
+        # Updates user in the database
+        API_calls.update_user(payload,user["pk"])
+        logger.info("XML is valid")
+        return user_xml_str
+    else:
+        logger.info("XML not valid")
+
+    
+
+    
+
+    
+    
 
 # Function that returns the list of users in inventree
 def fetch_users():
@@ -184,11 +310,25 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
 
-    API_calls.update_user(payload,updated_user['pk'])
- 
-    xml_data = ET.tostring(user_element, encoding="unicode")
+    user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    return xml_data
+
+
+    xsd_doc=etree.fromstring(user_xsd.encode())
+
+    xsd_schema = etree.XMLSchema(xsd_doc)
+    xml_doc=etree.fromstring(user_xml_str)
+
+    is_valid = xsd_schema.validate(xml_doc)
+
+    if is_valid:     
+        # Updates user in the database
+        API_calls.update_user(payload,updated_user['pk'])
+        logger.info("XML is valid")
+        return user_xml_str
+    else:
+        logger.info("XML not valid")
+
 
 # Function that checks the changes
 def handle_user_update(existing_user, updated_user):
@@ -265,9 +405,24 @@ def f_delete_xml(user_uid: str):
     ET.SubElement(user_element, "user_role").text = None
     ET.SubElement(user_element, "invoice").text = None
     ET.SubElement(user_element, "calendar_link").text = None
-    xml_data = ET.tostring(user_element, encoding="unicode")
+    
+    user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    return xml_data
+
+
+    xsd_doc=etree.fromstring(user_xsd.encode())
+
+    xsd_schema = etree.XMLSchema(xsd_doc)
+    xml_doc=etree.fromstring(user_xml_str)
+
+    is_valid = xsd_schema.validate(xml_doc)
+
+    if is_valid:     
+        # Updates user in the database
+        logger.info("XML is valid")
+        return user_xml_str
+    else:
+        logger.info("XML not valid")
 
 #Handles the user delete
 def handle_user_delete(deleted_user_uid: str):
