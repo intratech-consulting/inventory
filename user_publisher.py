@@ -193,18 +193,20 @@ def create_xml(user):
 
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    return user_xml_str
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
 
-    if is_valid:
-        API_calls.update_user(payload,user["pk"])
-        return user_xml_str
-    else:
-        API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
+    # is_valid = xsd_schema.validate(xml_doc)
+
+    # if is_valid:
+    #     API_calls.update_user(payload,user["pk"])
+    #     return user_xml_str
+    # else:
+    #     API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
 # Function that returns the list of users in inventree
 def fetch_users():
@@ -305,18 +307,21 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    return user_xml_str   
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
+    # logger.info(user_xml_str)
+    # logger.info(xml_doc)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # is_valid = xsd_schema.validate(xml_doc)
 
-    if is_valid:
-        API_calls.update_user(payload,updated_user['pk'])
-        return user_xml_str
-    else:
-        API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
+    # if is_valid:
+    #     API_calls.update_user(payload,updated_user['pk'])
+    #     return user_xml_str
+    # else:
+    #     API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
 
     
@@ -404,17 +409,19 @@ def f_delete_xml(user_uid: str):
 
     user_xml_str = ET.tostring(user_element, encoding='unicode')
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    return user_xml_str
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
 
-    if is_valid:
-        return user_xml_str
-    else:
-        API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
+    # is_valid = xsd_schema.validate(xml_doc)
+
+    # if is_valid:
+    #     return user_xml_str
+    # else:
+    #     API_calls.log_to_controller_room("Update_user_publisher","did not validate xml",True,datetime.datetime.now())
 
 
 #Handles the user delete
