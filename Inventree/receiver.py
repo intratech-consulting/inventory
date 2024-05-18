@@ -28,7 +28,7 @@ time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
     try:
         # Determine the publisher based on routing key
-        if method.routing_key.startswith('user.inventory'):
+        if method.routing_key.endswith('#.inventory'):
             ch.basic_ack(delivery_tag=method.delivery_tag)
         elif method.routing_key.startswith('user'):
             

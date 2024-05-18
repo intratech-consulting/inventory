@@ -147,7 +147,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
                 payload["phone"]=updated_user['phone']
         ET.SubElement(user_element, "birthday").text = None
 
-    payload['contact']=None
+    payload['contact']=''
     payload['currency']='EUR'
        
     address_element = ET.SubElement(user_element, "address")
