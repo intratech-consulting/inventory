@@ -2,10 +2,27 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import json
+import logging
 from utilities import API_calls  # Import API calls module
 from utilities import functions  # Import functions module
 
 IP='10.2.160.51'
+
+# Create a logger
+logger = logging.getLogger("INFO")
+logger.setLevel(logging.DEBUG)  # Set the logging level to DEBUG
+
+# Define the log format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Create a console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)  # Set the console logging level to INFO
+console_handler.setFormatter(formatter)
+
+# Add the console handler to the logger
+logger.addHandler(console_handler)
+
 
 # Function to that makes a payload to update the user without description(user made is ui)
 def get_payload_to_update_user(first_name,last_name,user,uid):
@@ -83,10 +100,10 @@ def publish_to_queue(xml_data):
     # Connect to RabbitMQ server
     connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
     channel = connection.channel()
- 
+    logger.info(xml_data)
     # Declare the exchange
     exchange_name = "amq.topic"
-    routing_key = 'user.inventory'
+    routing_key = 'Test.inventree'
     channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=True)
  
     # Publish XML to RabbitMQ
@@ -152,7 +169,7 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
 
     payload['contact']=""
     payload['currency']='EUR'
-       
+    logger.info(payload)
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
     ET.SubElement(address_element, "state").text = None
@@ -227,7 +244,7 @@ def f_delete_xml(user_uid: str):
 
     # Creating the body
     user_element = ET.Element("user")
-    ET.SubElement(user_element, "routing_key").text = "Test.inventree"
+    ET.SubElement(user_element, "routing_key").text = "user.inventory"
     ET.SubElement(user_element, "crud_operation").text = "delete"
     ET.SubElement(user_element, "id").text = user_uid
     # Set all other fields to None
@@ -275,7 +292,7 @@ def main():
     while True:
         
         # Fetch updated users after 60 seconds
-        time.sleep(60)
+        time.sleep(20)
 
         # Fetches all the users in the database
         updated_users = fetch_users()
