@@ -188,25 +188,28 @@ def create_xml(user):
 
 
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # is_valid = xsd_schema.validate(xml_doc)
 
-    if is_valid:
+    # if is_valid:
         
-        # Get payload to update the newly created user in the ui
-        payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
-        logger.info(payload)
-        logger.info(user_xml_str)
-        # Updates user in the database
-        API_calls.update_user(payload,user["pk"])
-        logger.info("XML ist valid")
-        return user_xml_str
-    else:
-        logger.info("XML note valid")
+    #     # Get payload to update the newly created user in the ui
+    #     payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+    #     logger.info(payload)
+    #     logger.info(user_xml_str)
+    #     # Updates user in the database
+    #     API_calls.update_user(payload,user["pk"])
+    #     logger.info("XML ist valid")
+    #     return user_xml_str
+    # else:
+    #     logger.info("XML note valid")
+    payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+    return user_xml_str
+    
 
     
 
@@ -252,7 +255,7 @@ def f_update_xml(updated_user, updated_fields):
     ET.SubElement(user_element, "telephone").text = updated_fields['telephone']
     ET.SubElement(user_element, "email").text = updated_fields['email']
     ET.SubElement(user_element, "birthday").text = None
-    
+
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
     ET.SubElement(address_element, "state").text = None
@@ -277,20 +280,22 @@ def f_update_xml(updated_user, updated_fields):
     payload["currency"]="EUR"
     payload=json.dumps(payload)
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # is_valid = xsd_schema.validate(xml_doc)
 
-    if is_valid:     
-        # Updates user in the database
-        API_calls.update_user(payload,updated_user['pk'])
-        logger.info("XML is valid")
-        return user_xml_str
-    else:
-        logger.info("XML not valid")
+    # if is_valid:     
+    #     # Updates user in the database
+    #     API_calls.update_user(payload,updated_user['pk'])
+    #     logger.info("XML is valid")
+    #     return user_xml_str
+    # else:
+    #     logger.info("XML not valid")
+    API_calls.update_user(payload,updated_user['pk'])
+    return user_xml_str
 
 
 # Function that checks the changes
@@ -348,19 +353,20 @@ def f_delete_xml(user_uid: str):
 
 
 
-    xsd_doc=etree.fromstring(user_xsd.encode())
+    # xsd_doc=etree.fromstring(user_xsd.encode())
 
-    xsd_schema = etree.XMLSchema(xsd_doc)
-    xml_doc=etree.fromstring(user_xml_str)
+    # xsd_schema = etree.XMLSchema(xsd_doc)
+    # xml_doc=etree.fromstring(user_xml_str)
 
-    is_valid = xsd_schema.validate(xml_doc)
+    # is_valid = xsd_schema.validate(xml_doc)
 
-    if is_valid:     
-        # Updates user in the database
-        logger.info("XML is valid")
-        return user_xml_str
-    else:
-        logger.info("XML not valid")
+    # if is_valid:     
+    #     # Updates user in the database
+    #     logger.info("XML is valid")
+    #     return user_xml_str
+    # else:
+    #     logger.info("XML not valid")
+    return user_xml_str
 
 #Handles the user delete
 def handle_user_delete(deleted_user_uid: str):
