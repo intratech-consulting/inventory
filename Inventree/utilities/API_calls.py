@@ -96,7 +96,7 @@ def log_to_controller_room(function_name,msg,error,time):
     if schema.validate(xml_doc):
         logger.info('XML is valid')
         # Publish the message to the queue
-        channel.basic_publish(exchange='', routing_key='logs', body=Loggin_xml)
+        channel.basic_publish(exchange='amq.topic', routing_key='logs', body=Loggin_xml)
         print('Message sent')
     else:
         logger.info('XML is not valid')
