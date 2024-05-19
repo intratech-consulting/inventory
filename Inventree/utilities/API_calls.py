@@ -40,13 +40,20 @@ UID_HEADERS={
 def log_to_controller_room(function_name,msg,error,time):
     SYSTEM="inventory"
 
+    if error==True:
+        error='true'
+    elif error==False:
+        error='false'
+    else:
+        logger.info("Error must be boolean")
+
     Loggin_xml = f"""
     <LogEntry>
         <SystemName>{SYSTEM}</SystemName>
         <FunctionName>{function_name}</FunctionName>
         <Logs>{msg}</Logs>
         <Error>{error}</Error>
-        <Timestamp>{datetime.datetime.utcnow().isoformat()}</Timestamp>
+        <Timestamp>{datetime.datetime.now().isoformat()}</Timestamp>
     </LogEntry>
     """
     # Define your XML and XSD as strings
@@ -96,10 +103,11 @@ def log_to_controller_room(function_name,msg,error,time):
     if schema.validate(xml_doc):
         logger.info('XML is valid')
         # Publish the message to the queue
-        channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
+        channel.basic_publish(exchange='amq.topic', routing_key='logs', body=Loggin_xml)
         print('Message sent')
     else:
         logger.info('XML is not valid')
+    logger.info("----------------------------------------------------------")
 
     # if True:
     #     print('XML is valid')
