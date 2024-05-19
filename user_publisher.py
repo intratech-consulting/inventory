@@ -208,6 +208,7 @@ def create_xml(user):
     # else:
     #     logger.info("XML note valid")
     payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
+    API_calls.update_user(payload,user["pk"])
     return user_xml_str
     
 
@@ -421,7 +422,7 @@ def main():
             elif updated_user['contact']=='delete':
 
 
-                handle_user_delete(old_user['description'])
+                handle_user_delete(updated_user['description'])
 
                 API_calls.delete_user(updated_user['pk'])
 
