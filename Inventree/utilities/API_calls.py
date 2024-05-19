@@ -53,7 +53,7 @@ def log_to_controller_room(function_name,msg,error,time):
         <FunctionName>{function_name}</FunctionName>
         <Logs>{msg}</Logs>
         <Error>{error}</Error>
-        <Timestamp>{datetime.datetime.now().isoformat()}</Timestamp>
+        <Timestamp>{time.isoformat()}</Timestamp>
     </LogEntry>
     """
     # Define your XML and XSD as strings
