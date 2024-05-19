@@ -40,13 +40,20 @@ UID_HEADERS={
 def log_to_controller_room(function_name,msg,error,time):
     SYSTEM="inventory"
 
+    if error==True:
+        error='true'
+    elif error==False:
+        error='false'
+    else:
+        logger.info("Error must be boolean")
+
     Loggin_xml = f"""
     <LogEntry>
         <SystemName>{SYSTEM}</SystemName>
         <FunctionName>{function_name}</FunctionName>
         <Logs>{msg}</Logs>
         <Error>{error}</Error>
-        <Timestamp>{datetime.datetime.utcnow().isoformat()}</Timestamp>
+        <Timestamp>{datetime.datetime.now().isoformat()}</Timestamp>
     </LogEntry>
     """
     # Define your XML and XSD as strings
@@ -92,6 +99,7 @@ def log_to_controller_room(function_name,msg,error,time):
     logger.info(function_name)
     logger.info(msg)
     logger.info(error)
+    logger.info("----------------------------------------------------------")
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         logger.info('XML is valid')
