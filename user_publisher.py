@@ -166,7 +166,7 @@ def create_xml(user):
     ET.SubElement(user_element, "first_name").text = name_array[0]
     ET.SubElement(user_element, "last_name").text = name_array[1]
     ET.SubElement(user_element, "email").text = user['email']
-    ET.SubElement(user_element, "phone").text = user['phone']
+    ET.SubElement(user_element, "telephone").text = user['phone']
     ET.SubElement(user_element, "birthday").text = None
        
     address_element = ET.SubElement(user_element, "address")
@@ -199,13 +199,14 @@ def create_xml(user):
         
         # Get payload to update the newly created user in the ui
         payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
-        
+        logger.info(payload)
+        logger.info(user_xml_str)
         # Updates user in the database
         API_calls.update_user(payload,user["pk"])
-        logger.info("XML is valid")
+        logger.info("XML ist valid")
         return user_xml_str
     else:
-        logger.info("XML not valid")
+        logger.info("XML note valid")
 
     
 
@@ -240,62 +241,18 @@ def publish_to_queue(xml_data):
     connection.close()
 
 # Function that creates the XML to update an user and returns it
-def f_update_xml(existing_user, updated_user, updated_fields: list):
+def f_update_xml(updated_user, updated_fields):
     payload={}
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = "user.inventory"
     ET.SubElement(user_element, "crud_operation").text = "update"
-    ET.SubElement(user_element, "id").text = existing_user['description']
-
-    if updated_fields[0]is not None and updated_fields[1]is not None:
-        new_name_array=updated_user["name"].split(".")         
-        ET.SubElement(user_element, "first_name").text = new_name_array[0]
-        ET.SubElement(user_element, "last_name").text = new_name_array[1]
-
-        payload['name']=updated_user["name"]
+    ET.SubElement(user_element, "id").text = updated_user['description']
+    ET.SubElement(user_element, "first_name").text = updated_fields["first_name"]
+    ET.SubElement(user_element, "last_name").text = updated_fields["last_name"]
+    ET.SubElement(user_element, "telephone").text = updated_fields['telephone']
+    ET.SubElement(user_element, "email").text = updated_fields['email']
+    ET.SubElement(user_element, "birthday").text = None
     
-    if updated_fields[0]is None and updated_fields[1]is not None:
-        new_name_array=updated_user["name"].split(".")
-        old_name_array=existing_user["name"].split(".")          
-        ET.SubElement(user_element, "first_name").text = old_name_array[0]
-        ET.SubElement(user_element, "last_name").text = new_name_array[1]
-
-        payload['name']=old_name_array[0]+'.'+new_name_array[1]
-
-    if updated_fields[0]is None and updated_fields[1]is None:
-        old_name_array=existing_user["name"].split(".")         
-        ET.SubElement(user_element, "first_name").text = None
-        ET.SubElement(user_element, "last_name").text = None
-
-        payload["name"]=old_name_array[0]+'.'+old_name_array[1]
-    
-    if updated_fields[0]is not None and updated_fields[1]is None:
-        new_name_array=updated_user["name"].split(".")
-        old_name_array=existing_user["name"].split(".")          
-        ET.SubElement(user_element, "first_name").text = new_name_array[0]
-        ET.SubElement(user_element, "last_name").text = old_name_array[1]
-
-        payload["name"]=new_name_array[0]+'.'+old_name_array[1]
-
-    if updated_fields[2] is None:
-        ET.SubElement(user_element, "email").text = None
-    if updated_fields[3] is None:
-        ET.SubElement(user_element, "phone").text = None
-
-    for field in updated_fields:
-        if field == "email":
-            if updated_user['email'] is not None:
-                ET.SubElement(user_element, "email").text = updated_user['email']
-                payload["email"]=updated_user['email']
-        elif field == "phone":
-            if updated_user['phone'] is not None:
-                ET.SubElement(user_element, "phone").text = updated_user['phone']
-                payload["phone"]=updated_user['phone']
-        ET.SubElement(user_element, "birthday").text = None
-
-    payload["contact"]=""
-    payload["currency"]="EUR"
-    payload=json.dumps(payload)
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
     ET.SubElement(address_element, "state").text = None
@@ -312,8 +269,13 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
     ET.SubElement(user_element, "calendar_link").text = None
 
     user_xml_str = ET.tostring(user_element, encoding='unicode')
-
-
+    
+    payload["name"]=updated_user["name"]
+    payload["email"]=updated_user["email"]
+    payload["phone"]=updated_user["phone"]
+    payload["contact"]=""
+    payload["currency"]="EUR"
+    payload=json.dumps(payload)
 
     xsd_doc=etree.fromstring(user_xsd.encode())
 
@@ -332,52 +294,27 @@ def f_update_xml(existing_user, updated_user, updated_fields: list):
 
 
 # Function that checks the changes
-def handle_user_update(existing_user, updated_user):
+def handle_user_update(updated_user):
 
     #Empty array to be filled
-    updated_fields = []
+    updated_fields = {}
 
     # Extract first name and last name from the company_name field
-    existing_user_name_array=existing_user['name'].split('.')
     updated_user_name_array=updated_user['name'].split('.')
     
     # Pasting the first & last names into variables
-    existing_first_name = existing_user_name_array[0]
-    existing_last_name = existing_user_name_array[1]
-    updated_first_name = updated_user_name_array[0]
-    updated_last_name =  updated_user_name_array[1]
+    updated_fields["first_name"] = updated_user_name_array[0]
+    updated_fields["last_name"] =  updated_user_name_array[1]
+    updated_fields["email"]=updated_user["email"]
+    updated_fields["telephone"]=updated_user["phone"]
  
-    # Checking if there is a change, if so place the field into the array, if not place None into the array
-    if existing_first_name != updated_first_name:
-        updated_fields.append("first_name")
-    else:
-        updated_fields.append(None)
 
-    if existing_last_name != updated_last_name:
-        updated_fields.append("last_name")
-    else:
-        updated_fields.append(None)
+    # Calls function to create the update XML
+    update_xml = f_update_xml(updated_user, updated_fields)
 
-    if existing_user['email'] != updated_user['email']:
-        updated_fields.append("email")
-    else:
-        updated_fields.append(None)
-
-    if existing_user['phone'] != updated_user['phone']:
-        updated_fields.append("phone")
-    else:
-        updated_fields.append(None)
- 
-    # If any of the tracked fields have been updated, create and publish update XML
-    if updated_fields:
-
-        # Calls function to create the update XML
-        update_xml = f_update_xml(existing_user, updated_user, updated_fields)
-
-        # Publish the updated user to the queue
-        publish_to_queue(update_xml)
-    else:
-        print("No relevant changes detected for the user.")
+    # Publish the updated user to the queue
+    publish_to_queue(update_xml)
+    
  
 # Function that creates the XML to delete a user and returns it
 def f_delete_xml(user_uid: str):
@@ -391,7 +328,7 @@ def f_delete_xml(user_uid: str):
     ET.SubElement(user_element, "first_name").text = None
     ET.SubElement(user_element, "last_name").text = None
     ET.SubElement(user_element, "email").text = None
-    ET.SubElement(user_element, "phone").text = None
+    ET.SubElement(user_element, "telephone").text = None
     ET.SubElement(user_element, "birthday").text = None
     address_element = ET.SubElement(user_element, "address")
     ET.SubElement(address_element, "country").text = None
@@ -435,11 +372,8 @@ def handle_user_delete(deleted_user_uid: str):
     publish_to_queue(delete_xml)
  
 def main():
-    # Initialize array list to store users
-    users_list = []
-   
-    # Fetch initial users
-    users_list = fetch_users()
+    
+    
 
     # flag for if there was a change
     change=False
@@ -464,30 +398,28 @@ def main():
                 publish_to_queue(user_xml)
 
                 # Adds the new user to the list
-                users_list.append(updated_user)
+
             elif updated_user['contact']=='update':
 
                 # Get the old user json object
-                old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
+
 
                 # Handles the user to be updated
-                handle_user_update(old_user, updated_user)
+                handle_user_update(updated_user)
 
-                # Update user in the list
-                users_list.append(updated_user)
-                users_list.remove(old_user)
+
 
 
 
                 change=True
             elif updated_user['contact']=='delete':
-                old_user=functions.get_user_with_same_uid(updated_user['description'], users_list)
+
 
                 handle_user_delete(old_user['description'])
 
                 API_calls.delete_user(updated_user['pk'])
 
-                users_list.remove(old_user)
+
 
                 change=True
             
