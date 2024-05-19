@@ -99,7 +99,7 @@ def log_to_controller_room(function_name,msg,error,time):
     logger.info(function_name)
     logger.info(msg)
     logger.info(error)
-    logger.info("----------------------------------------------------------")
+    
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         logger.info('XML is valid')
@@ -108,6 +108,7 @@ def log_to_controller_room(function_name,msg,error,time):
         print('Message sent')
     else:
         logger.info('XML is not valid')
+    logger.info("----------------------------------------------------------")
 
     # if True:
     #     print('XML is valid')
