@@ -242,3 +242,17 @@ def add_user_pk_to_masterUuid(user_pk, uid):
     print(f"uid: {uid}")
     print(f"pk: {user_pk}")
     return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+
+def delete_user_pk_in_masterUuid(uid):
+    #MasterUuid
+    masterUuid_url = f"http://{IP}:6000/updateServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "MasterUuid": f"{uid}",
+            "Service": "inventory",
+            "ServiceId": None
+        }
+    )
+    print(f"uid: {uid}")
+    print("Pk has been deleted")
+    return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
