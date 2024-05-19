@@ -46,7 +46,7 @@ def log_to_controller_room(function_name,msg,error,time):
         <FunctionName>{function_name}</FunctionName>
         <Logs>{msg}</Logs>
         <Error>{error}</Error>
-        <Timestamp>{time}</Timestamp>
+        <Timestamp>{datetime.datetime.utcnow().isoformat()}</Timestamp>
     </LogEntry>
     """
     # Define your XML and XSD as strings
@@ -83,11 +83,11 @@ def log_to_controller_room(function_name,msg,error,time):
     channel.queue_bind(exchange='amq.topic', queue='Loggin_queue', routing_key='logs')
 
     # Format the XML with the current timestamp
-    formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.now().isoformat())
+    # formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.utcnow().isoformat())
     # formatted_Loggin_xml = Loggin_xml.format(datetime.utcnow().isoformat())
 
     # Parse the XML
-    xml_doc = etree.fromstring(formatted_Loggin_xml.encode())
+    xml_doc = etree.fromstring(Loggin_xml.encode())
 
     logger.info(function_name)
     logger.info(msg)
