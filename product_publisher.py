@@ -1,3 +1,4 @@
+from doctest import master
 from unicodedata import category
 import requests
 import json
@@ -58,7 +59,6 @@ def get_stock():
 
     for item in data:
         part_id = item["part"]
-        part_Uuid = item["description"]
         item_price_string = item["purchase_price"]
         item_price = round(float(item_price_string), 2)
         #get item info
@@ -66,17 +66,19 @@ def get_stock():
         item_response = requests.request("GET", item_url, headers=headers, data=payload)
         item_data = item_response.json()
         item_name = item_data["name"]
+        partUuid = item_data["description"]
 
 
         #categorie info
         category_id = item_data["category"]
         category = category_mapping.get(category_id, "")
 
-        if part_Uuid == "":
-            API_calls.create_part_masterUuid(part_id, category_id, item_name)
-            item = Item(part_id, item_name, item_price, category)
+        if partUuid == "":
+            partUuid = API_calls.create_part_masterUuid(part_id)
+            API_calls.apply_partUuid(partUuid, part_id, category_id, item_name)
+            item = Item(part_id, item_name, item_price, category, partUuid)
             logging.info(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
-
+            print(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}, Description: {partUuid}")
         # if part_id not in [item.part_id for item in product_list]:
         #     #als item niet in de lijst is, toevoegen
         #     product_list.append(item)
@@ -93,7 +95,7 @@ def get_stock():
 
 
 class Item():
-    def __init__(self, part_id, item_name, item_price, category):
+    def __init__(self, part_id, item_name, item_price, category, partUuid):
         self.routing_key = "product.inventory"
         self.crud_operation = "create"
         self.part_id = part_id
@@ -102,12 +104,13 @@ class Item():
         self.category = category
         self.amount = "-1"
         self.btw = "-1"
+        self.description = partUuid
 
 def create_xml(item: Item):
     product = ET.Element("product")
     ET.SubElement(product, "routing_key").text = "product.inventory"
     ET.SubElement(product, "crud_operation").text = "create"
-    ET.SubElement(product, "id").text = str(item.part_id)
+    ET.SubElement(product, "id").text = str(item.description)
     ET.SubElement(product, "name").text = str(item.item_name)
     ET.SubElement(product, "price").text = str(item.item_price)
     ET.SubElement(product, "amount").text = str(item.amount)
