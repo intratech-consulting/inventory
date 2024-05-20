@@ -205,7 +205,7 @@ def get_user_pk_from_masterUuid(uid):
     data=response.json()
     user_pk=data['inventory']
     
-    value_after_dot = userpk.split('.')[1]
+    value_after_dot = user_pk.split('.')[1]
     print(value_after_dot)
     return(value_after_dot)
 
@@ -257,3 +257,106 @@ def delete_user_pk_in_masterUuid(uid):
     print(f"uid: {uid}")
     print("Pk has been deleted")
     return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+
+def create_category(category_name,parent_category_id = ""):
+    url = f"{IP}880/api/part/category/"
+    if parent_category_id == "":
+        payload = json.dumps({
+        "name":category_name
+    })
+    else:
+        payload = json.dumps({
+            "name":category_name,
+            "parent": parent_category_id
+        })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+def create_part(part_name, category_id):
+    url = f"{IP}880/api/part/"
+    payload = json.dumps({
+        "name":part_name,
+        "category": category_id,
+        "minimum_stock":1
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+def create_stock(part_id,quantity,purchase_prise):
+    url = f"{IP}880/api/stock/"
+    payload = json.dumps({
+        "part":part_id,
+        "quantity": quantity,
+        "purchase_price":purchase_prise,
+        "purchase_price_currency":"EUR",
+        "description":"xxx"
+    })
+    # currency best een ENUM
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+
+def create_user_masterUuid(user_pk):
+    masterUuid_url = f"http://{IP}:6000/createMasterUuid"
+    masterUuid_payload = json.dumps(
+    {
+    "Service": "inventory",
+    "ServiceId":f"p.{user_pk}"
+    }
+    )
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        print(response)
+        if response.status_code!=201:
+            error_message=f"something went wrong when creating a user with user_pk {user_pk}, status code was not 201: {response.text}"
+            raise Exception(error_message)    
+        return response.json()['MasterUuid']       
+    except requests.exceptions.RequestException as e:
+        error_message=f"something went wrong when creating a user with user_pk {user_pk} - {str(e)}"
+        raise Exception(error_message)
+
+def create_part_masterUuid(part_id: str, category_id: str, part_name: str):
+    url = f"http://{IP}:6000/createMasterUuid"
+    masterUuid_payload = json.dumps({
+    "Service": "inventory",
+    "ServiceId":f"p.{part_id}"
+    })
+    try:
+        response = requests.request("POST", url, headers=UID_HEADERS ,data=masterUuid_payload)
+        print(response)
+        product_masterUuid = response.json()["MASTERUUID"]
+        if response.status_code!=201:
+            error_message=f"something went wrong when creating a a product uuid for part: {part_id}, status code was not 201: {response.text}"
+            raise Exception(error_message)    
+        print(response.json()['MasterUuid'])
+    except requests.exceptions.RequestException as e:
+        error_message=f"something went wrong when creating a product uuid for part: {part_id} - {str(e)}"
+        raise Exception(error_message)
+    
+    try:
+        part_url = f"http://10.2.160.51:880/api/part/{part_id}"
+        payload = json.dumps({
+            "category": category_id,
+            "minimum_stock": 1,
+            "name": part_name,
+            "description": f"{product_masterUuid}"
+        })
+        response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
+    except requests.exceptions.RequestException as e:
+        ...

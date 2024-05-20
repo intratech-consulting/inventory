@@ -5,6 +5,7 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
+from Inventree.utilities import API_calls
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
@@ -57,6 +58,7 @@ def get_stock():
 
     for item in data:
         part_id = item["part"]
+        part_Uuid = item["description"]
         item_price_string = item["purchase_price"]
         item_price = round(float(item_price_string), 2)
         #get item info
@@ -70,11 +72,14 @@ def get_stock():
         category_id = item_data["category"]
         category = category_mapping.get(category_id, "")
 
-        if part_id not in [item.part_id for item in product_list]:
-            #als item niet in de lijst is, toevoegen
+        if part_Uuid == "":
+            API_calls.create_part_masterUuid(part_id, category_id, item_name)
             item = Item(part_id, item_name, item_price, category)
-            product_list.append(item)
             logging.info(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
+
+        # if part_id not in [item.part_id for item in product_list]:
+        #     #als item niet in de lijst is, toevoegen
+        #     product_list.append(item)
             xml_data = create_xml(item)
             logging.info(xml_data)
             publish_xml(xml_data) # Publisher voor kassa komt hier!!! #
