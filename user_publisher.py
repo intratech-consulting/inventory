@@ -430,10 +430,10 @@ def main():
 
                 uid= updated_user['description']
                 try:
-                    API_calls.delete_user(updated_user['pk'])
+                    response=API_calls.delete_user(updated_user['pk'])
                     API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
                 except:
-                    error_message = f"Error deleting user {uid}: {str(e)}"
+                    error_message = f"Error deleting user {uid}:"
                     raise Exception(error_message)
 
                 
