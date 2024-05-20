@@ -247,7 +247,7 @@ def delete_user_pk_in_masterUuid(uid):
     masterUuid_payload = json.dumps(
         {
             "Service": "inventory",
-            "ServiceId": None
+            "ServiceId": "NULL"
         }
     )
     print(f"uid: {uid}")

@@ -207,7 +207,12 @@ def delete_user(uid):
     
     try:
         API_calls.delete_user_pk_in_masterUuid(uid)
-        API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+        if response.status_code != 200:
+            error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
+            raise Exception(error_message)
+        else:
+            API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+        
     except Exception as e:
         error_message = f"Error accessing user {uid}: {str(e)}"
         raise Exception(error_message)
