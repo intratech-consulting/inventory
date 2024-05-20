@@ -246,6 +246,7 @@ def delete_user_pk_in_masterUuid(uid):
     masterUuid_url = f"http://{IP}:6000/UpdateServiceId"
     masterUuid_payload = json.dumps(
         {
+            "MASTERUUID": f"{uid}",
             "Service": "inventory",
             "ServiceId": "NULL"
         }
