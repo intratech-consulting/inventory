@@ -9,7 +9,7 @@ from utilities import API_calls  # Import API calls module
 from utilities import functions  # Import functions module
 import datetime
 from datetime import datetime
-import response
+import requests
 
 IP='10.2.160.53'
 
@@ -436,7 +436,7 @@ def main():
 
                 uid= updated_user['description']
                 try:
-                    API_calls.delete_user_pk_in_masterUuid(uid)
+                    response= API_calls.delete_user_pk_in_masterUuid(uid)
                     if response.status_code != 200:
                         error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
                         raise Exception(error_message)
