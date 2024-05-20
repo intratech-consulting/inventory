@@ -211,14 +211,10 @@ def get_user_pk_from_masterUuid(uid):
 
 def create_user_masterUuid(user_pk):
     masterUuid_url = f"http://{IP}:6000/createMasterUuid"
-    masterUuid_payload = json.dumps(
-    {
+    masterUuid_payload = json.dumps({
     "Service": "inventory",
     "ServiceId":f"u.{user_pk}"
-    }
-    )
-
-
+    })
 
     try:
         response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
@@ -310,53 +306,30 @@ def create_stock(part_id,quantity,purchase_prise):
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response.text)
 
-
-def create_user_masterUuid(user_pk):
-    masterUuid_url = f"http://{IP}:6000/createMasterUuid"
-    masterUuid_payload = json.dumps(
-    {
-    "Service": "inventory",
-    "ServiceId":f"p.{user_pk}"
-    }
-    )
-
-    try:
-        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
-        print(response)
-        if response.status_code!=201:
-            error_message=f"something went wrong when creating a user with user_pk {user_pk}, status code was not 201: {response.text}"
-            raise Exception(error_message)    
-        return response.json()['MasterUuid']       
-    except requests.exceptions.RequestException as e:
-        error_message=f"something went wrong when creating a user with user_pk {user_pk} - {str(e)}"
-        raise Exception(error_message)
-
-def create_part_masterUuid(part_id: str, category_id: str, part_name: str):
+def create_part_masterUuid(part_id):
     url = f"http://{IP}:6000/createMasterUuid"
     masterUuid_payload = json.dumps({
     "Service": "inventory",
-    "ServiceId":f"p.{part_id}"
+    "ServiceId":f"prod.{part_id}"
     })
     try:
         response = requests.request("POST", url, headers=UID_HEADERS ,data=masterUuid_payload)
         print(response)
-        product_masterUuid = response.json()["MASTERUUID"]
         if response.status_code!=201:
-            error_message=f"something went wrong when creating a a product uuid for part: {part_id}, status code was not 201: {response.text}"
+            error_message=f" 201: {response.text}"
             raise Exception(error_message)    
-        print(response.json()['MasterUuid'])
+        return response.json()['MasterUuid']       
     except requests.exceptions.RequestException as e:
-        error_message=f"something went wrong when creating a product uuid for part: {part_id} - {str(e)}"
+        error_message=f" {str(e)}"
         raise Exception(error_message)
-    
-    try:
-        part_url = f"http://10.2.160.51:880/api/part/{part_id}"
-        payload = json.dumps({
-            "category": category_id,
-            "minimum_stock": 1,
-            "name": part_name,
-            "description": f"{product_masterUuid}"
-        })
-        response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
-    except requests.exceptions.RequestException as e:
-        ...
+
+def apply_partUuid(Uuid, part_id, category_id: str, part_name: str):
+    part_url = f"http://10.2.160.51:880/api/part/{part_id}/"
+    payload = json.dumps({
+        "category": category_id,
+        "minimum_stock": 1,
+        "name": part_name,
+        "description": f"{Uuid}"
+    })
+    response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
+    print(response)
