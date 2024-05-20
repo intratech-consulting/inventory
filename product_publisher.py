@@ -1,3 +1,4 @@
+from doctest import master
 from unicodedata import category
 import requests
 import json
@@ -5,6 +6,7 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
+from utilities import API_calls
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
@@ -14,7 +16,6 @@ logger = logging.getLogger(__name__)
 pika_logger = logging.getLogger("pika")
 pika_logger.setLevel(logging.WARNING)
 
-product_list = []
 
 
 def publish_xml(xml_data):
@@ -29,8 +30,6 @@ def publish_xml(xml_data):
     connection.close()
 
 def get_stock():
-    global product_list
-
     time.sleep(30) ### kies interval ###
 
     stock_url = "http://10.2.160.53:880/api/stock/"
@@ -64,17 +63,22 @@ def get_stock():
         item_response = requests.request("GET", item_url, headers=headers, data=payload)
         item_data = item_response.json()
         item_name = item_data["name"]
+        partUuid = item_data["description"]
 
 
         #categorie info
         category_id = item_data["category"]
         category = category_mapping.get(category_id, "")
 
-        if part_id not in [item.part_id for item in product_list]:
-            #als item niet in de lijst is, toevoegen
-            item = Item(part_id, item_name, item_price, category)
-            product_list.append(item)
+        if partUuid == "":
+            partUuid = API_calls.create_part_masterUuid(part_id)
+            API_calls.apply_partUuid(partUuid, part_id, category_id, item_name)
+            item = Item(part_id, item_name, item_price, category, partUuid)
             logging.info(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}")
+            print(f"Nieuw item gevonden: id: {part_id}, Naam: {item_name}, Price: {item_price}, Categorie: {category}, Description: {partUuid}")
+        # if part_id not in [item.part_id for item in product_list]:
+        #     #als item niet in de lijst is, toevoegen
+        #     product_list.append(item)
             xml_data = create_xml(item)
             logging.info(xml_data)
             publish_xml(xml_data) # Publisher voor kassa komt hier!!! #
@@ -88,7 +92,7 @@ def get_stock():
 
 
 class Item():
-    def __init__(self, part_id, item_name, item_price, category):
+    def __init__(self, part_id, item_name, item_price, category, partUuid):
         self.routing_key = "product.inventory"
         self.crud_operation = "create"
         self.part_id = part_id
@@ -97,12 +101,13 @@ class Item():
         self.category = category
         self.amount = "-1"
         self.btw = "-1"
+        self.description = partUuid
 
 def create_xml(item: Item):
     product = ET.Element("product")
     ET.SubElement(product, "routing_key").text = "product.inventory"
     ET.SubElement(product, "crud_operation").text = "create"
-    ET.SubElement(product, "id").text = str(item.part_id)
+    ET.SubElement(product, "id").text = str(item.description)
     ET.SubElement(product, "name").text = str(item.item_name)
     ET.SubElement(product, "price").text = str(item.item_price)
     ET.SubElement(product, "amount").text = str(item.amount)

@@ -137,7 +137,7 @@ def create_user(uid, user_xml):
     try:
         response = API_calls.create_user(user_name, phone, email, uid)
         if response.status_code != 201:
-            error_message = f"Error creating user {uid} - Status code was not 201: : {response.json()}"
+            error_message = f"Error creating user {uid} - Status code was not 201: : {response.json()}| status_code: {response.status_code}"
             raise Exception(error_message)
         
         data = response.json()
@@ -146,7 +146,7 @@ def create_user(uid, user_xml):
         response = API_calls.add_user_pk_to_masterUuid(user_pk, uid)
         if response.status_code != 200:
             API_calls.delete_user(user_pk)
-            error_message = f"Error accessing user uid: {uid} - Status code was not 200, user has been locally deleted"
+            error_message = f"Error accessing user uid: {uid} - Status code was not 200, user has been locally deleted| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
             API_calls.log_to_controller_room("Creating user",f"user {uid} has been successfully created",False,datetime.datetime.now())
@@ -174,7 +174,7 @@ def update_user(uid, user_xml):
         if response.status_code==200:
             API_calls.log_to_controller_room('Updating user',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
         else:
-            raise Exception(f"Error with updating user {uid}, did not receiver status_code 200: {response.json()}")
+            raise Exception(f"Error with updating user {uid}, did not receiver status_code 200: {response.json()}| status_code: {response.status_code}")
             # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
             # return
     except requests.exceptions.RequestException as e:
@@ -194,13 +194,24 @@ def delete_user(uid):
     try:
         response=API_calls.delete_user(user_pk)
         if response.status_code != 204:
-            error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}"
+            if response.status_code==404:
+                error_message = f"Error deleting user {uid} - Status code was not 404: user does not exist"
+                raise Exception(error_message)
+            error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
-            API_calls.log_to_controller_room('Deleting user', f"user with uid:{uid} has been deleted", True, datetime.datetime.now())
+            API_calls.log_to_controller_room('Deleting user', f"user with uid:{uid} has been deleted", False, datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         error_message = f"Error deleting user {uid} - {str(e)}"
         raise Exception(error_message)
+    
+    try:
+        API_calls.delete_user_pk_in_masterUuid(uid)
+        API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+    except Exception as e:
+        error_message = f"Error accessing user {uid}: {str(e)}"
+        raise Exception(error_message)
+
  
 
 

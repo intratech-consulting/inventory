@@ -53,7 +53,7 @@ def log_to_controller_room(function_name,msg,error,time):
         <FunctionName>{function_name}</FunctionName>
         <Logs>{msg}</Logs>
         <Error>{error}</Error>
-        <Timestamp>{datetime.datetime.now().isoformat()}</Timestamp>
+        <Timestamp>{time.isoformat()}</Timestamp>
     </LogEntry>
     """
     # Define your XML and XSD as strings
@@ -99,7 +99,6 @@ def log_to_controller_room(function_name,msg,error,time):
     logger.info(function_name)
     logger.info(msg)
     logger.info(error)
-    
     # Validate the XML against the schema
     if schema.validate(xml_doc):
         logger.info('XML is valid')
@@ -202,22 +201,20 @@ def get_user_pk_from_masterUuid(uid):
         error_message=f"something went wrong accessing {uid} - {str(e)}"
         raise Exception(error_message)
 
-    
+   
     data=response.json()
     user_pk=data['inventory']
-    print(user_pk)
-    return(user_pk)
+    
+    value_after_dot = user_pk.split('.')[1]
+    print(value_after_dot)
+    return(value_after_dot)
 
 def create_user_masterUuid(user_pk):
     masterUuid_url = f"http://{IP}:6000/createMasterUuid"
-    masterUuid_payload = json.dumps(
-    {
+    masterUuid_payload = json.dumps({
     "Service": "inventory",
-    "ServiceId":user_pk
-    }
-    )
-
-
+    "ServiceId":f"u.{user_pk}"
+    })
 
     try:
         response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
@@ -237,9 +234,102 @@ def add_user_pk_to_masterUuid(user_pk, uid):
         {
             "MasterUuid": f"{uid}",
             "Service": "inventory",
-            "ServiceId": f"{user_pk}"
+            "ServiceId": f"u.{user_pk}"
         }
     )
     print(f"uid: {uid}")
     print(f"pk: {user_pk}")
     return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+
+def delete_user_pk_in_masterUuid(uid):
+    #MasterUuid
+    masterUuid_url = f"http://{IP}:6000/UpdateServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "Service": "inventory",
+            "ServiceId": None
+        }
+    )
+    print(f"uid: {uid}")
+    print("Pk has been deleted")
+    return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+
+def create_category(category_name,parent_category_id = ""):
+    url = f"{IP}880/api/part/category/"
+    if parent_category_id == "":
+        payload = json.dumps({
+        "name":category_name
+    })
+    else:
+        payload = json.dumps({
+            "name":category_name,
+            "parent": parent_category_id
+        })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+def create_part(part_name, category_id):
+    url = f"{IP}880/api/part/"
+    payload = json.dumps({
+        "name":part_name,
+        "category": category_id,
+        "minimum_stock":1
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+def create_stock(part_id,quantity,purchase_prise):
+    url = f"{IP}880/api/stock/"
+    payload = json.dumps({
+        "part":part_id,
+        "quantity": quantity,
+        "purchase_price":purchase_prise,
+        "purchase_price_currency":"EUR",
+        "description":"xxx"
+    })
+    # currency best een ENUM
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+
+def create_part_masterUuid(part_id):
+    url = f"http://{IP}:6000/createMasterUuid"
+    masterUuid_payload = json.dumps({
+    "Service": "inventory",
+    "ServiceId":f"prod.{part_id}"
+    })
+    try:
+        response = requests.request("POST", url, headers=UID_HEADERS ,data=masterUuid_payload)
+        print(response)
+        if response.status_code!=201:
+            error_message=f" 201: {response.text}"
+            raise Exception(error_message)    
+        return response.json()['MasterUuid']       
+    except requests.exceptions.RequestException as e:
+        error_message=f" {str(e)}"
+        raise Exception(error_message)
+
+def apply_partUuid(Uuid, part_id, category_id: str, part_name: str):
+    part_url = f"http://{IP}:880/api/part/{part_id}/"
+    payload = json.dumps({
+        "category": category_id,
+        "minimum_stock": 1,
+        "name": part_name,
+        "description": f"{Uuid}"
+    })
+    response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
+    print(response)
