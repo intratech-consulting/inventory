@@ -5,7 +5,7 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
-from Inventree.utilities import API_calls
+from utilities import API_calls
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
