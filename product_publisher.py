@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 pika_logger = logging.getLogger("pika")
 pika_logger.setLevel(logging.WARNING)
 
-product_list = []
 
 
 def publish_xml(xml_data):
@@ -31,8 +30,6 @@ def publish_xml(xml_data):
     connection.close()
 
 def get_stock():
-    global product_list
-
     time.sleep(30) ### kies interval ###
 
     stock_url = "http://10.2.160.51:880/api/stock/"
