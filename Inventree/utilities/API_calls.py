@@ -243,7 +243,7 @@ def add_user_pk_to_masterUuid(user_pk, uid):
 
 def delete_user_pk_in_masterUuid(uid):
     #MasterUuid
-    masterUuid_url = f"http://{IP}:6000/UpdateServiceId"
+    masterUuid_url = f"http://{IP}:6000/updateServiceId"
     masterUuid_payload = json.dumps(
         {
             "MASTERUUID": f"{uid}",
