@@ -201,15 +201,10 @@ def get_user_pk_from_masterUuid(uid):
         error_message=f"something went wrong accessing {uid} - {str(e)}"
         raise Exception(error_message)
 
-    #  # Extract first name and last name from the company_name field
-    # updated_user_name_array=updated_user['name'].split('.')
-    
-    # # Pasting the first & last names into variables
-    # updated_fields["first_name"] = updated_user_name_array[0]
-    # updated_fields["last_name"] =  updated_user_name_array[1]
+   
     data=response.json()
     user_pk=data['inventory']
-    # Uid_pk_inventree_pk_array=user_pk['inventory'].split('.')
+    
     value_after_dot = userpk.split('.')[1]
     print(value_after_dot)
     return(value_after_dot)
@@ -219,7 +214,7 @@ def create_user_masterUuid(user_pk):
     masterUuid_payload = json.dumps(
     {
     "Service": "inventory",
-    "ServiceId":f"u.{user_pk}
+    "ServiceId":f"u.{user_pk}"
     }
     )
 
