@@ -11,7 +11,7 @@ COPY /Inventree/utilities ./utilities
 COPY /Docker/user_publisher-requirements.txt .
 
 # Install any dependencies required by the publisher script
-RUN pip install pika requests
+RUN pip install pika requests lxml docker
 
 # Run the publisher script when the container starts
 CMD ["python", "product_publisher.py"]
