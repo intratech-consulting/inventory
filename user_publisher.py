@@ -429,12 +429,13 @@ def main():
                 handle_user_delete(updated_user['description'])
 
                 uid= updated_user['description']
-                try:
-                    response=API_calls.delete_user(updated_user['pk'])
-                    API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
-                except:
-                    error_message = f"Error deleting user {uid}:"
-                    raise Exception(error_message)
+                # try:
+                #     response=
+                #     API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+                # except:
+                #     error_message = f"Error deleting user {uid}:"
+                #     raise Exception(error_message)
+                API_calls.delete_user(updated_user['pk'])
 
                 API_calls.delete_user_pk_in_masterUuid(uid)
                 # try:
