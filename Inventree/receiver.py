@@ -2,6 +2,7 @@ import pika
 import xml.etree.ElementTree as ET
 import requests
 import json
+import lxml
 
 # Establish connection to RabbitMQ server
 connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.51', 5672, '/', pika.PlainCredentials('user', 'password')))
