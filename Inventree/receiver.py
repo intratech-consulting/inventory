@@ -23,14 +23,14 @@ queue_name = 'inventory'
 routing_keys=['user.crm','user.facturatie','user.frontend','user.kassa','user.mailing','user.planning','order.*']
 
 channel.queue_declare(queue=queue_name, durable=True)
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.crm')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.facturatie')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.frontend')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.crm')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.facturatie')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.frontend')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
 
 
 time.sleep(10) ### kies interval ###
