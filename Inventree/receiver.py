@@ -20,14 +20,18 @@ channel.exchange_declare(exchange=exchange_name, exchange_type="topic", durable=
 # Declare queue and bind it to the exchange with routing key pattern
 queue_name = 'inventory'
 
+routing_keys=['user.crm','user.facturatie','user.frontend','user.kassa','user.mailing','user.planning','order.*']
+
 channel.queue_declare(queue=queue_name, durable=True)
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.crm')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.facturatie')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.frontend')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
-channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='order.*')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.crm')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.facturatie')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.frontend')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
+
 
 time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
@@ -58,11 +62,19 @@ def process_order(body):
     try:
         order_xml = ET.fromstring(body)
         order_id = order_xml.find('id').text
-        product_id = order_xml.find('products/product/product_id').text
+        product_uid = order_xml.find('products/product/product_id').text
         quantity = int(order_xml.find('products/product/amount').text)
     except Exception as e:
         raise Exception(f"Error in XML parsing or field extraction of order_id, product_id and quantity:\n{str(e)}")
-    removeItemFromStock(product_id, quantity, order_id)
+    
+    try:
+        product_pk=API_calls.get_pk_from_masterUuid(product_uid)
+    except Exception as e:
+        error_message = f"Error accessing product_uid {product_uid}: {str(e)}"
+        raise Exception(error_message)
+    
+    
+    removeItemFromStock(product_pk, quantity, order_id)
 
 def process_user(body):
     try:
@@ -157,7 +169,7 @@ def create_user(uid, user_xml):
 def update_user(uid, user_xml):
     print('1')
     try:
-        user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+        user_pk=API_calls.get_pk_from_masterUuid(uid)
     except Exception as e:
         error_message = f"Error accessing user {uid}: {str(e)}"
         raise Exception(error_message)
@@ -186,7 +198,7 @@ def update_user(uid, user_xml):
 
 def delete_user(uid):
     try:
-        user_pk=API_calls.get_user_pk_from_masterUuid(uid)
+        user_pk=API_calls.get_pk_from_masterUuid(uid)
     except Exception as e:
         error_message = f"Error accessing user {uid}: {str(e)}"
         raise Exception(error_message)
@@ -206,8 +218,13 @@ def delete_user(uid):
         raise Exception(error_message)
     
     try:
-        API_calls.delete_user_pk_in_masterUuid(uid)
-        API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+        response=API_calls.delete_user_pk_in_masterUuid(uid)
+        if response.status_code != 200:
+            error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
+            raise Exception(error_message)
+        else:
+            API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+        
     except Exception as e:
         error_message = f"Error accessing user {uid}: {str(e)}"
         raise Exception(error_message)

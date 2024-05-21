@@ -181,7 +181,7 @@ def delete_user(user_pk):
     return requests.request("DELETE", url, headers=HEADERS, data=payload)
     
 
-def get_user_pk_from_masterUuid(uid):
+def get_pk_from_masterUuid(uid):
     #MasterUuid
     masterUuid_url = f"http://{IP}:6000/getServiceId"
     masterUuid_payload = json.dumps(
@@ -243,11 +243,12 @@ def add_user_pk_to_masterUuid(user_pk, uid):
 
 def delete_user_pk_in_masterUuid(uid):
     #MasterUuid
-    masterUuid_url = f"http://{IP}:6000/UpdateServiceId"
+    masterUuid_url = f"http://{IP}:6000/updateServiceId"
     masterUuid_payload = json.dumps(
         {
+            "MASTERUUID": f"{uid}",
             "Service": "inventory",
-            "ServiceId": None
+            "ServiceId": "NULL"
         }
     )
     print(f"uid: {uid}")
@@ -310,7 +311,7 @@ def create_part_masterUuid(part_id):
     url = f"http://{IP}:6000/createMasterUuid"
     masterUuid_payload = json.dumps({
     "Service": "inventory",
-    "ServiceId":f"prod.{part_id}"
+    "ServiceId":f"p.{part_id}"
     })
     try:
         response = requests.request("POST", url, headers=UID_HEADERS ,data=masterUuid_payload)
@@ -324,7 +325,7 @@ def create_part_masterUuid(part_id):
         raise Exception(error_message)
 
 def apply_partUuid(Uuid, part_id, category_id: str, part_name: str):
-    part_url = f"http://10.2.160.51:880/api/part/{part_id}/"
+    part_url = f"http://{IP}:880/api/part/{part_id}/"
     payload = json.dumps({
         "category": category_id,
         "minimum_stock": 1,
