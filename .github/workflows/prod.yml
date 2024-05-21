@@ -33,8 +33,8 @@ jobs:
       - name: Connect to Production Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_PROD }} <<'ENDSSH'
-          eval "$(ssh-agent -s)"                      # Start the SSH agent
-          ssh-add ${{ env.SSH_KEY_DIR }}              # Add your private key to the agent checking if it does git action 
+          eval $(ssh-agent)                     # Start the SSH agent
+          ssh-add ~/.ssh/github_intratechconsulting              # Add your private key to the agent checking if it does git action 
           cd ${{ env.WORK_DIR }}
           echo "Current directory:" $(pwd)
           echo "Checking directory contents..."
@@ -43,6 +43,8 @@ jobs:
           if [ -d ".git" ]; then
               echo "Git directory exists, proceeding with Git operations..."
               # Add Git operations here, such as git pull or git checkout
+              git fetch origin new-main
+              git reset --hard origin/new-main
           else
               echo "Not a Git repository. Exiting."
               exit 1
