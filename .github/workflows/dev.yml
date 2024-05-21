@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy to DEV
-    runs-on: self-hosted
+    runs-on: inventory
 #    environment: staging
     env:
       SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
