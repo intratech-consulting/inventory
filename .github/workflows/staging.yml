@@ -34,14 +34,15 @@ jobs:
       - name: Connect to Staging Server and Deploy
         run: |
           sshpass -p ${{ secrets.SSH_PASSWORD }} ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'ENDSSH'
-          eval "$(ssh-agent -s)"                      # Start the SSH agent
-          ssh-add ${{ env.SSH_KEY_DIR }}          # Add your private key to the agent
+          eval $(ssh-agent)                     # Start the SSH agent
+          ssh-add ~/.ssh/github_intratechconsulting        # Add your private key to the agent
           cd ${{ env.WORK_DIR }}
           pwd
           ls -la  # Check the directory content
           if [ -d ".git" ]; then
               echo "Git directory exists, proceeding with Git operations..."
-              
+              git fetch origin staging
+              git reset --hard origin/staging
           else
               echo "Not a Git repository. Exiting."
               exit 1
