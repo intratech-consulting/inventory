@@ -311,7 +311,7 @@ def create_part_masterUuid(part_id):
     url = f"http://{IP}:6000/createMasterUuid"
     masterUuid_payload = json.dumps({
     "Service": "inventory",
-    "ServiceId":f"prod.{part_id}"
+    "ServiceId":f"p.{part_id}"
     })
     try:
         response = requests.request("POST", url, headers=UID_HEADERS ,data=masterUuid_payload)
