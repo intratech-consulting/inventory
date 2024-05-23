@@ -127,10 +127,10 @@ def removeItemFromStock(primary_key, quantity, order_id):
         if response.status_code==201:
             API_calls.log_to_controller_room('processing order message for remove in stock',f"order with id:{order_id} has been processed",False,datetime.datetime.now())
         else:
-            raise Exception(f"Error with removing from stock with order id:{order_id}")
+            raise Exception(f"Error with removing from stock in db with order id:{order_id} : {response.text}  - status_code {response.status_code}")
             # API_calls.log_to_controller_room('processing order message for remove in stock',f"something went wrong when processing order with id:{order_id}",True,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Error with removing from stock with order id:{order_id}")
+        raise Exception(f"Error with removing from stock with order id:{order_id} : {response.text} - status_code {response.status_code}")
 
 def create_user(uid, user_xml):
     try:        
@@ -158,7 +158,7 @@ def create_user(uid, user_xml):
         response = API_calls.add_user_pk_to_masterUuid(user_pk, uid)
         if response.status_code != 200:
             API_calls.delete_user(user_pk)
-            error_message = f"Error accessing user uid: {uid} - Status code was not 200, user has been locally deleted| status_code: {response.status_code}"
+            error_message = f"Error adding user uid: {uid} when creating adding pk to uid- Status code was not 200, user has been locally deleted| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
             API_calls.log_to_controller_room("Creating user",f"user {uid} has been successfully created",False,datetime.datetime.now())
@@ -171,14 +171,14 @@ def update_user(uid, user_xml):
     try:
         user_pk=API_calls.get_pk_from_masterUuid(uid)
     except Exception as e:
-        error_message = f"Error accessing user {uid}: {str(e)}"
+        error_message = f"Error getting user {uid} when updating user: {str(e)}"
         raise Exception(error_message)
 
     try:
         # Extract required fields        
         payload=functions.payload_extracting_update_user(user_xml,user_pk)
     except Exception as e:
-        error_message = f"Error accessing {uid} - {str(e)}"
+        error_message = f"Error accessing {uid} when extracting the payload - {str(e)}"
         raise Exception(error_message)
     
     try:
@@ -190,7 +190,7 @@ def update_user(uid, user_xml):
             # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
             # return
     except requests.exceptions.RequestException as e:
-        error_message = f"Error updating user {uid} - {str(e)}"
+        error_message = f"Error updating user {uid} when updating in db - {str(e)}"
         raise Exception(error_message)
     
 
@@ -200,7 +200,7 @@ def delete_user(uid):
     try:
         user_pk=API_calls.get_pk_from_masterUuid(uid)
     except Exception as e:
-        error_message = f"Error accessing user {uid}: {str(e)}"
+        error_message = f"Error getting user {uid} when deleting: {str(e)}"
         raise Exception(error_message)
     
     try:
