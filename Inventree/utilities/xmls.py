@@ -1,16 +1,6 @@
-import time
 import xml.etree.ElementTree as ET
-import pika
 import lxml
 from lxml import etree
-import json
-import logging
-from . import API_calls  # Import API calls module
-from . import functions  # Import functions module
-from . import xsds
-import datetime
-from datetime import datetime
-import requests
 
 
 
@@ -53,7 +43,7 @@ def update_user_xml(user):
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'
     ET.SubElement(user_element, "crud_operation").text = 'update'
-    ET.SubElement(user_element, "id").text = user['uid']
+    ET.SubElement(user_element, "id").text = user['description']
     ET.SubElement(user_element, "first_name").text = name_array[0]
     ET.SubElement(user_element, "last_name").text = name_array[1]
     ET.SubElement(user_element, "email").text = user['email']
