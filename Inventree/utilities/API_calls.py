@@ -2,6 +2,7 @@ import lxml
 from lxml import etree
 import pika
 from datetime import datetime
+from . import constants
 import datetime
 import requests
 import json
@@ -24,7 +25,7 @@ console_handler.setFormatter(formatter)
 # Add the console handler to the logger
 logger.addHandler(console_handler)
 
-IP="10.2.160.51"
+IP=constants.IP
 
 HEADERS={
     'Content-Type': 'application/json',

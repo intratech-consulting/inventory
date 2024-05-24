@@ -8,8 +8,9 @@ import time
 # from .utilities import API_calls
 from utilities import API_calls
 from utilities import functions
+from utilities import constants
 # Establish connection to RabbitMQ server
-IP="10.2.160.51"
+IP=constants.IP
 connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
 channel = connection.channel()
 
