@@ -15,7 +15,7 @@ from datetime import datetime
 import requests
 
 IP=constants.IP
-USER_XSD=xsds.get_user_xsd
+USER_XSD=xsds.get_user_xsd()
 
 
 # Create a logger
