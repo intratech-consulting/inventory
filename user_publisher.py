@@ -203,7 +203,7 @@ def main():
                 try:
                     handle_user_update(updated_user)
                     API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
-                except:
+                except Exception as e:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
                 change=True
@@ -216,7 +216,7 @@ def main():
                     API_calls.delete_user(updated_user['pk'])
                     API_calls.delete_user_pk_in_masterUuid(uid)
                     API_calls.log_to_controller_room('P_DELETE user ', "user succesfully deleted", False, datetime.datetime.now())
-                except:
+                except Exception as e:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_DELETE user', error_message, True, datetime.datetime.now())   
         if change==False:
