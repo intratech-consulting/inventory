@@ -11,7 +11,6 @@ from utilities import xmls
 from utilities import xsds
 from utilities import constants
 import datetime
-from datetime import datetime
 
 IP=constants.IP
 USER_XSD=xsds.get_user_xsd()
