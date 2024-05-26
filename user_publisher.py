@@ -50,7 +50,6 @@ def create_xml(user):
         # Get payload to update the newly created user in the ui
         payload=functions.get_payload_to_update_user(user,uid)
         logger.info(payload)
-        logger.info(user_xml_str)
         # Updates user in the database
         API_calls.update_user(payload,user["pk"])
         return user_xml_str
@@ -181,14 +180,14 @@ def main():
                 try:
                     user_xml = create_xml(updated_user)
                     publish_to_queue(user_xml)
-                    API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created and published", False, datetime.datetime.now())
+                    API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created", False, datetime.datetime.now())
                 except Exception as e:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
             elif updated_user['contact']=='update':
                 try:
                     handle_user_update(updated_user)
-                    API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated and published", False, datetime.datetime.now())
+                    API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
                 except:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
@@ -199,7 +198,7 @@ def main():
                     uid= updated_user['description']
                     API_calls.delete_user(updated_user['pk'])
                     API_calls.delete_user_pk_in_masterUuid(uid)
-                    API_calls.log_to_controller_room('P_DELETE user ', "user succesfully deleted and published", False, datetime.datetime.now())
+                    API_calls.log_to_controller_room('P_DELETE user ', "user succesfully deleted", False, datetime.datetime.now())
                 except:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_DELETE user', error_message, True, datetime.datetime.now())   
