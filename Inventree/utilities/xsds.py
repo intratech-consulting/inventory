@@ -31,8 +31,8 @@ def get_user_update_and_delete_xsd():
                     </xs:element>
                     <xs:element name="first_name" type="xs:string" nillable="true"/>
                     <xs:element name="last_name" type="xs:string" nillable="true"/>
-                    <xs:element name="email" type="xs:string" nillable="true"/>
-                    <xs:element name="telephone" type="xs:string" nillable="true"/>
+                    <xs:element name="email" type="xs:string" nillable="false"/>
+                    <xs:element name="telephone" type="xs:string" nillable="false"/>
                     <xs:element name="birthday">
                         <xs:simpleType>
                             <xs:union>
