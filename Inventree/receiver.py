@@ -98,22 +98,6 @@ def process_user(body):
             raise Exception(f"CRUD was invalid for user with uid:{uid} - {str(e)}")
     except Exception as e:
         raise Exception(e)
-    # def switchCase(crud):
-    #     switcher = {
-    #         "create":create_user(first_name, last_name, phone, email, uid),
-    #         "update":update_user(first_name, last_name, phone, email, uid, user_pk),
-    #         "delete":delete_user(user_pk),
-    #     }
-    # switchCase(crud)
-    
-# def filter_users(uid):
-#     response = API_calls.get_users()
-#     data=response.json()
-#     for user in data:
-#         description=user["description"]
-#         if (description==uid):
-#             id=user["pk"]
-#             return id
         
 def removeItemFromStock(primary_key, quantity, order_id):
     response = API_calls.get_one_from_stock(primary_key)
@@ -142,7 +126,7 @@ def create_user(uid, user_xml):
         email = user_xml.find('email').text
         uid=user_xml.find('id').text
     except AttributeError as e:
-        error_message = f"Error extracting user fields: {str(e)}"
+        error_message = f"Error extracting user fields for CREATE: {str(e)}"
         raise Exception(error_message)
     
     user_name = f"{first_name}.{last_name}"
@@ -162,7 +146,7 @@ def create_user(uid, user_xml):
             error_message = f"Error adding user uid: {uid} when creating adding pk to uid- Status code was not 200, user has been locally deleted| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
-            API_calls.log_to_controller_room("Creating user",f"user {uid} has been successfully created",False,datetime.datetime.now())
+            API_calls.log_to_controller_room("C_CREATE user",f"user {uid} has been successfully created",False,datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         error_message = f"Error creating user {uid} - {str(e)}"
         raise Exception(error_message)
@@ -179,13 +163,13 @@ def update_user(uid, user_xml):
         # Extract required fields        
         payload=functions.payload_extracting_update_user(user_xml,user_pk)
     except Exception as e:
-        error_message = f"Error accessing {uid} when extracting the payload - {str(e)}"
+        error_message = f"Error accessing {uid} when extracting the payload for update user - {str(e)}"
         raise Exception(error_message)
     
     try:
         response = API_calls.update_user(payload,user_pk)
         if response.status_code==200:
-            API_calls.log_to_controller_room('Updating user',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
+            API_calls.log_to_controller_room('C_UPDATE user',f"user with uid:{uid} has been updated",False,datetime.datetime.now())
         else:
             raise Exception(f"Error with updating user {uid}, did not receiver status_code 200: {response.json()}| status_code: {response.status_code}")
             # API_calls.log_to_controller_room('processing user message for update',f"something went wrong when updating user with uid:{uid}",True,datetime.datetime.now())
@@ -213,7 +197,7 @@ def delete_user(uid):
             error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
-            API_calls.log_to_controller_room('Deleting user', f"user with uid:{uid} has been deleted", False, datetime.datetime.now())
+            API_calls.log_to_controller_room('C_DELETE user', f"user with uid:{uid} has been deleted", False, datetime.datetime.now())
     except requests.exceptions.RequestException as e:
         error_message = f"Error deleting user {uid} - {str(e)}"
         raise Exception(error_message)
@@ -224,10 +208,10 @@ def delete_user(uid):
             error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
             raise Exception(error_message)
         else:
-            API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+            API_calls.log_to_controller_room('C_DELETE user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
         
     except Exception as e:
-        error_message = f"Error accessing user {uid}: {str(e)}"
+        error_message = f"Error accessing user {uid} when deleting: {str(e)}"
         raise Exception(error_message)
 
  
