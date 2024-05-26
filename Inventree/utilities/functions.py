@@ -96,3 +96,26 @@ def compare_json_objects(updated_user, user_list):
         return False
     else:
         return True
+    
+# Function to that makes a payload to update the user without a description(user made in the ui)
+def get_payload_to_update_user(user,uid):
+    user_name=user['name']
+
+    payload = json.dumps(
+            {
+                "name": user_name,
+                "description": uid,
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+            }
+        )
+    return payload
+
+# Function that returns the list of users in inventree
+def fetch_users():
+    response = API_calls.get_users()
+    users = response.json()
+    print(f"fetching is done")
+    return users

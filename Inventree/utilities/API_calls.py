@@ -2,6 +2,7 @@ import lxml
 from lxml import etree
 import pika
 from datetime import datetime
+from . import constants
 import datetime
 import requests
 import json
@@ -24,7 +25,7 @@ console_handler.setFormatter(formatter)
 # Add the console handler to the logger
 logger.addHandler(console_handler)
 
-IP="10.2.160.53"
+IP=constants.IP
 
 HEADERS={
     'Content-Type': 'application/json',
@@ -181,7 +182,7 @@ def delete_user(user_pk):
     return requests.request("DELETE", url, headers=HEADERS, data=payload)
     
 
-def get_user_pk_from_masterUuid(uid):
+def get_pk_from_masterUuid(uid):
     #MasterUuid
     masterUuid_url = f"http://{IP}:6000/getServiceId"
     masterUuid_payload = json.dumps(

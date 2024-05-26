@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 import pika
 import logging
 from utilities import API_calls
+from utilities import constants
+
+IP= constants.IP
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
@@ -19,7 +22,7 @@ pika_logger.setLevel(logging.WARNING)
 
 
 def publish_xml(xml_data):
-    connection = pika.BlockingConnection(pika.ConnectionParameters('10.2.160.53', 5672, '/', pika.PlainCredentials('user', 'password')))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
     channel = connection.channel()
 
     exchange_name = "amq.topic"
@@ -32,8 +35,8 @@ def publish_xml(xml_data):
 def get_stock():
     time.sleep(30) ### kies interval ###
 
-    stock_url = "http://10.2.160.53:880/api/stock/"
-    category_url = "http://10.2.160.53:880/api/part/category/"
+    stock_url = f"http://{IP}:880/api/stock/"
+    category_url = f"http://{IP}:880/api/part/category/"
     payload = {}
     headers = {
         'Content-Type': 'application/json',
@@ -59,7 +62,7 @@ def get_stock():
         item_price_string = item["purchase_price"]
         item_price = round(float(item_price_string), 2)
         #get item info
-        item_url = f"http://10.2.160.53:880/api/part/{part_id}/"
+        item_url = f"http://{IP}:880/api/part/{part_id}/"
         item_response = requests.request("GET", item_url, headers=headers, data=payload)
         item_data = item_response.json()
         item_name = item_data["name"]
