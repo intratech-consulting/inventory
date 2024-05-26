@@ -14,8 +14,8 @@ import datetime
 
 #constants
 IP=constants.IP
-USER_XSD_U_D=xsds.get_user_update_and_delete_xsd()
-USER_XSD_C=xsds.get_user_create_xsd()
+USER_XSD_D=xsds.get_user_delete_xsd()
+USER_XSD_C_U=xsds.get_user_create_and_update_xsd()
 
 
 # Create a logger
@@ -40,7 +40,7 @@ def create_xml(user):
     #Creates uid for new user
     user_xml_str= xmls.create_user_xml(user, uid)
 
-    xsd_doc=etree.fromstring(USER_XSD_C.encode())
+    xsd_doc=etree.fromstring(USER_XSD_C_U.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
@@ -96,7 +96,7 @@ def f_update_xml(updated_user):
     payload["currency"]="EUR"
     payload=json.dumps(payload)
 
-    xsd_doc=etree.fromstring(USER_XSD_U_D.encode())
+    xsd_doc=etree.fromstring(USER_XSD_C_U.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
@@ -132,7 +132,7 @@ def f_delete_xml(user_uid: str):
 
     user_xml_str = xmls.delete_user_xml(user_uid)
 
-    xsd_doc=etree.fromstring(USER_XSD_U_D.encode())
+    xsd_doc=etree.fromstring(USER_XSD_D.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)

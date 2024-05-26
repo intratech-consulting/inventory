@@ -1,6 +1,6 @@
 
 
-def get_user_update_and_delete_xsd():
+def get_user_delete_xsd():
     return"""
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
         <xs:element name="user">
@@ -106,7 +106,7 @@ def get_user_update_and_delete_xsd():
     </xs:schema>
     """
 
-def get_user_create_xsd():
+def get_user_create_and_update_xsd():
     return"""
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="user">
