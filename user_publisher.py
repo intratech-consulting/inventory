@@ -54,10 +54,8 @@ def create_xml(user):
         logger.info(user_xml_str)
         # Updates user in the database
         API_calls.update_user(payload,user["pk"])
-        logger.info("XML ist valid")
         return user_xml_str
     else:
-        logger.info("XML note valid")
         error_message="XML not valid"
         raise Exception(error_message)
     
@@ -105,10 +103,8 @@ def f_update_xml(updated_user):
     if xsd_schema.validate(xml_doc):     
         # Updates user in the database
         API_calls.update_user(payload,updated_user['pk'])
-        logger.info("XML is valid")
         return user_xml_str
     else:
-        logger.info("XML not valid")
         error_message="XML not valid"
         raise Exception(error_message)
 
@@ -141,10 +137,8 @@ def f_delete_xml(user_uid: str):
 
     if xsd_schema.validate(xml_doc):     
         # Updates user in the database
-        logger.info("XML is valid")
         return user_xml_str
     else:
-        logger.info("XML not valid")
         error_message="XML not valid"
         raise Exception(error_message)
     
