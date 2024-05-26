@@ -12,8 +12,10 @@ from utilities import xsds
 from utilities import constants
 import datetime
 
+#constants
 IP=constants.IP
-USER_XSD=xsds.get_user_xsd()
+USER_XSD_U_D=xsds.get_user_update_and_delete_xsd()
+USER_XSD_C=xsds.get_user_create_xsd()
 
 
 # Create a logger
@@ -38,7 +40,7 @@ def create_xml(user):
     #Creates uid for new user
     user_xml_str= xmls.create_user_xml(user, uid)
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_C.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
@@ -79,6 +81,7 @@ def publish_to_queue(xml_data):
 # Function that creates the XML to update an user and returns it
 def f_update_xml(updated_user):
 
+    # Payload for inventree
     payload={}
     
 
@@ -91,13 +94,13 @@ def f_update_xml(updated_user):
     payload["currency"]="EUR"
     payload=json.dumps(payload)
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_U_D.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
 
     
-
+    # validates xml
     if xsd_schema.validate(xml_doc):     
         # Updates user in the database
         API_calls.update_user(payload,updated_user['pk'])
@@ -127,12 +130,12 @@ def f_delete_xml(user_uid: str):
 
     user_xml_str = xmls.delete_user_xml(user_uid)
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_U_D.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
 
-
+    # validates xml
     if xsd_schema.validate(xml_doc):     
         # Updates user in the database
         return user_xml_str
@@ -173,17 +176,21 @@ def main():
 
         # Check for new users, updated users, and deleted users
         for updated_user in updated_users:
+            # Check for new user without description (uid)
             if updated_user['description'] == "":
                 change=True
 
                 # New user detected
                 try:
+                    
                     user_xml = create_xml(updated_user)
                     publish_to_queue(user_xml)
                     API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created", False, datetime.datetime.now())
                 except Exception as e:
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
+            
+            # Check for users need to be update by checking contact field for update
             elif updated_user['contact']=='update':
                 try:
                     handle_user_update(updated_user)
@@ -192,6 +199,8 @@ def main():
                     error_message=f"Error processing message:\n{str(e)}"
                     API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
                 change=True
+
+            # Check for user need to be deleted by checking contact field for delete
             elif updated_user['contact']=='delete':         
                 try:
                     handle_user_delete(updated_user['description'])

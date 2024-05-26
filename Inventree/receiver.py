@@ -49,7 +49,7 @@ def callback(ch, method, properties, body):
             process_order(body)
         # Acknowledge the message
         else:
-            API_calls.log_to_controller_room('Uknown',"message was not an order or user",True,datetime.datetime.now())
+            API_calls.log_to_controller_room('Unknown',"message was not an order or user",True,datetime.datetime.now())
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
         error_message=f"Error processing message:\n{str(e)}"
@@ -104,8 +104,8 @@ def removeItemFromStock(primary_key, quantity, order_id):
     item_data = response.json()
     current_quantity = item_data.get("quantity", 100)
     if current_quantity - quantity < 1:
-        print("The stock is empty")
-        return
+        error_message="Stocke can't go bellow 0"
+        raise Exception (error_message)
     
     try:
         response= API_calls.remove_from_stock(primary_key,quantity,order_id)
