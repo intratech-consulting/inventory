@@ -57,6 +57,8 @@ def create_xml(user):
         return user_xml_str
     else:
         error_message="XML not valid"
+        API_calls.delete_user_pk_in_masterUuid(uid)
+        API_calls.delete_user(user["pk"])
         raise Exception(error_message)
     
 
