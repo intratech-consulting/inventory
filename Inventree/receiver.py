@@ -123,13 +123,7 @@ def create_user(uid, user_xml):
         first_name = user_xml.find('first_name').text
         last_name = user_xml.find('last_name').text
         phone = user_xml.find('telephone').text
-        if phone =='':
-            error_message = f"Error extracting user fields for CREATE: phone is empty"
-            raise Exception(error_message)
         email = user_xml.find('email').text
-        if email == '':
-            error_message = f"Error extracting user fields for CREATE: email is empty"
-            raise Exception(error_message)
         uid=user_xml.find('id').text
     except AttributeError as e:
         error_message = f"Error extracting user fields for CREATE: {str(e)}"
