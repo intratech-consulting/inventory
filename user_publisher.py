@@ -89,12 +89,7 @@ def f_update_xml(updated_user):
 
     user_xml_str = xmls.update_user_xml(updated_user)
     
-    payload["name"]=updated_user["name"]
-    payload["email"]=updated_user["email"]
-    payload["phone"]=updated_user["phone"]
-    payload["contact"]=""
-    payload["currency"]="EUR"
-    payload=json.dumps(payload)
+    
 
     xsd_doc=etree.fromstring(USER_XSD_C_U.encode())
 
@@ -103,12 +98,23 @@ def f_update_xml(updated_user):
 
     
     # validates xml
-    if xsd_schema.validate(xml_doc):     
+    if xsd_schema.validate(xml_doc):  
+        payload["name"]=updated_user["name"]
+        payload["email"]=updated_user["email"]
+        payload["phone"]=updated_user["phone"]
+        payload["contact"]=""
+        payload["currency"]="EUR"
+        payload=json.dumps(payload)   
         # Updates user in the database
         API_calls.update_user(payload,updated_user['pk'])
         return user_xml_str
     else:
+        payload["name"]=updated_user["name"]
+        payload["contact"]="ERROR"
+        payload["currency"]="EUR"
+        payload=json.dumps(payload) 
         error_message="XML not valid"
+        API_calls.update_user(payload,updated_user['pk'])
         raise Exception(error_message)
 
 
