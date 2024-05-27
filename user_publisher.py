@@ -11,11 +11,11 @@ from utilities import xmls
 from utilities import xsds
 from utilities import constants
 import datetime
-from datetime import datetime
-import requests
 
+#constants
 IP=constants.IP
-USER_XSD=xsds.get_user_xsd()
+USER_XSD_D=xsds.get_user_delete_xsd()
+USER_XSD_C_U=xsds.get_user_create_and_update_xsd()
 
 
 # Create a logger
@@ -40,7 +40,7 @@ def create_xml(user):
     #Creates uid for new user
     user_xml_str= xmls.create_user_xml(user, uid)
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_C_U.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
@@ -52,16 +52,14 @@ def create_xml(user):
         # Get payload to update the newly created user in the ui
         payload=functions.get_payload_to_update_user(user,uid)
         logger.info(payload)
-        logger.info(user_xml_str)
         # Updates user in the database
         API_calls.update_user(payload,user["pk"])
-        logger.info("XML ist valid")
         return user_xml_str
     else:
-        logger.info("XML note valid")
-    # payload=get_payload_to_update_user(name_array[0],name_array[1],user,uid)
-    # API_calls.update_user(payload,user["pk"])
-    # return user_xml_str
+        error_message="XML not valid"
+        API_calls.delete_user_pk_in_masterUuid(uid)
+        API_calls.delete_user(user["pk"])
+        raise Exception(error_message)
     
 
 # Function that enables us to publish messages on the queue
@@ -85,34 +83,39 @@ def publish_to_queue(xml_data):
 # Function that creates the XML to update an user and returns it
 def f_update_xml(updated_user):
 
+    # Payload for inventree
     payload={}
     
 
     user_xml_str = xmls.update_user_xml(updated_user)
     
-    payload["name"]=updated_user["name"]
-    payload["email"]=updated_user["email"]
-    payload["phone"]=updated_user["phone"]
-    payload["contact"]=""
-    payload["currency"]="EUR"
-    payload=json.dumps(payload)
+    
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_C_U.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
 
     
-
-    if xsd_schema.validate(xml_doc):     
+    # validates xml
+    if xsd_schema.validate(xml_doc):  
+        payload["name"]=updated_user["name"]
+        payload["email"]=updated_user["email"]
+        payload["phone"]=updated_user["phone"]
+        payload["contact"]=""
+        payload["currency"]="EUR"
+        payload=json.dumps(payload)   
         # Updates user in the database
         API_calls.update_user(payload,updated_user['pk'])
-        logger.info("XML is valid")
         return user_xml_str
     else:
-        logger.info("XML not valid")
-    # API_calls.update_user(payload,updated_user['pk'])
-    # return user_xml_str
+        payload["name"]=updated_user["name"]
+        payload["contact"]="ERROR"
+        payload["currency"]="EUR"
+        payload=json.dumps(payload) 
+        error_message="XML not valid"
+        API_calls.update_user(payload,updated_user['pk'])
+        raise Exception(error_message)
 
 
 # Function that checks the changes
@@ -121,8 +124,13 @@ def handle_user_update(updated_user):
     # Calls function to create the update XML
     update_xml = f_update_xml(updated_user)
 
+    try:
+        publish_to_queue(update_xml)
+    except Exception as e:
+        error_message=f"Error deleting user {updated_user['description']}: {str(e)}"
+        raise Exception(error_message)
     # Publish the updated user to the queue
-    publish_to_queue(update_xml)
+    
     
  
 # Function that creates the XML to delete a user and returns it
@@ -130,18 +138,19 @@ def f_delete_xml(user_uid: str):
 
     user_xml_str = xmls.delete_user_xml(user_uid)
 
-    xsd_doc=etree.fromstring(USER_XSD.encode())
+    xsd_doc=etree.fromstring(USER_XSD_D.encode())
 
     xsd_schema = etree.XMLSchema(xsd_doc)
     xml_doc=etree.fromstring(user_xml_str)
 
-
+    # validates xml
     if xsd_schema.validate(xml_doc):     
         # Updates user in the database
-        logger.info("XML is valid")
         return user_xml_str
     else:
-        logger.info("XML not valid")
+        error_message="XML not valid"
+        raise Exception(error_message)
+    
     # return user_xml_str
 
 #Handles the user delete
@@ -151,7 +160,11 @@ def handle_user_delete(deleted_user_uid: str):
     delete_xml = f_delete_xml(deleted_user_uid)
 
     # Publishes the the deleted user to the queue
-    publish_to_queue(delete_xml)
+    try:
+        publish_to_queue(delete_xml)
+    except Exception as e:
+        error_message=f"Error deleting user {deleted_user_uid}: {str(e)}"
+        raise Exception(error_message)
  
 def main():
     
@@ -164,73 +177,51 @@ def main():
         time.sleep(20)
 
         # Fetches all the users in the database
-        updated_users = functions.fetch_users()
+        try:
+            updated_users = functions.fetch_users()
+        except:
+            API_calls.log_to_controller_room('Error, publishing user', "failed to fetch users from db", True, datetime.datetime.now())
 
         # Check for new users, updated users, and deleted users
         for updated_user in updated_users:
+            # Check for new user without description (uid)
             if updated_user['description'] == "":
                 change=True
 
                 # New user detected
-                user_xml = create_xml(updated_user)
-
-                # Publishe the new user to the queue
-                publish_to_queue(user_xml)
-
-                # Adds the new user to the list
-
-            elif updated_user['contact']=='update':
-
-                # Get the old user json object
-
-
-                # Handles the user to be updated
-                handle_user_update(updated_user)
-
-
-
-
-
-                change=True
-            elif updated_user['contact']=='delete':
-                
-
-
-                handle_user_delete(updated_user['description'])
-
-                uid= updated_user['description']
-                # try:
-                #     response=
-                #     API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
-                # except:
-                #     error_message = f"Error deleting user {uid}:"
-                #     raise Exception(error_message)
-                API_calls.delete_user(updated_user['pk'])
-
-                API_calls.delete_user_pk_in_masterUuid(uid)
-                # try:
-                #     response= API_calls.delete_user_pk_in_masterUuid(uid)
-                #     if response.status_code != 200:
-                #         error_message = f"Error deleting user {uid} - Status code was not 204: {response.text}| status_code: {response.status_code}"
-                #         raise Exception(error_message)
-                #     else:
-                #         API_calls.log_to_controller_room('Deleting user', f"uid:{uid} has been deleted", False, datetime.datetime.now())
+                try:
                     
-                # except Exception as e:
-                #     error_message = f"Error accessing user {uid}: {str(e)}"
-                #     raise Exception(error_message)
-
-                
-
-
-
-
+                    user_xml = create_xml(updated_user)
+                    publish_to_queue(user_xml)
+                    API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created", False, datetime.datetime.now())
+                except Exception as e:
+                    error_message=f"Error processing message:\n{str(e)}"
+                    API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
             
+            # Check for users need to be update by checking contact field for update
+            elif updated_user['contact']=='update':
+                try:
+                    handle_user_update(updated_user)
+                    API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
+                except Exception as e:
+                    error_message=f"Error processing message:\n{str(e)}"
+                    API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
+                change=True
+
+            # Check for user need to be deleted by checking contact field for delete
+            elif updated_user['contact']=='delete':         
+                try:
+                    handle_user_delete(updated_user['description'])
+                    uid= updated_user['description']
+                    API_calls.delete_user(updated_user['pk'])
+                    API_calls.delete_user_pk_in_masterUuid(uid)
+                    API_calls.log_to_controller_room('P_DELETE user ', "user succesfully deleted", False, datetime.datetime.now())
+                except Exception as e:
+                    error_message=f"Error processing message:\n{str(e)}"
+                    API_calls.log_to_controller_room('ERROR P_DELETE user', error_message, True, datetime.datetime.now())   
         if change==False:
             print("Nothing new")
         
- 
- 
 if __name__ == "__main__":
     main()
 
