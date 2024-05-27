@@ -31,6 +31,8 @@ channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.f
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='product.*')
+
 # channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
 def get_categories():
     url = f"http://{IP}:880/api/part/category/"
