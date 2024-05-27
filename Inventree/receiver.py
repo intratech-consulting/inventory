@@ -131,7 +131,7 @@ def process_user(body):
         elif crud == "delete":
             delete_user(uid)
         else:
-            raise Exception(f"CRUD was invalid for user with uid:{uid} - {str(e)}")
+            raise Exception(f"CRUD was invalid for user with uid:{uid} - ") #{str(e)}
     except Exception as e:
         raise Exception(e)
     # def switchCase(crud):
@@ -284,24 +284,24 @@ def create_product(uid, product_xml):
         raise Exception(e)
 
     try:
-        response = create_part(name, category_id, uid)
-        print(f"Product created: {response}")
-        API_calls.log_to_controller_room("Product Creation", f"Product with uid:{uid} created successfully", False, datetime.datetime.now())
+        part_id = create_part(name, category_id, uid)
+        print(f"Product created with Part ID: {part_id}")
+        API_calls.log_to_controller_room("Product Creation", f"Product with uid:{uid} created successfully with part ID: {part_id}", False, datetime.datetime.now())
+        
+        # Create stock using the part ID
+        stock_response = API_calls.create_stock(part_id, amount, price)
+        print(f'Stock has been added: {stock_response}')
     except Exception as e:
         error_message = f"Failed to create product with uid:{uid}: {str(e)}"
         API_calls.log_to_controller_room("Product Creation Error", error_message, True, datetime.datetime.now())
         raise Exception(error_message)
 
-    #Stock creëren
-    response = API_calls.create_stock(id, amount, price)
-    print(f'Stock has been added: {response}')
-
 def create_part(part_name, category_id, description):
-    url = f"{IP}880/api/part/"
+    url = f"http://{IP}:880/api/part/"
     payload = json.dumps({
-        "name":part_name,
+        "name": part_name,
         "category": category_id,
-        "minimum_stock":1,
+        "minimum_stock": 1,
         "description": description,
     })
     headers = {
@@ -310,8 +310,29 @@ def create_part(part_name, category_id, description):
         'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
+    response_data = response.json()
+    if response.status_code == 201:
+        part_id = response_data.get('pk')
+        return part_id
+    else:
+        raise Exception(f"Failed to create part: {response.text}")
 
+def create_stock(part_id, quantity, purchase_price):
+    url = f"http://{IP}:880/api/stock/"
+    payload = json.dumps({
+        "part": part_id,
+        "quantity": quantity,
+        "purchase_price": purchase_price,
+        "purchase_price_currency": "EUR",
+        "description": "xxx"
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return response.text
 
 
 
