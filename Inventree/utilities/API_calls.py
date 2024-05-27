@@ -257,7 +257,7 @@ def delete_user_pk_in_masterUuid(uid):
     return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
 
 def create_category(category_name,parent_category_id = ""):
-    url = f"{IP}880/api/part/category/"
+    url = f"http://{IP}:880/api/part/category/"
     if parent_category_id == "":
         payload = json.dumps({
         "name":category_name
@@ -276,7 +276,7 @@ def create_category(category_name,parent_category_id = ""):
     print(response.text)
 
 def create_part(part_name, category_id):
-    url = f"{IP}:880/api/part/"
+    url = f"http://{IP}:880/api/part/"
     payload = json.dumps({
         "name":part_name,
         "category": category_id,
@@ -291,7 +291,7 @@ def create_part(part_name, category_id):
     print(response.text)
 
 def create_stock(part_id,quantity,purchase_prise):
-    url = f"{IP}:880/api/stock/"
+    url = f"http://{IP}:880/api/stock/"
     payload = json.dumps({
         "part":part_id,
         "quantity": quantity,
