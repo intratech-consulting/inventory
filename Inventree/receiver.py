@@ -31,8 +31,26 @@ channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.f
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.kassa')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.mailing')
 channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='user.planning')
-# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
+channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key='product.*')
 
+# channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_keys)
+def get_categories():
+    url = f"http://{IP}:880/api/part/category/"
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(f"Failed to fetch categories: {response.status_code} {response.text}")
+
+def get_category_id(category_name):
+    categories = get_categories()
+    category_dict = {category['name']: category['pk'] for category in categories}
+    return category_dict.get(category_name, None)
 
 time.sleep(10) ### kies interval ###
 def callback(ch, method, properties, body):
@@ -47,14 +65,34 @@ def callback(ch, method, properties, body):
         elif method.routing_key.startswith('order'):
             print("Received order message:")
             process_order(body)
+        elif method.routing_key.startswith('product'):
+            print("Received product message:")
+            process_product(body)
         # Acknowledge the message
         else:
-            API_calls.log_to_controller_room('Unknown',"message was not an order or user",True,datetime.datetime.now())
+            API_calls.log_to_controller_room('Uknown',"message was not a product, order or user",True,datetime.datetime.now())
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
         error_message=f"Error processing message:\n{str(e)}"
         API_calls.log_to_controller_room('Processing Error', error_message, True, datetime.datetime.now())
         ch.basic_ack(delivery_tag=method.delivery_tag)
+
+def process_product(body):
+    try:
+        product_xml = ET.fromstring(body)
+        # Extract required fields
+        uid = product_xml.find('id').text
+        crud = product_xml.find('crud_operation').text
+    except Exception as e:
+        raise Exception(f"Error in XML parsing or field extraction of uid and CRUD:\n{str(e)}")
+    
+    try:
+        if crud == "create":
+            create_product(uid, product_xml)
+        else:
+            raise Exception(f"CRUD operation '{crud}' is invalid for product with uid: {uid}")
+    except Exception as e:
+        raise Exception(e)
 
 def process_order(body):
     # Process order message
@@ -95,7 +133,7 @@ def process_user(body):
         elif crud == "delete":
             delete_user(uid)
         else:
-            raise Exception(f"CRUD was invalid for user with uid:{uid} - {str(e)}")
+            raise Exception(f"CRUD was invalid for user with uid:{uid} - ") #{str(e)}
     except Exception as e:
         raise Exception(e)
         
@@ -117,6 +155,7 @@ def removeItemFromStock(primary_key, quantity, order_id):
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error with removing from stock with order id:{order_id} : {response.text} - status_code {response.status_code}")
 
+#User operations
 def create_user(uid, user_xml):
     try:        
         # Extract required fields
@@ -177,9 +216,6 @@ def update_user(uid, user_xml):
     except requests.exceptions.RequestException as e:
         error_message = f"Error updating user {uid} when updating in db - {str(e)}"
         raise Exception(error_message)
-    
-
-    
 
 def delete_user(uid):
     try:
@@ -214,7 +250,76 @@ def delete_user(uid):
         error_message = f"Error accessing user {uid} when deleting: {str(e)}"
         raise Exception(error_message)
 
- 
+#Product operations
+def create_product(uid, product_xml):
+    try:
+        name = product_xml.find('name').text
+        price = product_xml.find('price').text
+        amount = product_xml.find('amount').text
+        category_name = product_xml.find('category').text
+        btw = product_xml.find('btw').text
+
+        # categorie id vinden op basis van categorie naam
+        category_id = get_category_id(category_name)
+        if category_id is None:
+            raise Exception(f"Category '{category_name}' not found")
+    except AttributeError as e:
+        error_message = f"Error extracting product fields: {str(e)}"
+        raise Exception(error_message)
+    except Exception as e:
+        raise Exception(e)
+
+    try:
+        part_id = create_part(name, category_id, uid)
+        print(f"Product created with Part ID: {part_id}")
+        API_calls.log_to_controller_room("Product Creation", f"Product with uid:{uid} created successfully with part ID: {part_id}", False, datetime.datetime.now())
+        
+        # Create stock using the part ID
+        stock_response = API_calls.create_stock(part_id, amount, price)
+        print(f'Stock has been added: {stock_response}')
+    except Exception as e:
+        error_message = f"Failed to create product with uid:{uid}: {str(e)}"
+        API_calls.log_to_controller_room("Product Creation Error", error_message, True, datetime.datetime.now())
+        raise Exception(error_message)
+
+def create_part(part_name, category_id, description):
+    url = f"http://{IP}:880/api/part/"
+    payload = json.dumps({
+        "name": part_name,
+        "category": category_id,
+        "minimum_stock": 1,
+        "description": description,
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    response_data = response.json()
+    if response.status_code == 201:
+        part_id = response_data.get('pk')
+        return part_id
+    else:
+        raise Exception(f"Failed to create part: {response.text}")
+
+def create_stock(part_id, quantity, purchase_price):
+    url = f"http://{IP}:880/api/stock/"
+    payload = json.dumps({
+        "part": part_id,
+        "quantity": quantity,
+        "purchase_price": purchase_price,
+        "purchase_price_currency": "EUR",
+        "description": "xxx"
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
+        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return response.text
+
 
 
 # Consume messages from the queue
