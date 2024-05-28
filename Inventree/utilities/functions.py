@@ -127,16 +127,35 @@ def uid_checker(user):
         
         if is_invalid_uid:
             uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
-            user['description'] = uid
-            user['contact'] = "ERROR: uid was incorrect, is now recovered but nothing was published."
-            response = API_calls.update_user(user, user['pk'])
+            payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": uid,
+                "currency": "EUR",
+                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False
+            }
+            )
+            response = API_calls.update_user(payload, user['pk'])
             raise Exception(f"uid was altered, is now reset")
     except requests.exceptions.RequestException as e:
         if e.response.status_code == 404:
             uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
-            user['description'] = uid
-            user['contact'] = "ERROR: uid was incorrect, is now recovered but nothing was published."
-            response = API_calls.update_user(user, user['pk'])
+
+            payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": uid,
+                "currency": "EUR",
+                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False
+            }
+            )
+            response = API_calls.update_user(payload, user['pk'])
             raise Exception(f"uid was altered, is now reset")
         else:
             raise Exception(f"Something went wrong when checking the uid: {str(e)}")
