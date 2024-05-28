@@ -73,6 +73,7 @@ def get_stock():
         item_price_string = item["purchase_price"]
         item_price = round(float(item_price_string), 2)
         stock_id = item["pk"]
+        amount= item["quantity"]
 
         # Get item info
         item_url = f"http://{IP}:880/api/part/{part_id}/"
@@ -145,7 +146,7 @@ def update_product_xml(product):
     ET.SubElement(product_element, "id").text = product['description']
     ET.SubElement(product_element, "name").text = product['name']
     ET.SubElement(product_element, "price").text = str(product['item_price'])
-    ET.SubElement(product_element, "amount").text = None
+    ET.SubElement(product_element, "amount").text = product['amount']
     ET.SubElement(product_element, "category").text = product['category']
     ET.SubElement(product_element, "btw").text = None
 
