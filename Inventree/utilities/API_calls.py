@@ -125,7 +125,7 @@ def remove_from_stock(primary_key,quantity,order_id):
             {
                 "batch": "string",
                 "packaging": "string",
-                "part": primary_key,
+                "pk": primary_key,
                 "quantity": f"{quantity}",
                 "status": ""
             }
