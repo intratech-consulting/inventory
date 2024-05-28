@@ -119,3 +119,19 @@ def fetch_users():
     users = response.json()
     print(f"fetching is done")
     return users
+
+def uid_checker(user):
+
+    try:
+        response=API_calls.get_pk_from_masterUuid(user['description'])
+        data= response.json()
+        if data['error']=="No matching entry found.":
+            uid=API_calls.get_uid_from_pk("u."+user['pk'])
+            user['description']=uid
+            user['contact']="ERROR IN UID, IS FIXED NOW"
+            response=API_calls.update_user(user,user["u."+'pk'])
+        else:
+            return
+    except:
+        error_message="something went wrong when checking the uid"
+        raise Exception(error_message)

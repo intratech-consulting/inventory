@@ -144,13 +144,7 @@ def get_user_create_and_update_xsd():
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="telephone">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:minLength value="1"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element name="telephone" type="xs:string" nillable="true"/>
                 <xs:element name="birthday">
                     <xs:simpleType>
                         <xs:union>

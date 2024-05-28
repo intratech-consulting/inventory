@@ -90,10 +90,6 @@ def log_to_controller_room(function_name,msg,error,time):
     channel.queue_declare(queue='Loggin_queue', durable=True)
     channel.queue_bind(exchange='amq.topic', queue='Loggin_queue', routing_key='logs')
 
-    # Format the XML with the current timestamp
-    # formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.utcnow().isoformat())
-    # formatted_Loggin_xml = Loggin_xml.format(datetime.utcnow().isoformat())
-
     # Parse the XML
     xml_doc = etree.fromstring(Loggin_xml.encode())
 
@@ -109,17 +105,6 @@ def log_to_controller_room(function_name,msg,error,time):
     else:
         logger.info('XML is not valid')
     logger.info("----------------------------------------------------------")
-
-    # if True:
-    #     print('XML is valid')
-    #     logger.info('XML is valid')
-    #     # Publish the message to the queue
-    #     channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
-    #     print('Message sent')
-    #     logger.info('XML is not valid')
-    # else:
-    #     print('XML is not valid')
-    #     logger.info('XML is not valid')
 
     # Close the connection
     connection.close()
@@ -335,3 +320,30 @@ def apply_partUuid(Uuid, part_id, category_id: str, part_name: str):
     })
     response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
     print(response)
+
+
+def get_uid_from_pk(pk):
+    #MasterUuid
+    masterUuid_url = f"http://{IP}:6000/getMasterUuid"
+    masterUuid_payload = json.dumps(
+        {
+            "Service": "inventory",
+            "ServiceId": f"{pk}",
+        }
+    )
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        if response.status_code!=200:
+            error_message=f"something went wrong when accessing this pk:{pk}, status code was not 200: {response.text}"
+            raise Exception(error_message)           
+    except requests.exceptions.RequestException as e:
+        error_message=f"something went wrong accessing pk:{pk} - {str(e)}"
+        raise Exception(error_message)
+
+   
+    data=response.json()
+    uid=data['UUID']
+    
+    
+    return(uid)
