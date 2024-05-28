@@ -123,7 +123,7 @@ def fetch_users():
 def uid_checker(user):
 
     try:
-        Error=API_calls.get_pk_from_masterUuid(user['description'])
+        Error=API_calls.masterUuid_check(user['description'])
         
         if Error==True:
             uid=API_calls.get_uid_from_pk("u."+user['pk'])
@@ -134,5 +134,5 @@ def uid_checker(user):
         else:
             return True
     except:
-        error_message="something went wrong when checking the uid"+ response.text
+        error_message="something went wrong when checking the uid"
         raise Exception(error_message)
