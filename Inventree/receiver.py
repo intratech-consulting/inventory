@@ -142,7 +142,7 @@ def removeItemFromStock(primary_key, quantity, order_id):
     item_data = response.json()
     current_quantity = item_data.get("quantity", 100)
     if current_quantity - quantity < 1:
-        error_message="Stocke can't go bellow 0"
+        error_message="Stock can't go bellow 0"
         raise Exception (error_message)
     
     try:

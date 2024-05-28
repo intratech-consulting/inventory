@@ -107,6 +107,7 @@ def get_stock():
             # Updated item
             item_data['category'] = category
             item_data['item_price'] = item_price  # Ensure 'item_price' is set
+            item_data['amount'] = amount
             logging.info(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}")
             print(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
             xml_data = update_product_xml(item_data)
