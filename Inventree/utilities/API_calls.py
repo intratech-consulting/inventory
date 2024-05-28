@@ -350,4 +350,4 @@ def masterUuid_check(uid):
         data = response.json()
         return data.get('error') == "No matching entry found."
     except requests.exceptions.RequestException as e:
-        raise Exception(f"Unexpected error occurred during uid check: {str(e)}")
+        raise e
