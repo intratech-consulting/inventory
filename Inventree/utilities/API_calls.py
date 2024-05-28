@@ -90,10 +90,6 @@ def log_to_controller_room(function_name,msg,error,time):
     channel.queue_declare(queue='Loggin_queue', durable=True)
     channel.queue_bind(exchange='amq.topic', queue='Loggin_queue', routing_key='logs')
 
-    # Format the XML with the current timestamp
-    # formatted_Loggin_xml = Loggin_xml.format(datetime.datetime.utcnow().isoformat())
-    # formatted_Loggin_xml = Loggin_xml.format(datetime.utcnow().isoformat())
-
     # Parse the XML
     xml_doc = etree.fromstring(Loggin_xml.encode())
 
@@ -109,17 +105,6 @@ def log_to_controller_room(function_name,msg,error,time):
     else:
         logger.info('XML is not valid')
     logger.info("----------------------------------------------------------")
-
-    # if True:
-    #     print('XML is valid')
-    #     logger.info('XML is valid')
-    #     # Publish the message to the queue
-    #     channel.basic_publish(exchange='', routing_key='Loggin_queue', body=formatted_Loggin_xml)
-    #     print('Message sent')
-    #     logger.info('XML is not valid')
-    # else:
-    #     print('XML is not valid')
-    #     logger.info('XML is not valid')
 
     # Close the connection
     connection.close()
@@ -257,7 +242,7 @@ def delete_user_pk_in_masterUuid(uid):
     return requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
 
 def create_category(category_name,parent_category_id = ""):
-    url = f"{IP}880/api/part/category/"
+    url = f"http://{IP}:880/api/part/category/"
     if parent_category_id == "":
         payload = json.dumps({
         "name":category_name
@@ -267,31 +252,23 @@ def create_category(category_name,parent_category_id = ""):
             "name":category_name,
             "parent": parent_category_id
         })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_part(part_name, category_id):
-    url = f"{IP}880/api/part/"
+    url = f"http://{IP}:880/api/part/"
     payload = json.dumps({
         "name":part_name,
         "category": category_id,
         "minimum_stock":1
     })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_stock(part_id,quantity,purchase_prise):
-    url = f"{IP}880/api/stock/"
+    url = f"http://{IP}:880/api/stock/"
     payload = json.dumps({
         "part":part_id,
         "quantity": quantity,
@@ -300,12 +277,8 @@ def create_stock(part_id,quantity,purchase_prise):
         "description":"xxx"
     })
     # currency best een ENUM
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_part_masterUuid(part_id):
@@ -335,3 +308,46 @@ def apply_partUuid(Uuid, part_id, category_id: str, part_name: str):
     })
     response = requests.request("PUT", part_url, headers=HEADERS, data=payload)
     print(response)
+
+
+def get_uid_from_pk(pk):
+    #MasterUuid
+    masterUuid_url = f"http://{IP}:6000/getMasterUuid"
+    masterUuid_payload = json.dumps(
+        {
+            "Service": "inventory",
+            "ServiceId": f"{pk}",
+        }
+    )
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        if response.status_code!=200:
+            error_message=f"something went wrong when accessing this pk:{pk}, status code was not 200: {response.text}"
+            raise Exception(error_message)           
+    except requests.exceptions.RequestException as e:
+        error_message=f"something went wrong accessing pk:{pk} - {str(e)}"
+        raise Exception(error_message)
+
+   
+    data=response.json()
+    uid=data['UUID']
+    
+    
+    return(uid)
+
+def masterUuid_check(uid):
+    masterUuid_url = f"http://{IP}:6000/getServiceId"
+    masterUuid_payload = json.dumps({
+        "MASTERUUID": uid,
+        "Service": "inventory"
+    })
+    print(f"uid: {uid}")
+
+    try:
+        response = requests.post(masterUuid_url, headers=UID_HEADERS, data=masterUuid_payload)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        data = response.json()
+        return data.get('error') == "No matching entry found."
+    except requests.exceptions.RequestException as e:
+        raise e

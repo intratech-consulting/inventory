@@ -201,6 +201,7 @@ def main():
             # Check for users need to be update by checking contact field for update
             elif updated_user['contact']=='update':
                 try:
+                    functions.uid_checker(updated_user)
                     handle_user_update(updated_user)
                     API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
                 except Exception as e:
@@ -211,6 +212,7 @@ def main():
             # Check for user need to be deleted by checking contact field for delete
             elif updated_user['contact']=='delete':         
                 try:
+                    functions.uid_checker(updated_user)
                     handle_user_delete(updated_user['description'])
                     uid= updated_user['description']
                     API_calls.delete_user(updated_user['pk'])
