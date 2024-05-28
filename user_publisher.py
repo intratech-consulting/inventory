@@ -56,9 +56,21 @@ def create_xml(user):
         API_calls.update_user(payload,user["pk"])
         return user_xml_str
     else:
-        error_message="XML not valid"
+        
         API_calls.delete_user_pk_in_masterUuid(uid)
-        API_calls.delete_user(user["pk"])
+        payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": "Incorrect fields, see notes",
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+                "notes":"email must not be empty"
+            }
+            )
+        error_message="XML not valid, created user has not been published, uid has been deleted"
+        API_calls.update_user(payload, user['pk'])
         raise Exception(error_message)
     
 
