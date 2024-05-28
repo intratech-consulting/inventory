@@ -337,23 +337,17 @@ def get_uid_from_pk(pk):
     return(uid)
 
 def masterUuid_check(uid):
-    #MasterUuid
     masterUuid_url = f"http://{IP}:6000/getServiceId"
-    masterUuid_payload = json.dumps(
-        {
-            "MASTERUUID": f"{uid}",
-            "Service": "inventory"
-        }
-    )
+    masterUuid_payload = json.dumps({
+        "MASTERUUID": uid,
+        "Service": "inventory"
+    })
     print(f"uid: {uid}")
 
     try:
-        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
-        data=response.json()
-        if data['error']=="No matching entry found.":
-            return True
-        else:
-            return False        
+        response = requests.post(masterUuid_url, headers=UID_HEADERS, data=masterUuid_payload)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        data = response.json()
+        return data.get('error') == "No matching entry found."
     except requests.exceptions.RequestException as e:
-        error_message="Unexpected error occurred during uid check: "+ str(e)
-        raise Exception(error_message)
+        raise Exception(f"Unexpected error occurred during uid check: {str(e)}")

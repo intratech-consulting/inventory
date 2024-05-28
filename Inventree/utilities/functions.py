@@ -121,18 +121,16 @@ def fetch_users():
     return users
 
 def uid_checker(user):
-
     try:
-        Error=API_calls.masterUuid_check(user['description'])
+        is_invalid_uid = API_calls.masterUuid_check(user['description'])
         
-        if Error==True:
-            uid=API_calls.get_uid_from_pk("u."+user['pk'])
-            user['description']=uid
-            user['contact']="ERROR: uid was incorrect, is now recovered but nothing was published."
-            response=API_calls.update_user(user,user["u."+'pk'])
+        if is_invalid_uid:
+            uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
+            user['description'] = uid
+            user['contact'] = "ERROR: uid was incorrect, is now recovered but nothing was published."
+            response = API_calls.update_user(user, user['pk'])
             return False
         else:
             return True
-    except:
-        error_message="something went wrong when checking the uid"
-        raise Exception(error_message)
+    except Exception as e:
+        raise Exception(f"Something went wrong when checking the uid: {str(e)}")
