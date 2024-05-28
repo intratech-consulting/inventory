@@ -133,5 +133,5 @@ def uid_checker(user):
         else:
             return
     except:
-        error_message="something went wrong when checking the uid"
+        error_message="something went wrong when checking the uid"+ response.text
         raise Exception(error_message)
