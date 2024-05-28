@@ -252,12 +252,8 @@ def create_category(category_name,parent_category_id = ""):
             "name":category_name,
             "parent": parent_category_id
         })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_part(part_name, category_id):
@@ -267,12 +263,8 @@ def create_part(part_name, category_id):
         "category": category_id,
         "minimum_stock":1
     })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_stock(part_id,quantity,purchase_prise):
@@ -285,12 +277,8 @@ def create_stock(part_id,quantity,purchase_prise):
         "description":"xxx"
     })
     # currency best een ENUM
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-        'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = requests.request("POST", url, headers=HEADERS, data=payload)
     print(response.text)
 
 def create_part_masterUuid(part_id):
@@ -347,3 +335,25 @@ def get_uid_from_pk(pk):
     
     
     return(uid)
+
+def masterUuid_check(uid):
+    #MasterUuid
+    masterUuid_url = f"http://{IP}:6000/getServiceId"
+    masterUuid_payload = json.dumps(
+        {
+            "MASTERUUID": f"{uid}",
+            "Service": "inventory"
+        }
+    )
+    print(f"uid: {uid}")
+
+    try:
+        response = requests.request("POST", masterUuid_url, headers=UID_HEADERS ,data=masterUuid_payload)
+        data=response.json()
+        if data['error']=="No matching entry found.":
+            return True
+        else:
+            return False        
+    except requests.exceptions.RequestException as e:
+        error_message="Unexpected error occurred during uid check: "+ str(e)
+        raise Exception(error_message)
