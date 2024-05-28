@@ -130,15 +130,13 @@ def uid_checker(user):
             user['description'] = uid
             user['contact'] = "ERROR: uid was incorrect, is now recovered but nothing was published."
             response = API_calls.update_user(user, user['pk'])
-            return False
-        else:
-            return True
+            raise Exception(f"uid was altered, is now reset")
     except requests.exceptions.RequestException as e:
         if e.response.status_code == 404:
             uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
             user['description'] = uid
             user['contact'] = "ERROR: uid was incorrect, is now recovered but nothing was published."
             response = API_calls.update_user(user, user['pk'])
-            return False
+            raise Exception(f"uid was altered, is now reset")
         else:
             raise Exception(f"Something went wrong when checking the uid: {str(e)}")
