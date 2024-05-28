@@ -73,7 +73,8 @@ def get_stock():
         item_price_string = item["purchase_price"]
         item_price = round(float(item_price_string), 2)
         stock_id = item["pk"]
-        amount= item["quantity"]
+        amount_string = item["quantity"]
+        amount = round(float(amount_string), 2)
 
         # Get item info
         item_url = f"http://{IP}:880/api/part/{part_id}/"
@@ -82,6 +83,7 @@ def get_stock():
         item_name = item_data["name"]
         partUuid = item_data["description"]
         item_keyword = item_data.get("keywords", "").lower() if item_data.get("keywords") else ""
+
 
         # Category info
         category_id = item_data["category"]
@@ -94,8 +96,9 @@ def get_stock():
             item_data['description'] = partUuid
             item_data['category'] = category
             item_data['item_price'] = item_price  # Ensure 'item_price' is set
-            logging.info(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}")
-            print(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
+            item_data['amount'] = amount
+            logging.info(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Amount: {amount}")
+            print(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}, Amount: {amount}")
             xml_data = create_product_xml(item_data)
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
@@ -132,9 +135,9 @@ def create_product_xml(product):
     ET.SubElement(product_element, "id").text = product['description']
     ET.SubElement(product_element, "name").text = product['name']
     ET.SubElement(product_element, "price").text = str(product['item_price'])
-    ET.SubElement(product_element, "amount").text = None
+    ET.SubElement(product_element, "amount").text = str(product['amount'])
     ET.SubElement(product_element, "category").text = product['category']
-    ET.SubElement(product_element, "btw").text = None
+    ET.SubElement(product_element, "btw").text = "-1"
 
     return ET.tostring(product_element, encoding='unicode')
 
@@ -146,9 +149,9 @@ def update_product_xml(product):
     ET.SubElement(product_element, "id").text = product['description']
     ET.SubElement(product_element, "name").text = product['name']
     ET.SubElement(product_element, "price").text = str(product['item_price'])
-    ET.SubElement(product_element, "amount").text = product['amount']
+    ET.SubElement(product_element, "amount").text = str(product['amount'])
     ET.SubElement(product_element, "category").text = product['category']
-    ET.SubElement(product_element, "btw").text = None
+    ET.SubElement(product_element, "btw").text = "-1"
 
     return ET.tostring(product_element, encoding='unicode')
 
