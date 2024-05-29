@@ -25,7 +25,7 @@ def payload_extracting_update_user(user_xml,user_pk):
         email=None
 
     if email is None and phone is None and last_name is None and first_name is None:
-        API_calls.log_to_controller_room('C_UPDATE user',f"user with uid:{user_xml.find('id')} has been updated, no relevant fields were updated",False,datetime.datetime.now())
+        API_calls.log_to_controller_room('C_UPDATE user',f"user with uid:{user_xml.find('id').text} has been updated, no relevant fields were updated",False,datetime.datetime.now())
         return True
     return payload_update_user(user_pk,first_name, last_name, phone, email)
 
