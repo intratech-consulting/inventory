@@ -6,8 +6,8 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
-from utilities import API_calls
-from utilities import constants
+from Inventree.utilities import API_calls
+from Inventree.utilities import constants
 
 IP = constants.IP
 
@@ -44,7 +44,7 @@ def publish_xml(xml_data, routing_key):
 
 
 def get_stock():
-    time.sleep(10)  # kies interval
+    time.sleep(5)  # kies interval
 
     stock_url = f"http://{IP}:880/api/stock/"
     part_url = f"http://{IP}:880/api/part/"
@@ -90,7 +90,7 @@ def get_stock():
             response = requests.request("GET", stock_url, headers=headers, data=payload)
             stock_data = response.json()
 
-            item_name = item["full_name"]
+            item_name = item["name"]
             partUuid = item["description"]
             item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
 
@@ -118,35 +118,31 @@ def get_stock():
         elif item['keywords']=='update':
             category_response = requests.request("GET", category_url, headers=headers, data=payload)
             category_data = category_response.json()
-
             # Mapping for categories
             category_mapping = {category["pk"]: category["pathstring"] for category in category_data}
-
             # Get the stock data
             response = requests.request("GET", stock_url, headers=headers, data=payload)
             stock_data = response.json()
-
-            item_name = item["full_name"]
+            item_name = item["name"]
             partUuid = item["description"]
             item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
-
-
             # Category info
             category_id = item["category"]
             category = category_mapping.get(category_id, "")
-
-
             # Updated item
             stock=filter_stock(item['pk'],stock_data)
             item['category'] = category
             item['price'] = stock["purchase_price"]  # Ensure 'item_price' is set
             item['amount'] = stock["quantity"]
+            update_item_keyword(item)
+
             logging.info(f"Updated item found: id: {item['pk']}, Name: {item_name}, Price: {item['price']}, Category: {category}")
             # print(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
             xml_data = update_product_xml(item)
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
-            update_item_keyword({item['pk']})
+            
+
         elif item['active']== False:
             category_response = requests.request("GET", category_url, headers=headers, data=payload)
             category_data = category_response.json()
@@ -158,7 +154,7 @@ def get_stock():
             response = requests.request("GET", stock_url, headers=headers, data=payload)
             stock_data = response.json()
 
-            item_name = item["full_name"]
+            item_name = item["name"]
             partUuid = item["description"]
             item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
 
@@ -220,18 +216,19 @@ def delete_product_xml(uid):
 
     return ET.tostring(product_element, encoding='unicode')
 
-def update_item_keyword(part_id, new_keyword=""):
-    item_url = f"http://{IP}:880/api/part/{part_id}/"
-    payload = {"keywords": new_keyword}
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic YWRtaW46ZWhiMTIz',
-    }
-    response = requests.patch(item_url, headers=headers, data=json.dumps(payload))
-    if response.status_code == 200:
-        logging.info(f"Updated keyword for part_id {part_id} to '{new_keyword}'")
-    else:
-        logging.error(f"Failed to update keyword for part_id {part_id}: {response.status_code}, {response.text}")
+def update_item_keyword(item, new_keyword=""):
+    logger.info("begin\n")
+    
+    item_url = f"http://{IP}:880/api/part/{item['pk']}/"
+    logger.info(item['pk'])
+    payload={}
+    payload['category']=item['category']
+    payload['minimum_stock']=item['minimum_stock']
+    payload['name']=item['name']
+    payload['keywords']=""
+    logger.info(payload)
+    response = requests.request("PUT",item_url, headers=HEADERS, data=json.dumps(payload))
+    
 
 def delete_product_pk_in_masterUuid(uid):
     #MasterUuid
