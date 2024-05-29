@@ -213,6 +213,7 @@ def main():
                         {
                             "name": "ERROR",
                             "currency": "EUR",
+                            "description":"ERROR",
                             "is_customer": True,
                             "is_manufacturer": False,
                             "is_supplier": False,
