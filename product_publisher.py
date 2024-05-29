@@ -6,8 +6,8 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
-from utilities import API_calls
-from utilities import constants
+from Inventree.utilities import API_calls
+from Inventree.utilities import constants
 
 IP = constants.IP
 
@@ -47,6 +47,7 @@ def get_stock():
     time.sleep(10)  # kies interval
 
     stock_url = f"http://{IP}:880/api/stock/"
+    part_url = f"http://{IP}:880/api/part/"
     category_url = f"http://{IP}:880/api/part/category/"
     payload = {}
     headers = {
@@ -55,75 +56,124 @@ def get_stock():
         'Cookie': 'csrftoken=cDqCDkdERE2HS5d6AeavIFtzBmq9AW6k; sessionid=yxqgwt1c562bdis3d6mxlxez4ihrl4gi'
     }
 
-    # Get the category data
-    category_response = requests.request("GET", category_url, headers=headers, data=payload)
-    category_data = category_response.json()
+    
 
-    # Mapping for categories
-    category_mapping = {category["pk"]: category["pathstring"] for category in category_data}
-
-    # Get the stock data
-    response = requests.request("GET", stock_url, headers=headers, data=payload)
-    data = response.json()
+    response = requests.request("GET", part_url, headers=headers, data=payload)
+    part_data = response.json()
 
     new_item_found = False
-
-    for item in data:
-        part_id = item["part"]
-        item_price_string = item["purchase_price"]
-        item_price = round(float(item_price_string), 2)
-        stock_id = item["pk"]
-        amount_string = item["quantity"]
-        amount = round(float(amount_string), 2)
+    def filter_stock(part_id, stock_list):
+            for stock in stock_list:
+                if stock['part']==part_id:
+                    return stock
+    
+    for item in part_data:
+        # part_id = item["part"]
+        # item_price_string = item["purchase_price"]
+        # item_price = round(float(item_price_string), 2)
+        # stock_id = item["pk"]
+        # amount_string = item["quantity"]
+        # amount = round(float(amount_string), 2)
 
         # Get item info
-        item_url = f"http://{IP}:880/api/part/{part_id}/"
-        item_response = requests.request("GET", item_url, headers=headers, data=payload)
-        item_data = item_response.json()
-        item_name = item_data["name"]
-        partUuid = item_data["description"]
-        item_keyword = item_data.get("keywords", "").lower() if item_data.get("keywords") else ""
+        
+
+        if item['description'] == "" and item['in_stock']>0:
+            # Get the category data
+            category_response = requests.request("GET", category_url, headers=headers, data=payload)
+            category_data = category_response.json()
+
+            # Mapping for categories
+            category_mapping = {category["pk"]: category["pathstring"] for category in category_data}
+
+            # Get the stock data
+            response = requests.request("GET", stock_url, headers=headers, data=payload)
+            stock_data = response.json()
+
+            item_name = item["full_name"]
+            partUuid = item["description"]
+            item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
 
 
-        # Category info
-        category_id = item_data["category"]
-        category = category_mapping.get(category_id, "")
+            # Category info
+            category_id = item["category"]
+            category = category_mapping.get(category_id, "")
 
-        if partUuid == "":
+
             # New item
-            partUuid = API_calls.create_part_masterUuid(part_id)
-            API_calls.apply_partUuid(partUuid, part_id, category_id, item_name)
-            item_data['description'] = partUuid
-            item_data['category'] = category
-            item_data['item_price'] = item_price  # Ensure 'item_price' is set
-            item_data['amount'] = amount
-            logging.info(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Amount: {amount}")
-            print(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}, Amount: {amount}")
-            xml_data = create_product_xml(item_data)
+            stock=filter_stock(item['pk'],stock_data)
+            partUuid = API_calls.create_part_masterUuid(stock['pk'])
+            API_calls.apply_partUuid(partUuid, item['pk'], category_id, item_name)
+            item['description'] = partUuid
+            item['category'] = category
+            
+            item['price'] = stock["purchase_price"]  # Ensure 'item_price' is set
+            item['amount'] = stock["quantity"]
+            logging.info(f"New item found: id: {item['pk']}, Name: {item_name}, Price: {item['price']}, Category: {category}, Amount: {item['amount']}")
+            # print(f"New item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}, Amount: {amount}")
+            xml_data = create_product_xml(item)
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
             new_item_found = True
-        elif "update" in item_keyword:
+        elif item['keywords']=='update':
+            category_response = requests.request("GET", category_url, headers=headers, data=payload)
+            category_data = category_response.json()
+
+            # Mapping for categories
+            category_mapping = {category["pk"]: category["pathstring"] for category in category_data}
+
+            # Get the stock data
+            response = requests.request("GET", stock_url, headers=headers, data=payload)
+            stock_data = response.json()
+
+            item_name = item["full_name"]
+            partUuid = item["description"]
+            item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
+
+
+            # Category info
+            category_id = item["category"]
+            category = category_mapping.get(category_id, "")
+
+
             # Updated item
-            item_data['category'] = category
-            item_data['item_price'] = item_price  # Ensure 'item_price' is set
-            item_data['amount'] = amount
-            logging.info(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}")
-            print(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
-            xml_data = update_product_xml(item_data)
+            stock=filter_stock(item['pk'],stock_data)
+            item['category'] = category
+            item['price'] = stock["purchase_price"]  # Ensure 'item_price' is set
+            item['amount'] = stock["quantity"]
+            logging.info(f"Updated item found: id: {item['pk']}, Name: {item_name}, Price: {item['price']}, Category: {category}")
+            # print(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
+            xml_data = update_product_xml(item)
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
-            update_item_keyword(part_id)
-        elif "delete" in item_keyword:
-            # Deleted item
-            logging.info(f"Deleted item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}")
-            print(f"Deleted item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
+            update_item_keyword({item['pk']})
+        elif item['active']== False:
+            category_response = requests.request("GET", category_url, headers=headers, data=payload)
+            category_data = category_response.json()
+
+            # Mapping for categories
+            category_mapping = {category["pk"]: category["pathstring"] for category in category_data}
+
+            # Get the stock data
+            response = requests.request("GET", stock_url, headers=headers, data=payload)
+            stock_data = response.json()
+
+            item_name = item["full_name"]
+            partUuid = item["description"]
+            item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
+
+
+            # Category info
+            category_id = item["category"]
+            category = category_mapping.get(category_id, "")
+
+            stock=filter_stock(item['pk'],stock_data)
             xml_data = delete_product_xml(partUuid)
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
             delete_product_pk_in_masterUuid(partUuid)
-            delete_stock(stock_id)
-            delete_part(part_id)
+            delete_stock(stock['pk'])
+            delete_part(item['pk'])
 
     if not new_item_found:
         logging.info("No new items found...")
@@ -135,7 +185,7 @@ def create_product_xml(product):
     ET.SubElement(product_element, "crud_operation").text = 'create'
     ET.SubElement(product_element, "id").text = product['description']
     ET.SubElement(product_element, "name").text = product['name']
-    ET.SubElement(product_element, "price").text = str(product['item_price'])
+    ET.SubElement(product_element, "price").text = str(product['price'])
     ET.SubElement(product_element, "amount").text = str(product['amount'])
     ET.SubElement(product_element, "category").text = product['category']
     ET.SubElement(product_element, "btw").text = "-1"
@@ -149,7 +199,7 @@ def update_product_xml(product):
     ET.SubElement(product_element, "crud_operation").text = 'update'
     ET.SubElement(product_element, "id").text = product['description']
     ET.SubElement(product_element, "name").text = product['name']
-    ET.SubElement(product_element, "price").text = str(product['item_price'])
+    ET.SubElement(product_element, "price").text = str(product['price'])
     ET.SubElement(product_element, "amount").text = str(product['amount'])
     ET.SubElement(product_element, "category").text = product['category']
     ET.SubElement(product_element, "btw").text = "-1"
