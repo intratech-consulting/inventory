@@ -15,12 +15,10 @@ def create_user_xml(user,uid):
         # Probeer toegang te krijgen tot het eerste element in name_array
         first_element = name_array[0]
         print(f"First element: {first_element}")
-    except IndexError as e:
-        if "list index out of range" in str(e):
-            payload = json.dumps(
+    except IndexError:
+        payload = json.dumps(
             {
                 "name": "ERROR",
-                "description": "Error, see notes",
                 "currency": "EUR",
                 "is_customer": True,
                 "is_manufacturer": False,
@@ -28,14 +26,14 @@ def create_user_xml(user,uid):
                 "notes":"first & last name must be seperated with '.'"
             }
             )
-            error_message="XML not valid, created user has not been published, uid has been deleted"
-            API_calls.update_user(payload, user['pk'])
-            API_calls.delete_user_pk_in_masterUuid(uid)
-            raise Exception(error_message)
-        else:
-            API_calls.delete_user_pk_in_masterUuid(uid)
-            error_message=f"XML not valid, created user has not been published, uid has been deleted : {str(e)}"
-            raise Exception(error_message)
+        error_message="XML not valid, created user has not been published, uid has been deleted, name had no '.'"
+        API_calls.delete_user_pk_in_masterUuid(uid)
+        API_calls.update_user(payload, user['pk'])
+        raise Exception(error_message)
+    except Exception as e:
+        error_message=f"XML not valid, created user has not been published, uid has been deleted : {str(e)}"
+        API_calls.delete_user_pk_in_masterUuid(uid)
+        raise Exception(error_message)
     
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'
@@ -71,9 +69,8 @@ def update_user_xml(user):
         # Probeer toegang te krijgen tot het eerste element in name_array
         first_element = name_array[0]
         print(f"First element: {first_element}")
-    except IndexError as e:
-        if "list index out of range" in str(e):
-            payload = json.dumps(
+    except IndexError:
+        payload = json.dumps(
             {
                 "name": "ERROR",
                 "currency": "EUR",
@@ -83,12 +80,13 @@ def update_user_xml(user):
                 "notes":"first & last name must be seperated with '.'"
             }
             )
-            error_message="XML not valid, updated user has not been published"
-            API_calls.update_user(payload, user['pk'])
-            raise Exception(error_message)
-        else:
-            error_message=f"XML not valid, updated user has not been published : {str(e)}"
-            raise Exception(error_message)
+        error_message="XML not valid, updated user has not been published, name has no '.'"
+        API_calls.update_user(payload, user['pk'])
+        raise Exception(error_message)
+    except Exception as e:
+        error_message=f"XML not valid, updated user has not been published : {str(e)}"
+        raise Exception(error_message)
+    
     
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'
