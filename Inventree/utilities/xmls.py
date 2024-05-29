@@ -30,10 +30,6 @@ def create_user_xml(user,uid):
         API_calls.delete_user_pk_in_masterUuid(uid)
         API_calls.update_user(payload, user['pk'])
         raise Exception(error_message)
-    except Exception as e:
-        error_message=f"XML not valid, created user has not been published, uid has been deleted : {str(e)}"
-        API_calls.delete_user_pk_in_masterUuid(uid)
-        raise Exception(error_message)
     
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'
@@ -82,9 +78,6 @@ def update_user_xml(user):
             )
         error_message="XML not valid, updated user has not been published, name has no '.'"
         API_calls.update_user(payload, user['pk'])
-        raise Exception(error_message)
-    except Exception as e:
-        error_message=f"XML not valid, updated user has not been published : {str(e)}"
         raise Exception(error_message)
     
     
