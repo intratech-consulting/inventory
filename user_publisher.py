@@ -61,7 +61,7 @@ def create_xml(user):
         payload = json.dumps(
             {
                 "name": user['name'],
-                "description": "Incorrect fields, see notes",
+                "description": "Error, see notes",
                 "currency": "EUR",
                 "is_customer": True,
                 "is_manufacturer": False,
@@ -124,6 +124,7 @@ def f_update_xml(updated_user):
         payload["name"]=updated_user["name"]
         payload["contact"]="ERROR"
         payload["currency"]="EUR"
+        payload["notes"]="email must not be empty"
         payload=json.dumps(payload) 
         error_message="XML not valid"
         API_calls.update_user(payload,updated_user['pk'])
