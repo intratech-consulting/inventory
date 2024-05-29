@@ -15,7 +15,7 @@ def create_user_xml(user,uid):
         # Probeer toegang te krijgen tot het eerste element in name_array
         first_element = name_array[0]
         print(f"First element: {first_element}")
-    except IndexError:
+    except Exception as e:
         payload = json.dumps(
             {
                 "name": "ERROR",
@@ -26,7 +26,7 @@ def create_user_xml(user,uid):
                 "notes":"first & last name must be seperated with '.'"
             }
             )
-        error_message="XML not valid, created user has not been published, uid has been deleted, name had no '.'"
+        error_message=f"XML not valid, created user has not been published, uid has been deleted, name had no '.': {str(e)}"
         API_calls.delete_user_pk_in_masterUuid(uid)
         API_calls.update_user(payload, user['pk'])
         raise Exception(error_message)
@@ -65,7 +65,7 @@ def update_user_xml(user):
         # Probeer toegang te krijgen tot het eerste element in name_array
         first_element = name_array[0]
         print(f"First element: {first_element}")
-    except IndexError:
+    except Exception as e:
         payload = json.dumps(
             {
                 "name": "ERROR",
@@ -76,7 +76,7 @@ def update_user_xml(user):
                 "notes":"first & last name must be seperated with '.'"
             }
             )
-        error_message="XML not valid, updated user has not been published, name has no '.'"
+        error_message=f"XML not valid, updated user has not been published, name has no '.': {str(e)}"
         API_calls.update_user(payload, user['pk'])
         raise Exception(error_message)
     
