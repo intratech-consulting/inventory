@@ -6,8 +6,8 @@ import time
 import xml.etree.ElementTree as ET
 import pika
 import logging
-from Inventree.utilities import API_calls
-from Inventree.utilities import constants
+from utilities import API_calls
+from utilities import constants
 
 IP = constants.IP
 
