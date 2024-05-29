@@ -110,6 +110,7 @@ def get_payload_to_update_user(user,uid):
                 "is_customer": True,
                 "is_manufacturer": False,
                 "is_supplier": False,
+                "notes":""
             }
         )
     return payload
@@ -132,10 +133,11 @@ def uid_checker(user):
                 "name": user['name'],
                 "description": uid,
                 "currency": "EUR",
-                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "contact":"ERROR",
                 "is_customer": True,
                 "is_manufacturer": False,
-                "is_supplier": False
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
             }
             )
             response = API_calls.update_user(payload, user['pk'])
@@ -149,10 +151,11 @@ def uid_checker(user):
                 "name": user['name'],
                 "description": uid,
                 "currency": "EUR",
-                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "contact":"ERROR",
                 "is_customer": True,
                 "is_manufacturer": False,
-                "is_supplier": False
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
             }
             )
             response = API_calls.update_user(payload, user['pk'])

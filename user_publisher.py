@@ -115,6 +115,7 @@ def f_update_xml(updated_user):
         payload["email"]=updated_user["email"]
         payload["phone"]=updated_user["phone"]
         payload["contact"]=""
+        payload['notes']=""
         payload["currency"]="EUR"
         payload=json.dumps(payload)   
         # Updates user in the database
