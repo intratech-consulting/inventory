@@ -1,14 +1,17 @@
 import xml.etree.ElementTree as ET
 import lxml
 from lxml import etree
+from . import API_calls
+import json
 
 
 
 
 
 def create_user_xml(user,uid):
-    name=user['name']
-    name_array=name.split(".")
+
+    name = user['name']
+    name_array = name.split(".")
     
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'
@@ -38,8 +41,8 @@ def create_user_xml(user,uid):
     return ET.tostring(user_element, encoding='unicode')
 
 def update_user_xml(user):
-    name=user['name']
-    name_array=name.split(".")
+    name = user['name']
+    name_array = name.split(".")
     
     user_element = ET.Element("user")
     ET.SubElement(user_element, "routing_key").text = 'user.inventory'

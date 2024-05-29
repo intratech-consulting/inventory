@@ -201,6 +201,8 @@ def update_user(uid, user_xml):
     try:
         # Extract required fields        
         payload=functions.payload_extracting_update_user(user_xml,user_pk)
+        if payload==True:
+            return
     except Exception as e:
         error_message = f"Error accessing {uid} when extracting the payload for update user - {str(e)}"
         raise Exception(error_message)

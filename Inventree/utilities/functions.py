@@ -1,6 +1,7 @@
 import json
 from . import API_calls
 import requests
+import datetime
 
 def payload_extracting_update_user(user_xml,user_pk):
     try:
@@ -24,7 +25,8 @@ def payload_extracting_update_user(user_xml,user_pk):
         email=None
 
     if email is None and phone is None and last_name is None and first_name is None:
-        raise Exception("relevant fields were empty")
+        API_calls.log_to_controller_room('C_UPDATE user',f"user with uid:{user_xml.find('id').text} has been updated, no relevant fields were updated",False,datetime.datetime.now())
+        return True
     return payload_update_user(user_pk,first_name, last_name, phone, email)
 
 def payload_update_user(user_pk,first_name=None, last_name=None, telephone=None, email=None):
@@ -110,6 +112,7 @@ def get_payload_to_update_user(user,uid):
                 "is_customer": True,
                 "is_manufacturer": False,
                 "is_supplier": False,
+                "notes":""
             }
         )
     return payload
@@ -132,10 +135,11 @@ def uid_checker(user):
                 "name": user['name'],
                 "description": uid,
                 "currency": "EUR",
-                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "contact":"ERROR",
                 "is_customer": True,
                 "is_manufacturer": False,
-                "is_supplier": False
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
             }
             )
             response = API_calls.update_user(payload, user['pk'])
@@ -149,10 +153,11 @@ def uid_checker(user):
                 "name": user['name'],
                 "description": uid,
                 "currency": "EUR",
-                "contact":"ERROR: uid was incorrect, is now recovered but nothing was published.",
+                "contact":"ERROR",
                 "is_customer": True,
                 "is_manufacturer": False,
-                "is_supplier": False
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
             }
             )
             response = API_calls.update_user(payload, user['pk'])
