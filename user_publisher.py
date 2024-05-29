@@ -242,7 +242,7 @@ def main():
                                 "is_customer": True,
                                 "is_manufacturer": False,
                                 "is_supplier": False,
-                                "contact":"",
+                                "contact":"ERROR",
                                 "notes":"first & last name must be seperated with '.'"
                             }
                             )
