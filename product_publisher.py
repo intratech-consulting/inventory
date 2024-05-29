@@ -123,6 +123,7 @@ def get_stock():
             # Get the stock data
             response = requests.request("GET", stock_url, headers=headers, data=payload)
             stock_data = response.json()
+
             item_name = item["name"]
             partUuid = item["description"]
             item_keyword = item.get("keywords", "").lower() if item.get("keywords") else ""
@@ -131,14 +132,16 @@ def get_stock():
             category = category_mapping.get(category_id, "")
             # Updated item
             stock=filter_stock(item['pk'],stock_data)
-            item['category'] = category
             item['price'] = stock["purchase_price"]  # Ensure 'item_price' is set
             item['amount'] = stock["quantity"]
+            logger.info(item)
             update_item_keyword(item)
 
             logging.info(f"Updated item found: id: {item['pk']}, Name: {item_name}, Price: {item['price']}, Category: {category}")
             # print(f"Updated item found: id: {part_id}, Name: {item_name}, Price: {item_price}, Category: {category}, Description: {partUuid}")
+            item['category'] = category
             xml_data = update_product_xml(item)
+
             logging.info(xml_data)
             publish_xml(xml_data, "product.inventory")
             
@@ -217,7 +220,7 @@ def delete_product_xml(uid):
     return ET.tostring(product_element, encoding='unicode')
 
 def update_item_keyword(item, new_keyword=""):
-    logger.info("begin\n")
+    # logger.info("begin\n")
     
     item_url = f"http://{IP}:880/api/part/{item['pk']}/"
     logger.info(item['pk'])
@@ -226,7 +229,7 @@ def update_item_keyword(item, new_keyword=""):
     payload['minimum_stock']=item['minimum_stock']
     payload['name']=item['name']
     payload['keywords']=""
-    logger.info(payload)
+    # logger.info(payload)
     response = requests.request("PUT",item_url, headers=HEADERS, data=json.dumps(payload))
     
 
