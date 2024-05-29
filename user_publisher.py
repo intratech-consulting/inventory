@@ -34,9 +34,9 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
 # Function that creates the XML to create an user and returns it
-def create_xml(user):
+def create_xml(user,uid):
     
-    uid=API_calls.create_user_masterUuid(user["pk"])
+    
     #Creates uid for new user
     user_xml_str= xmls.create_user_xml(user, uid)
 
@@ -203,13 +203,29 @@ def main():
 
                 # New user detected
                 try:
-                    
-                    user_xml = create_xml(updated_user)
+                    uid=API_calls.create_user_masterUuid(updated_user["pk"])
+                    user_xml = create_xml(updated_user,uid)
                     publish_to_queue(user_xml)
                     API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created", False, datetime.datetime.now())
                 except Exception as e:
-                    error_message=f"Error processing message:\n{str(e)}"
-                    API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
+                    if str(e)=='list index out of range':
+                        payload = json.dumps(
+                        {
+                            "name": "ERROR",
+                            "currency": "EUR",
+                            "is_customer": True,
+                            "is_manufacturer": False,
+                            "is_supplier": False,
+                            "notes":"first & last name must be seperated with '.'"
+                        }
+                        )
+                        error_message=f"XML not valid, created user has not been published, uid has been deleted, name had no '.': {str(e)}"
+                        API_calls.delete_user_pk_in_masterUuid(uid)
+                        API_calls.update_user(payload, updated_user['pk'])
+                        API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
+                    else:
+                        error_message=f"Error processing message:\n{str(e)}"
+                        API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
             
             # Check for users need to be update by checking contact field for update
             elif updated_user['contact']=='update':
@@ -218,8 +234,25 @@ def main():
                     handle_user_update(updated_user)
                     API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
                 except Exception as e:
-                    error_message=f"Error processing message:\n{str(e)}"
-                    API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
+                    if str(e)=='list index out of range':
+                        payload = json.dumps(
+                            {
+                                "name": "ERROR",
+                                "currency": "EUR",
+                                "is_customer": True,
+                                "is_manufacturer": False,
+                                "is_supplier": False,
+                                "notes":"first & last name must be seperated with '.'"
+                            }
+                            )
+                        error_message=f"XML not valid, updated user has not been published, name has no '.': {str(e)}"
+                        API_calls.update_user(payload, updated_user['pk'])
+                        API_calls.log_to_controller_room('ERROR P_UPDATE user ', error_message, True, datetime.datetime.now())
+                    else:
+                        error_message=f"Error processing message:\n{str(e)}"
+                        API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
+
+                    
                 change=True
 
             # Check for user need to be deleted by checking contact field for delete
