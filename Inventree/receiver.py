@@ -121,6 +121,8 @@ def process_user(body):
         # Extract required fields
         uid=user_xml.find('id').text
         crud=user_xml.find('crud_operation').text
+        if user_xml.find('routing_key').text!="user.facturatie":
+            raise Exception(f"Delete request was not send by facturatie")
     except Exception as e:
         raise Exception(f"Error in XML parsing or field extraction of uid and CRUD:\n{str(e)}")
     
