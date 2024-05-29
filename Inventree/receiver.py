@@ -121,8 +121,6 @@ def process_user(body):
         # Extract required fields
         uid=user_xml.find('id').text
         crud=user_xml.find('crud_operation').text
-        if user_xml.find('routing_key').text!="user.facturatie":
-            raise Exception(f"Delete request was not send by facturatie")
     except Exception as e:
         raise Exception(f"Error in XML parsing or field extraction of uid and CRUD:\n{str(e)}")
     
@@ -133,7 +131,10 @@ def process_user(body):
         elif crud == "update":
             update_user(uid, user_xml)
         elif crud == "delete":
-            delete_user(uid)
+            if user_xml.find('routing_key').text!="user.facturatie":
+                raise Exception(f"Delete request was not send by facturatie")
+            else:
+                delete_user(uid)
         else:
             raise Exception(f"CRUD was invalid for user with uid:{uid} - ") #{str(e)}
     except Exception as e:
