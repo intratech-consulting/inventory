@@ -74,7 +74,7 @@ def create_xml(user,uid):
         raise Exception(error_message)
     
 
-# Function that enables us to publish messages on the queue
+# Function that enables us to publish messages on the queue.
 def publish_to_queue(xml_data):
     # Connect to RabbitMQ server
     connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
