@@ -52,7 +52,8 @@ jobs:
           echo "Restarting services..."
           # Commands to restart your services
           cd Inventree
-          # Additional deployment commands can be added here
+          docker compose build
+          docker compose up
           ENDSSH
       
 

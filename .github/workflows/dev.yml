@@ -49,6 +49,8 @@ jobs:
           echo "Restarting services..."
           pwd
           cd Inventree
+          docker compose build
+          docker compose up
           ENDSSH
       
 
