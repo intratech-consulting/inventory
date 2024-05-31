@@ -34,9 +34,9 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
 # Function that creates the XML to create an user and returns it
-def create_xml(user):
+def create_xml(user,uid):
     
-    uid=API_calls.create_user_masterUuid(user["pk"])
+    
     #Creates uid for new user
     user_xml_str= xmls.create_user_xml(user, uid)
 
@@ -56,13 +56,25 @@ def create_xml(user):
         API_calls.update_user(payload,user["pk"])
         return user_xml_str
     else:
-        error_message="XML not valid"
+        
         API_calls.delete_user_pk_in_masterUuid(uid)
-        API_calls.delete_user(user["pk"])
+        payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": "Error, see notes",
+                "currency": "EUR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+                "notes":"email must not be empty"
+            }
+            )
+        error_message="XML not valid, created user has not been published, uid has been deleted"
+        API_calls.update_user(payload, user['pk'])
         raise Exception(error_message)
     
 
-# Function that enables us to publish messages on the queue
+# Function that enables us to publish messages on the queue.
 def publish_to_queue(xml_data):
     # Connect to RabbitMQ server
     connection = pika.BlockingConnection(pika.ConnectionParameters(IP, 5672, '/', pika.PlainCredentials('user', 'password')))
@@ -103,6 +115,7 @@ def f_update_xml(updated_user):
         payload["email"]=updated_user["email"]
         payload["phone"]=updated_user["phone"]
         payload["contact"]=""
+        payload['notes']=""
         payload["currency"]="EUR"
         payload=json.dumps(payload)   
         # Updates user in the database
@@ -112,6 +125,7 @@ def f_update_xml(updated_user):
         payload["name"]=updated_user["name"]
         payload["contact"]="ERROR"
         payload["currency"]="EUR"
+        payload["notes"]="email must not be empty"
         payload=json.dumps(payload) 
         error_message="XML not valid"
         API_calls.update_user(payload,updated_user['pk'])
@@ -190,27 +204,64 @@ def main():
 
                 # New user detected
                 try:
-                    
-                    user_xml = create_xml(updated_user)
+                    uid=API_calls.create_user_masterUuid(updated_user["pk"])
+                    user_xml = create_xml(updated_user,uid)
                     publish_to_queue(user_xml)
                     API_calls.log_to_controller_room('P_CREATE user ', "user succesfully created", False, datetime.datetime.now())
                 except Exception as e:
-                    error_message=f"Error processing message:\n{str(e)}"
-                    API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
+                    if str(e)=='list index out of range':
+                        payload = json.dumps(
+                        {
+                            "name": "ERROR",
+                            "currency": "EUR",
+                            "description":"ERROR",
+                            "is_customer": True,
+                            "is_manufacturer": False,
+                            "is_supplier": False,
+                            "notes":"first & last name must be seperated with '.'"
+                        }
+                        )
+                        error_message=f"XML not valid, created user has not been published, uid has been deleted, name had no '.': {str(e)}"
+                        API_calls.delete_user_pk_in_masterUuid(uid)
+                        API_calls.update_user(payload, updated_user['pk'])
+                        API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
+                    else:
+                        error_message=f"Error processing message:\n{str(e)}"
+                        API_calls.log_to_controller_room('ERROR P_CREATE user ', error_message, True, datetime.datetime.now())
             
             # Check for users need to be update by checking contact field for update
             elif updated_user['contact']=='update':
                 try:
+                    functions.uid_checker(updated_user)
                     handle_user_update(updated_user)
                     API_calls.log_to_controller_room('P_UPDATE user ', "user succesfully updated", False, datetime.datetime.now())
                 except Exception as e:
-                    error_message=f"Error processing message:\n{str(e)}"
-                    API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
+                    if str(e)=='list index out of range':
+                        payload = json.dumps(
+                            {
+                                "name": "ERROR",
+                                "currency": "EUR",
+                                "is_customer": True,
+                                "is_manufacturer": False,
+                                "is_supplier": False,
+                                "contact":"ERROR",
+                                "notes":"first & last name must be seperated with '.'"
+                            }
+                            )
+                        error_message=f"XML not valid, updated user has not been published, name has no '.': {str(e)}"
+                        API_calls.update_user(payload, updated_user['pk'])
+                        API_calls.log_to_controller_room('ERROR P_UPDATE user ', error_message, True, datetime.datetime.now())
+                    else:
+                        error_message=f"Error processing message:\n{str(e)}"
+                        API_calls.log_to_controller_room('ERROR P_UPDATE user', error_message, True, datetime.datetime.now())
+
+                    
                 change=True
 
             # Check for user need to be deleted by checking contact field for delete
             elif updated_user['contact']=='delete':         
                 try:
+                    functions.uid_checker(updated_user)
                     handle_user_delete(updated_user['description'])
                     uid= updated_user['description']
                     API_calls.delete_user(updated_user['pk'])

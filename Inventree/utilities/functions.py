@@ -1,5 +1,7 @@
 import json
 from . import API_calls
+import requests
+import datetime
 
 def payload_extracting_update_user(user_xml,user_pk):
     try:
@@ -23,7 +25,8 @@ def payload_extracting_update_user(user_xml,user_pk):
         email=None
 
     if email is None and phone is None and last_name is None and first_name is None:
-        raise Exception("relevant fields were empty")
+        API_calls.log_to_controller_room('C_UPDATE user',f"user with uid:{user_xml.find('id').text} has been updated, no relevant fields were updated",False,datetime.datetime.now())
+        return True
     return payload_update_user(user_pk,first_name, last_name, phone, email)
 
 def payload_update_user(user_pk,first_name=None, last_name=None, telephone=None, email=None):
@@ -109,6 +112,7 @@ def get_payload_to_update_user(user,uid):
                 "is_customer": True,
                 "is_manufacturer": False,
                 "is_supplier": False,
+                "notes":""
             }
         )
     return payload
@@ -119,3 +123,44 @@ def fetch_users():
     users = response.json()
     print(f"fetching is done")
     return users
+
+def uid_checker(user):
+    try:
+        is_invalid_uid = API_calls.masterUuid_check(user['description'])
+        
+        if is_invalid_uid:
+            uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
+            payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": uid,
+                "currency": "EUR",
+                "contact":"ERROR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
+            }
+            )
+            response = API_calls.update_user(payload, user['pk'])
+            raise Exception(f"uid was altered, is now reset")
+    except requests.exceptions.RequestException as e:
+        if e.response.status_code == 404:
+            uid = API_calls.get_uid_from_pk(f"u.{user['pk']}")
+
+            payload = json.dumps(
+            {
+                "name": user['name'],
+                "description": uid,
+                "currency": "EUR",
+                "contact":"ERROR",
+                "is_customer": True,
+                "is_manufacturer": False,
+                "is_supplier": False,
+                "notes":": uid was incorrect, is now recovered but nothing was published."
+            }
+            )
+            response = API_calls.update_user(payload, user['pk'])
+            raise Exception(f"uid was altered, is now reset")
+        else:
+            raise Exception(f"Something went wrong when checking the uid: {str(e)}")
