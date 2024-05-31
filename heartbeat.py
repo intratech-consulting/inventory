@@ -4,7 +4,7 @@ import pika
 from lxml import etree
 import docker  # Import Docker library
 
-TEAM = 'inventory'  # Service name
+TEAM = 'inventory'  # Service name.
 
 # Define your XML and XSD as strings
 heartbeat_xml = """
