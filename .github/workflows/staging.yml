@@ -50,7 +50,7 @@ jobs:
           echo "Restarting services..."
           cd Inventree
           docker compose build
-          docker compose up
+          docker compose up -d
           ENDSSH
       
 
