@@ -13,5 +13,5 @@ COPY ./heartbeat.py ./
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r heartbeat-requirements.txt
 
-# Command to run the application
+# Command to run the applicationn
 CMD ["python", "heartbeat.py"]
