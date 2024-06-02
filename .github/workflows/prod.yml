@@ -53,7 +53,7 @@ jobs:
           # Commands to restart your services
           cd Inventree
           docker compose build
-          docker compose up
+          docker compose up -d
           ENDSSH
       
 
